@@ -88,22 +88,18 @@
       <h2 class="section-label">Passions</h2>
       <div class="cards">
         <article class="card">
-          <span class="num">01</span>
           <h3>Golf</h3>
           <p>My biggest passion outside the classroom &mdash; patience, focus, and always chasing a better round.</p>
         </article>
         <article class="card">
-          <span class="num">02</span>
           <h3>People</h3>
           <p>An extrovert at heart. I love meeting new people and hearing their stories.</p>
         </article>
         <article class="card">
-          <span class="num">03</span>
           <h3>Adventure</h3>
           <p>Endlessly curious and always looking for the next experience, city, or challenge.</p>
         </article>
         <article class="card">
-          <span class="num">04</span>
           <h3>Growth</h3>
           <p>Pushing myself, every day, to grow into the best version of me.</p>
         </article>
@@ -112,12 +108,9 @@
 
     <section id="contact" class="contact">
       <h2>Let's <em>connect</em></h2>
-      <p>Always happy to meet someone new &mdash; whether it's about international affairs, business, or a round of golf.</p>
+      <p>Always happy to meet someone new &mdash; whether it's about international affairs, business, or a round of golf. Find me at UBC in Vancouver.</p>
       <div class="links">
-        <!-- Replace the hrefs below with your real email / LinkedIn / Instagram -->
-        <a href="mailto:you@example.com">Email</a>
-        <a href="https://www.linkedin.com/" target="_blank" rel="noopener">LinkedIn</a>
-        <a href="https://www.instagram.com/" target="_blank" rel="noopener">Instagram</a>
+        <a href="#top">Back to top</a>
       </div>
     </section>
   </main>
@@ -129,10 +122,6 @@
 
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
-    }, { threshold: 0.12 });
-    document.querySelectorAll('section').forEach((s) => { s.classList.add('reveal'); io.observe(s); });
   </script>
 </body>
 </html>
