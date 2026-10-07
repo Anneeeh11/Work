@@ -82,7 +82,7 @@
           <a class="app app-ig" href="https://www.instagram.com/anneee1103/" target="_blank" rel="noopener" aria-label="Instagram">
             <svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="5" fill="none" stroke="#fff" stroke-width="2"></rect><circle cx="12" cy="12" r="3.6" fill="none" stroke="#fff" stroke-width="2"></circle><circle cx="16.6" cy="7.4" r="1.2" fill="#fff"></circle></svg>
           </a>
-          <a class="app app-photos" href="#feed" aria-label="Photos">
+          <a class="app app-photos" href="https://vsco.co/anneeeh1103/gallery" target="_blank" rel="noopener" aria-label="My photo gallery on VSCO">
             <svg viewBox="0 0 24 24"><g transform="translate(12 12)"><ellipse rx="3" ry="6" cy="-4" fill="#f9b233" opacity=".9"></ellipse><ellipse rx="3" ry="6" cy="-4" transform="rotate(60)" fill="#e94e77" opacity=".85"></ellipse><ellipse rx="3" ry="6" cy="-4" transform="rotate(120)" fill="#a05ad8" opacity=".85"></ellipse><ellipse rx="3" ry="6" cy="-4" transform="rotate(180)" fill="#3b8de0" opacity=".85"></ellipse><ellipse rx="3" ry="6" cy="-4" transform="rotate(240)" fill="#3fc1a5" opacity=".85"></ellipse><ellipse rx="3" ry="6" cy="-4" transform="rotate(300)" fill="#9ccc3c" opacity=".85"></ellipse></g></svg>
           </a>
           <span class="dock-sep" aria-hidden="true"></span>
@@ -108,7 +108,7 @@
         </article>
 
         <div class="maps win-sm">
-          <div class="win-bar sm"><span class="dots"><i></i><i></i><i></i></span><span class="win-title">Maps &mdash; Taipei to Vancouver</span></div>
+          <div class="win-bar sm"><span class="dots"><i></i><i></i><i></i></span><span class="win-title">Taipei to Vancouver</span></div>
           <div class="maps-body">
             <aside class="maps-side">
               <p class="maps-city">My two homes</p>
@@ -146,16 +146,20 @@
     </section>
 
     <!-- 3. Experience: Photos albums + AirDrop -->
-    <section id="experience" class="win experience">
-      <p class="tab-label city">VANCOUVER, BC &middot; TAIPEI, TAIWAN &middot; VANCOUVER, BC &middot; TAIPEI, TAIWAN</p>
-      <div class="exp-body">
-        <div class="airdrop win-sm">
+    <section id="request" class="win request" aria-label="AirDrop request">
+      <p class="tab-label city">There's a request&hellip;</p>
+      <div class="request-body">
+        <div class="airdrop win-sm" id="airdrop">
           <p class="airdrop-title">AirDrop</p>
-          <p class="airdrop-text">&ldquo;Anne&rdquo; would like to share a photo.</p>
-          <img src="images/headshot.webp" alt="" width="1400" height="1227">
-          <div class="airdrop-btns"><a href="#about">Decline</a><a href="#contact" class="accept">Accept</a></div>
+          <p class="airdrop-text">&ldquo;Anne&rdquo; would like to share more about her experience.</p>
+          <img src="images/headshot.webp" alt="Anne Hung in a black blazer and white shirt" width="1400" height="1227">
+          <div class="airdrop-btns"><button type="button" id="airdrop-decline">Decline</button><a href="#experience" class="accept">Accept</a></div>
         </div>
+      </div>
+    </section>
 
+    <section id="experience" class="win experience">
+      <div class="exp-body">
         <div class="albums win-sm">
           <div class="win-bar sm"><span class="dots"><i></i><i></i><i></i></span></div>
           <div class="albums-body">
@@ -378,6 +382,12 @@
 
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
+    const airdrop = document.getElementById('airdrop');
+    document.getElementById('airdrop-decline').addEventListener('click', () => {
+      airdrop.classList.remove('denied');
+      void airdrop.offsetWidth;
+      airdrop.classList.add('denied');
+    });
     const form = document.getElementById('contact-form');
     const status = document.getElementById('cf-status');
     const sendBtn = document.getElementById('cf-send');
