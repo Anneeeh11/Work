@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Anne Hung</title>
+  <meta name="description" content="Anne Hung — International Relations student at UBC, golfer, and curious explorer from Taipei.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="nav">
+    <a class="logo" href="#top">Anne Hung</a>
+    <nav>
+      <a href="#about">About</a>
+      <a href="#journey">Journey</a>
+      <a href="#passions">Passions</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="hero-text">
+        <p class="eyebrow">Taipei &rarr; Vancouver</p>
+        <h1>Hi, I am<br><em>Anne Hung</em></h1>
+        <p class="lede">
+          I am from Taipei, Taiwan, and came to Vancouver to pursue my Bachelor's degree at UBC.
+          Currently in my second year, majoring in International Relations with a minor in Commerce.
+        </p>
+        <a class="button" href="#contact">Say hello</a>
+      </div>
+      <figure class="hero-photo">
+        <img src="images/anne.webp" alt="Anne Hung smiling on a New York City subway platform, wearing an olive trench coat" width="668" height="936">
+        <figcaption>Somewhere on the 6 train, NYC</figcaption>
+      </figure>
+    </section>
+
+    <section id="about" class="about">
+      <h2 class="section-label">About me</h2>
+      <div class="about-body">
+        <p class="big-quote">
+          &ldquo;Life's too short to stay in one lane.&rdquo;
+        </p>
+        <div class="about-copy">
+          <p>
+            Outside of academics, my biggest passion is golf. I'm an extroverted person who
+            loves meeting new people. I'm endlessly curious, always chasing new experiences and adventures.
+          </p>
+          <p>
+            Life's too short to stay in one lane, and I'm always pushing myself to grow into the
+            best version of me.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="journey" class="journey">
+      <h2 class="section-label">Journey</h2>
+      <ol class="timeline">
+        <li>
+          <span class="when">Home</span>
+          <div>
+            <h3>Taipei, Taiwan</h3>
+            <p>Where I grew up and where my story begins.</p>
+          </div>
+        </li>
+        <li>
+          <span class="when">Now</span>
+          <div>
+            <h3>University of British Columbia</h3>
+            <p>Bachelor of Arts, second year &mdash; International Relations major, Commerce minor. Vancouver, Canada.</p>
+          </div>
+        </li>
+        <li>
+          <span class="when">Next</span>
+          <div>
+            <h3>Wherever curiosity leads</h3>
+            <p>Always open to new experiences, new places, and new people.</p>
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <section id="passions" class="passions">
+      <h2 class="section-label">Passions</h2>
+      <div class="cards">
+        <article class="card">
+          <span class="num">01</span>
+          <h3>Golf</h3>
+          <p>My biggest passion outside the classroom &mdash; patience, focus, and always chasing a better round.</p>
+        </article>
+        <article class="card">
+          <span class="num">02</span>
+          <h3>People</h3>
+          <p>An extrovert at heart. I love meeting new people and hearing their stories.</p>
+        </article>
+        <article class="card">
+          <span class="num">03</span>
+          <h3>Adventure</h3>
+          <p>Endlessly curious and always looking for the next experience, city, or challenge.</p>
+        </article>
+        <article class="card">
+          <span class="num">04</span>
+          <h3>Growth</h3>
+          <p>Pushing myself, every day, to grow into the best version of me.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="contact" class="contact">
+      <h2>Let's <em>connect</em></h2>
+      <p>Always happy to meet someone new &mdash; whether it's about international affairs, business, or a round of golf.</p>
+      <div class="links">
+        <!-- Replace the hrefs below with your real email / LinkedIn / Instagram -->
+        <a href="mailto:you@example.com">Email</a>
+        <a href="https://www.linkedin.com/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://www.instagram.com/" target="_blank" rel="noopener">Instagram</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span>&copy; <span id="year"></span> Anne Hung</span>
+    <span>Vancouver, BC</span>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('section').forEach((s) => { s.classList.add('reveal'); io.observe(s); });
+  </script>
+</body>
+</html>
