@@ -109,6 +109,31 @@
     <section id="contact" class="contact">
       <h2>Let's <em>connect</em></h2>
       <p>Always happy to meet someone new &mdash; whether it's about international affairs, business, or a round of golf.</p>
+      <form id="contact-form" class="form" action="https://formsubmit.co/yianhung11@gmail.com" method="POST" novalidate>
+        <input type="hidden" name="_subject" value="New message from your website">
+        <input type="hidden" name="_template" value="table">
+        <input type="text" name="_honey" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <div class="row">
+          <label for="cf-name">Name
+            <input id="cf-name" name="name" type="text" autocomplete="name" required>
+          </label>
+          <label for="cf-email">Email
+            <input id="cf-email" name="email" type="email" autocomplete="email" required>
+          </label>
+        </div>
+        <label for="cf-subject">Subject <span class="opt">(optional)</span>
+          <input id="cf-subject" name="subject" type="text">
+        </label>
+        <label for="cf-message">Message
+          <textarea id="cf-message" name="message" rows="6" required></textarea>
+        </label>
+        <div class="form-foot">
+          <button type="submit" class="button" id="cf-send">Send message</button>
+          <p class="status" id="cf-status" role="status" aria-live="polite"></p>
+        </div>
+        <a class="button gmail" id="cf-gmail" href="#" target="_blank" rel="noopener" hidden>Open in Gmail to send</a>
+      </form>
+      <p class="or">or reach me directly</p>
       <div class="links">
         <a href="https://www.linkedin.com/in/annehung11" target="_blank" rel="noopener">LinkedIn</a>
         <a href="https://www.instagram.com/anneee1103/" target="_blank" rel="noopener">Instagram &middot; @anneee1103</a>
@@ -127,6 +152,53 @@
 
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
+    const form = document.getElementById('contact-form');
+    const status = document.getElementById('cf-status');
+    const sendBtn = document.getElementById('cf-send');
+    const gmail = document.getElementById('cf-gmail');
+    const TO = 'yianhung11@gmail.com';
+    // On claude.ai the page can't reach outside services, so it hands off to Gmail instead.
+    const HANDOFF = window.SITE_MODE === 'artifact';
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      gmail.hidden = true;
+      const d = Object.fromEntries(new FormData(form));
+      if (d._honey) return;
+      if (!d.name.trim() || !d.message.trim() || !form.elements.email.checkValidity() || !d.email.trim()) {
+        status.textContent = 'Please add your name, a valid email and a message.';
+        status.className = 'status err';
+        return;
+      }
+      const subject = d.subject.trim() || 'Hello from ' + d.name.trim();
+      if (HANDOFF) {
+        const body = d.message.trim() + '\n\n— ' + d.name.trim() + ' (' + d.email.trim() + ')';
+        gmail.href = 'https://mail.google.com/mail/?view=cm&fs=1&to=' + encodeURIComponent(TO) +
+          '&su=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+        gmail.hidden = false;
+        status.textContent = 'Your message is ready. Open it in Gmail and press Send.';
+        status.className = 'status';
+        return;
+      }
+      sendBtn.disabled = true;
+      status.textContent = 'Sending…';
+      status.className = 'status';
+      try {
+        const res = await fetch('https://formsubmit.co/ajax/' + TO, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify({ name: d.name, email: d.email, _replyto: d.email, _subject: subject, message: d.message, _template: 'table' })
+        });
+        if (!res.ok) throw new Error(res.status);
+        form.reset();
+        status.textContent = 'Thanks! Your message was sent. I\'ll get back to you soon.';
+        status.className = 'status ok';
+      } catch (err) {
+        status.textContent = 'Your message didn\'t send. Please try again, or email me at ' + TO + '.';
+        status.className = 'status err';
+      } finally {
+        sendBtn.disabled = false;
+      }
+    });
     const copyBtn = document.getElementById('copy-email');
     copyBtn.addEventListener('click', () => {
       const addr = 'yianhung11@gmail.com';
