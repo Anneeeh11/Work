@@ -136,6 +136,15 @@ h1 {
   text-decoration: none; font-size: 16px; transition: background .2s, color .2s;
 }
 .links a:hover { background: var(--ink); color: var(--bg); }
+.email { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+.email-addr { font-family: var(--serif-display); font-size: clamp(26px, 4vw, 36px); text-decoration: none; user-select: all; overflow-wrap: anywhere; }
+.email-addr:hover { color: var(--accent); }
+.copy {
+  font: inherit; font-size: 14px; padding: 8px 16px; border-radius: 999px; cursor: pointer;
+  background: transparent; color: var(--muted); border: 1px solid var(--line);
+}
+.copy:hover { color: var(--ink); border-color: var(--ink); }
+.copy:focus-visible, .email-addr:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 
 .footer {
   display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;

@@ -108,9 +108,14 @@
 
     <section id="contact" class="contact">
       <h2>Let's <em>connect</em></h2>
-      <p>Always happy to meet someone new &mdash; whether it's about international affairs, business, or a round of golf. Find me at UBC in Vancouver.</p>
+      <p>Always happy to meet someone new &mdash; whether it's about international affairs, business, or a round of golf.</p>
       <div class="links">
-        <a href="#top">Back to top</a>
+        <a href="https://www.linkedin.com/in/annehung11" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://www.instagram.com/anneee1103/" target="_blank" rel="noopener">Instagram &middot; @anneee1103</a>
+      </div>
+      <div class="email">
+        <a class="email-addr" href="mailto:yianhung11@gmail.com">yianhung11@gmail.com</a>
+        <button type="button" id="copy-email" class="copy">Copy email</button>
       </div>
     </section>
   </main>
@@ -122,6 +127,16 @@
 
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
+    const copyBtn = document.getElementById('copy-email');
+    copyBtn.addEventListener('click', () => {
+      const addr = 'yianhung11@gmail.com';
+      const done = () => { copyBtn.textContent = 'Copied'; setTimeout(() => { copyBtn.textContent = 'Copy email'; }, 1800); };
+      const fallback = () => {
+        const r = document.createRange(); r.selectNodeContents(document.querySelector('.email-addr'));
+        const s = getSelection(); s.removeAllRanges(); s.addRange(r);
+      };
+      try { navigator.clipboard.writeText(addr).then(done, fallback); } catch (e) { fallback(); }
+    });
   </script>
 </body>
 </html>
