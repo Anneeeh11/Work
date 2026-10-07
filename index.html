@@ -24,26 +24,41 @@
   <main id="top">
     <section class="hero">
       <div class="hero-text">
-        <p class="eyebrow">Taipei &rarr; Vancouver</p>
-        <h1>Hi, I am<br><em>Anne Hung</em></h1>
+        <p class="hello">Hi, I am</p>
+        <h1><span>Anne</span><span class="indent"><em>Hung</em></span></h1>
         <p class="lede">
           I am from Taipei, Taiwan, and came to Vancouver to pursue my Bachelor's degree at UBC.
           Currently in my second year, majoring in International Relations with a minor in Commerce.
         </p>
-        <a class="button" href="#contact">Say hello</a>
+        <a class="button" href="#contact">Say hello <span aria-hidden="true">&rarr;</span></a>
       </div>
       <figure class="hero-photo">
-        <img src="images/anne.webp" alt="Anne Hung smiling on a New York City subway platform, wearing an olive trench coat" width="668" height="936">
-        <figcaption>Somewhere on the 6 train, NYC</figcaption>
+        <div class="frame">
+          <img src="images/anne.webp" alt="Anne Hung smiling on a New York City subway platform, wearing an olive trench coat" width="668" height="936">
+        </div>
+        <svg class="badge" viewBox="0 0 200 200" aria-hidden="true">
+          <defs><path id="circle" d="M100,100 m-76,0 a76,76 0 1,1 152,0 a76,76 0 1,1 -152,0"></path></defs>
+          <circle cx="100" cy="100" r="99" class="badge-bg"></circle>
+          <g class="ring"><text class="badge-text"><textPath href="#circle">International Relations &middot; Commerce &middot; UBC &middot; </textPath></text></g>
+          <text x="100" y="114" text-anchor="middle" class="badge-mark">AH</text>
+        </svg>
       </figure>
     </section>
+
+    <div class="ticker" aria-hidden="true">
+      <div class="ticker-track">
+        <span>Golf</span><i>&#10022;</i><span>International Relations</span><i>&#10022;</i><span>Commerce</span><i>&#10022;</i><span>New people</span><i>&#10022;</i><span>New places</span><i>&#10022;</i><span>Growth</span><i>&#10022;</i>
+        <span>Golf</span><i>&#10022;</i><span>International Relations</span><i>&#10022;</i><span>Commerce</span><i>&#10022;</i><span>New people</span><i>&#10022;</i><span>New places</span><i>&#10022;</i><span>Growth</span><i>&#10022;</i>
+      </div>
+    </div>
 
     <section id="about" class="about">
       <h2 class="section-label">About me</h2>
       <div class="about-body">
-        <p class="big-quote">
-          &ldquo;Life's too short to stay in one lane.&rdquo;
-        </p>
+        <blockquote class="big-quote">
+          <span class="qmark" aria-hidden="true">&ldquo;</span>
+          Life's too short to stay in <em>one lane.</em>
+        </blockquote>
         <div class="about-copy">
           <p>
             Outside of academics, my biggest passion is golf. I'm an extroverted person who
@@ -59,23 +74,26 @@
 
     <section id="journey" class="journey">
       <h2 class="section-label">Journey</h2>
-      <ol class="timeline">
-        <li>
+      <ol class="line">
+        <li class="stop">
           <span class="when">Home</span>
+          <span class="dot" aria-hidden="true"></span>
           <div>
             <h3>Taipei, Taiwan</h3>
             <p>Where I grew up and where my story begins.</p>
           </div>
         </li>
-        <li>
+        <li class="stop current">
           <span class="when">Now</span>
+          <span class="dot" aria-hidden="true"></span>
           <div>
             <h3>University of British Columbia</h3>
-            <p>Bachelor of Arts, second year &mdash; International Relations major, Commerce minor. Vancouver, Canada.</p>
+            <p>Bachelor of Arts, second year. International Relations major, Commerce minor. Vancouver, Canada.</p>
           </div>
         </li>
-        <li>
+        <li class="stop next">
           <span class="when">Next</span>
+          <span class="dot" aria-hidden="true"></span>
           <div>
             <h3>Wherever curiosity leads</h3>
             <p>Always open to new experiences, new places, and new people.</p>
@@ -86,23 +104,26 @@
 
     <section id="passions" class="passions">
       <h2 class="section-label">Passions</h2>
-      <div class="cards">
-        <article class="card">
+      <div class="passion-grid">
+        <article class="feature">
+          <p class="tag">My biggest passion</p>
           <h3>Golf</h3>
-          <p>My biggest passion outside the classroom &mdash; patience, focus, and always chasing a better round.</p>
+          <p>Outside the classroom, you'll find me on the course. Patience, focus, and always chasing a better round.</p>
         </article>
-        <article class="card">
-          <h3>People</h3>
-          <p>An extrovert at heart. I love meeting new people and hearing their stories.</p>
-        </article>
-        <article class="card">
-          <h3>Adventure</h3>
-          <p>Endlessly curious and always looking for the next experience, city, or challenge.</p>
-        </article>
-        <article class="card">
-          <h3>Growth</h3>
-          <p>Pushing myself, every day, to grow into the best version of me.</p>
-        </article>
+        <ul class="passion-list">
+          <li>
+            <h3>People</h3>
+            <p>An extrovert at heart. I love meeting new people and hearing their stories.</p>
+          </li>
+          <li>
+            <h3>Adventure</h3>
+            <p>Endlessly curious, always looking for the next experience, city, or challenge.</p>
+          </li>
+          <li>
+            <h3>Growth</h3>
+            <p>Pushing myself every day to grow into the best version of me.</p>
+          </li>
+        </ul>
       </div>
     </section>
 
