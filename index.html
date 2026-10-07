@@ -7,224 +7,334 @@
   <meta name="description" content="Anne Hung — International Relations student at UBC, golfer, and curious explorer from Taipei.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@400;500;600;700&family=Mrs+Saint+Delafield&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800;900&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header class="nav">
-    <a class="logo" href="#top">Anne Hung</a>
+  <div class="sky" aria-hidden="true"></div>
+
+  <header class="menubar">
+    <a class="menu-logo" href="#top">anne hung</a>
     <nav>
-      <a href="#about">About</a>
-      <a href="#experience">Experience</a>
-      <a href="#passions">Passions</a>
-      <a href="#moments">Moments</a>
-      <a href="#contact">Contact</a>
+      <a href="#about">about</a>
+      <a href="#experience">experience</a>
+      <a href="#passions">passions</a>
+      <a href="#feed">feed</a>
+      <a href="#contact">contact</a>
     </nav>
   </header>
 
   <main id="top">
-    <section class="hero">
-      <div class="hero-title">
-        <span class="script">Anne's</span>
-        <span class="sub">Personal</span>
-        <h1 class="giant">Portfolio</h1>
-        <div class="hero-photo">
-          <img src="images/anne.webp" alt="Anne Hung smiling on a New York City subway platform, wearing an olive trench coat" width="668" height="936">
+
+    <!-- 1. Browser hero -->
+    <section class="win hero" aria-label="Intro">
+      <div class="browser-bar">
+        <span class="dots"><i></i><i></i><i></i></span>
+        <span class="nav-btns" aria-hidden="true"><b>&lsaquo;</b><b>&rsaquo;</b></span>
+        <span class="url"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"></circle><path d="M16 16l4.5 4.5"></path></svg>www.annehung.com</span>
+        <span class="kebab" aria-hidden="true">&#8942;</span>
+      </div>
+      <div class="hero-body">
+        <h1 class="hero-name"><span>anne</span><span class="hl">hung</span></h1>
+
+        <span class="folder f1" aria-hidden="true"></span>
+        <span class="folder f2" aria-hidden="true"></span>
+        <span class="folder f3" aria-hidden="true"></span>
+
+        <figure class="polaroid p1">
+          <img src="images/anne.webp" alt="Anne on a New York City subway platform" width="668" height="936">
+          <figcaption>nyc.jpg</figcaption>
+        </figure>
+        <figure class="polaroid p2">
+          <img src="images/golf-green.webp" alt="Anne lining up a putt on the green" width="1082" height="716">
+          <figcaption>on-the-green.jpg</figcaption>
+        </figure>
+        <figure class="mini-win m1">
+          <div class="mini-bar">golf.png</div>
+          <img src="images/golf-swing.webp" alt="Anne mid-swing on the fairway" width="914" height="1400">
+        </figure>
+        <figure class="mini-win m2">
+          <div class="mini-bar">hello.png</div>
+          <img src="images/headshot.webp" alt="Headshot of Anne in a black blazer" width="1400" height="1227">
+        </figure>
+        <figure class="mini-win m3">
+          <div class="mini-bar">intern.png</div>
+          <img src="images/pestlo.webp" alt="Anne at the Pestlo office" width="1050" height="1400">
+        </figure>
+
+        <p class="bubble"><span class="bubble-icon" aria-hidden="true">&#9829;</span>ubc student</p>
+
+        <span class="sticker s-star" aria-hidden="true">&#11088;</span>
+        <span class="sticker s-spark1" aria-hidden="true">&#10024;</span>
+        <span class="sticker s-spark2" aria-hidden="true">&#10024;</span>
+        <span class="sticker s-cam" aria-hidden="true">&#128248;</span>
+        <span class="sticker s-golf" aria-hidden="true">&#9971;</span>
+        <span class="sticker s-laptop" aria-hidden="true">&#128187;</span>
+        <span class="sticker s-star2" aria-hidden="true">&#11088;</span>
+        <span class="sticker s-hand" aria-hidden="true">&#128070;</span>
+
+        <nav class="dock" aria-label="Contact links">
+          <a class="app app-mail" href="#contact" aria-label="Email me">
+            <svg viewBox="0 0 24 24"><rect x="3" y="5.5" width="18" height="13" rx="2" fill="#fff"></rect><path d="M3.5 7l8.5 6.5L20.5 7" fill="none" stroke="#ea4335" stroke-width="2.2" stroke-linejoin="round"></path><path d="M3.5 7.5v10.5M20.5 7.5v10.5" stroke="#4285f4" stroke-width="2.2"></path></svg>
+          </a>
+          <a class="app app-li" href="https://www.linkedin.com/in/annehung11" target="_blank" rel="noopener" aria-label="LinkedIn">in</a>
+          <a class="app app-ig" href="https://www.instagram.com/anneee1103/" target="_blank" rel="noopener" aria-label="Instagram">
+            <svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="5" fill="none" stroke="#fff" stroke-width="2"></rect><circle cx="12" cy="12" r="3.6" fill="none" stroke="#fff" stroke-width="2"></circle><circle cx="16.6" cy="7.4" r="1.2" fill="#fff"></circle></svg>
+          </a>
+          <a class="app app-photos" href="#feed" aria-label="Photos">
+            <svg viewBox="0 0 24 24"><g transform="translate(12 12)"><ellipse rx="3" ry="6" cy="-4" fill="#f9b233" opacity=".9"></ellipse><ellipse rx="3" ry="6" cy="-4" transform="rotate(60)" fill="#e94e77" opacity=".85"></ellipse><ellipse rx="3" ry="6" cy="-4" transform="rotate(120)" fill="#a05ad8" opacity=".85"></ellipse><ellipse rx="3" ry="6" cy="-4" transform="rotate(180)" fill="#3b8de0" opacity=".85"></ellipse><ellipse rx="3" ry="6" cy="-4" transform="rotate(240)" fill="#3fc1a5" opacity=".85"></ellipse><ellipse rx="3" ry="6" cy="-4" transform="rotate(300)" fill="#9ccc3c" opacity=".85"></ellipse></g></svg>
+          </a>
+          <span class="dock-sep" aria-hidden="true"></span>
+          <span class="app app-trash" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M6 7h12l-1 13H7z" fill="#e9eef3" stroke="#9aa5b1" stroke-width="1.2"></path><path d="M9 10v8M12 10v8M15 10v8" stroke="#b8c2cc" stroke-width="1"></path><path d="M5 7h14" stroke="#9aa5b1" stroke-width="1.4"></path></svg>
+          </span>
+        </nav>
+      </div>
+    </section>
+
+    <!-- 2. About: Hi! I'm + Maps -->
+    <section id="about" class="win about">
+      <div class="win-bar"><span class="dots"><i></i><i></i><i></i></span><span class="win-title">about-me.txt</span></div>
+      <div class="about-body">
+        <figure class="about-photo">
+          <img src="images/headshot.webp" alt="Anne Hung in a black blazer and white shirt" width="1400" height="1227">
+        </figure>
+
+        <article class="hi-card">
+          <h2>Hi! I'm <span class="pink">ANNE HUNG</span><span class="caret">...</span></h2>
+          <p>I am from Taipei, Taiwan, and came to Vancouver to pursue my Bachelor's degree at UBC. Currently in my second year, majoring in International Relations with a minor in Commerce.</p>
+          <p>Outside of academics, my biggest passion is golf. I'm an extroverted person who loves meeting new people. I'm endlessly curious, always chasing new experiences and adventures. Life's too short to stay in one lane, and I'm always pushing myself to grow into the best version of me.</p>
+        </article>
+
+        <div class="maps win-sm" aria-label="Map: Vancouver, BC">
+          <div class="win-bar sm"><span class="dots"><i></i><i></i><i></i></span></div>
+          <div class="maps-body">
+            <aside class="maps-side">
+              <p class="maps-city">Vancouver, BC</p>
+              <ul>
+                <li>University of British Columbia</li>
+                <li>Home: Taipei, Taiwan</li>
+              </ul>
+            </aside>
+            <div class="map" aria-hidden="true">
+              <span class="water"></span>
+              <span class="route"></span>
+              <span class="pin">&#128205;</span>
+              <span class="map-label">Vancouver</span>
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="hero-foot">
-        <p class="lede">From Taipei to UBC. Studying International Relations and Commerce, chasing new experiences, and always up for a round of golf.</p>
-        <div class="socials">
-          <a href="https://www.instagram.com/anneee1103/" target="_blank" rel="noopener" aria-label="Instagram">
-            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.3" cy="6.7" r="1.1" class="fill"></circle></svg>
-          </a>
-          <a href="https://www.linkedin.com/in/annehung11" target="_blank" rel="noopener" aria-label="LinkedIn">
-            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"></rect><path d="M8 10.5v6M8 7.6v.1M11.5 16.5v-6M11.5 13c0-1.6 1.1-2.6 2.4-2.6 1.4 0 2.1.9 2.1 2.6v3.5"></path></svg>
-          </a>
-          <a href="#contact" aria-label="Email">
-            <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="M3.5 6l8.5 7 8.5-7"></path></svg>
-          </a>
+
+        <div class="picker win-sm">
+          <div class="win-bar sm"><span class="dots"><i></i><i></i><i></i></span><span class="win-title">3 Photos Selected</span></div>
+          <div class="picker-grid">
+            <img src="images/anne.webp" alt="" width="668" height="936">
+            <img src="images/golf-swing.webp" alt="" width="914" height="1400">
+            <img src="images/team.webp" alt="" width="1400" height="933">
+          </div>
         </div>
+        <span class="sticker s-maps" aria-hidden="true">&#128506;&#65039;</span>
       </div>
     </section>
 
-    <section id="about" class="about">
-      <div class="about-text">
-        <h2 class="heading">Who am I</h2>
-        <p>
-          I am from Taipei, Taiwan, and came to Vancouver to pursue my Bachelor's degree at UBC.
-          Currently in my second year, majoring in International Relations with a minor in Commerce.
-        </p>
-        <p>
-          Outside of academics, my biggest passion is golf. I'm an extroverted person who
-          loves meeting new people. I'm endlessly curious, always chasing new experiences and adventures.
-        </p>
-        <dl class="stats">
-          <div><dt>2nd</dt><dd>Year at UBC</dd></div>
-          <div><dt>IR</dt><dd>Major</dd></div>
-          <div><dt>COMM</dt><dd>Minor</dd></div>
-        </dl>
-        <ul class="chips">
-          <li>UBC</li><li class="pink">International Relations</li><li class="blue">Commerce</li><li>Golf</li>
-        </ul>
+    <!-- 3. Experience: Photos albums + AirDrop -->
+    <section id="experience" class="win experience">
+      <p class="tab-label city">VANCOUVER, BC &middot; TAIPEI, TAIWAN &middot; VANCOUVER, BC &middot; TAIPEI, TAIWAN</p>
+      <div class="exp-body">
+        <div class="airdrop win-sm">
+          <p class="airdrop-title">AirDrop</p>
+          <p class="airdrop-text">&ldquo;Anne&rdquo; would like to share a photo.</p>
+          <img src="images/headshot.webp" alt="" width="1400" height="1227">
+          <div class="airdrop-btns"><a href="#about">Decline</a><a href="#contact" class="accept">Accept</a></div>
+        </div>
+
+        <div class="albums win-sm">
+          <div class="win-bar sm"><span class="dots"><i></i><i></i><i></i></span></div>
+          <div class="albums-body">
+            <aside class="finder-side" aria-hidden="true">
+              <p class="active">Albums</p><p>Documents</p><p>Pictures</p><p>Videos</p><p>Music</p><p>Desktop</p>
+            </aside>
+            <div class="albums-main">
+              <h2>Experience &amp; more&hellip;</h2>
+              <div class="album-grid">
+                <figure class="album">
+                  <img src="images/pestlo.webp" alt="Anne at the Pestlo office next to a giant product display" width="1050" height="1400">
+                  <figcaption><b>Pestlo</b><span>Intern &middot; Korean skincare brand</span><em>Details coming soon</em></figcaption>
+                </figure>
+                <figure class="album">
+                  <img src="images/team.webp" alt="Anne with classmates in business attire at UBC" width="1400" height="933">
+                  <figcaption><b>UBC</b><span>International Relations &middot; Commerce</span><em>Year 2</em></figcaption>
+                </figure>
+                <figure class="album">
+                  <img src="images/golf-green.webp" alt="Anne reading the green with her putter" width="1082" height="716">
+                  <figcaption><b>Golf</b><span>My biggest passion</span><em>2 photos</em></figcaption>
+                </figure>
+                <figure class="album add">
+                  <span aria-hidden="true">+</span>
+                  <figcaption><b>Coming soon</b><span>More to add</span></figcaption>
+                </figure>
+              </div>
+            </div>
+          </div>
+        </div>
+        <span class="app-icon-big" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><rect width="24" height="24" rx="6" fill="#fff"></rect><g transform="translate(12 12)"><ellipse rx="2.6" ry="5.4" cy="-3.6" fill="#f9b233" opacity=".9"></ellipse><ellipse rx="2.6" ry="5.4" cy="-3.6" transform="rotate(60)" fill="#e94e77" opacity=".85"></ellipse><ellipse rx="2.6" ry="5.4" cy="-3.6" transform="rotate(120)" fill="#a05ad8" opacity=".85"></ellipse><ellipse rx="2.6" ry="5.4" cy="-3.6" transform="rotate(180)" fill="#3b8de0" opacity=".85"></ellipse><ellipse rx="2.6" ry="5.4" cy="-3.6" transform="rotate(240)" fill="#3fc1a5" opacity=".85"></ellipse><ellipse rx="2.6" ry="5.4" cy="-3.6" transform="rotate(300)" fill="#9ccc3c" opacity=".85"></ellipse></g></svg>
+        </span>
       </div>
-      <figure class="about-photo">
-        <img src="images/headshot.webp" alt="Professional headshot of Anne Hung in a black blazer and white shirt" width="1400" height="1227">
-        <figcaption class="script">get to know me</figcaption>
-      </figure>
     </section>
 
-  <div class="ticker" aria-hidden="true">
-    <div class="ticker-track">
-      <span>Golf</span><i>&#10022;</i><span>International Relations</span><i>&#10022;</i><span>Commerce</span><i>&#10022;</i><span>New people</span><i>&#10022;</i><span>New places</span><i>&#10022;</i><span>Growth</span><i>&#10022;</i>
-      <span>Golf</span><i>&#10022;</i><span>International Relations</span><i>&#10022;</i><span>Commerce</span><i>&#10022;</i><span>New people</span><i>&#10022;</i><span>New places</span><i>&#10022;</i><span>Growth</span><i>&#10022;</i>
-    </div>
-  </div>
-
-    <section class="motto">
-      <ul class="pill-stack">
-        <li>Golf</li><li class="pink">People</li><li class="blue">Adventure</li><li>Growth</li>
-      </ul>
-      <div class="motto-text">
-        <h2 class="heading">My motto</h2>
-        <blockquote>&ldquo;Life's too short to stay in one lane.&rdquo;</blockquote>
-        <p>I'm always pushing myself to grow into the best version of me.</p>
-      </div>
-    </section>
-
-    <section id="experience" class="experience">
-      <figure class="exp-photo">
-        <img src="images/pestlo.webp" alt="Anne Hung standing next to a giant Pestlo NAD+ 1000 Ampoule display at the office" width="1050" height="1400" loading="lazy">
-      </figure>
-      <div class="exp-text">
-        <h2 class="heading">Experience</h2>
-        <article class="exp-card">
-          <p class="exp-role">Intern</p>
-          <h3>Pestlo</h3>
-          <p class="exp-org">Pestle &amp; Road &middot; Korean skincare brand</p>
-          <p class="exp-note">More details coming soon.</p>
-          <ul class="chips">
-            <li class="pink">Internship</li><li class="blue">Skincare</li><li>Beauty brand</li>
+    <!-- 4. Passions: Messages -->
+    <section id="passions" class="win messages">
+      <p class="tab-label big">my passions</p>
+      <div class="msg-body">
+        <aside class="msg-side">
+          <p class="msg-search">Search</p>
+          <ul class="msg-pins">
+            <li><img src="images/golf-swing.webp" alt="" width="914" height="1400"><span>golf</span></li>
+            <li><img src="images/team.webp" alt="" width="1400" height="933"><span>people</span></li>
+            <li><img src="images/anne.webp" alt="" width="668" height="936"><span>adventure</span></li>
+            <li><img src="images/headshot.webp" alt="" width="1400" height="1227"><span>growth</span></li>
           </ul>
-        </article>
-      </div>
-    </section>
-
-    <section id="journey" class="journey">
-      <h2 class="heading center">Journey</h2>
-      <ol class="cards">
-        <li class="card">
-          <p class="card-label">Home</p>
-          <h3>Taipei, Taiwan</h3>
-          <p>Where I grew up and where my story begins.</p>
-          <span class="pill-btn pink">Where it began</span>
-        </li>
-        <li class="card now">
-          <p class="card-label">Now</p>
-          <h3>University of British Columbia</h3>
-          <p>Bachelor of Arts, second year. International Relations major, Commerce minor. Vancouver, Canada.</p>
-          <span class="pill-btn blue">Year 2</span>
-        </li>
-        <li class="card">
-          <p class="card-label">Next</p>
-          <h3>Wherever curiosity leads</h3>
-          <p>Always open to new experiences, new places, and new people.</p>
-          <span class="pill-btn">Coming soon</span>
-        </li>
-      </ol>
-    </section>
-
-    <section id="passions" class="passions">
-      <h2 class="heading">What I love</h2>
-      <div class="tiles">
-        <article class="tile golf">
-          <p class="tile-label">My biggest passion</p>
-          <h3>Golf</h3>
-          <p>Outside the classroom, you'll find me on the course. Patience, focus, and always chasing a better round.</p>
-        </article>
-        <article class="tile pink">
-          <h3>People</h3>
-          <p>An extrovert at heart. I love meeting new people and hearing their stories.</p>
-        </article>
-        <article class="tile blue">
-          <h3>Adventure</h3>
-          <p>Endlessly curious, always looking for the next experience, city, or challenge.</p>
-        </article>
-        <article class="tile outline">
-          <h3>Growth</h3>
-          <p>Pushing myself every day to grow into the best version of me.</p>
-        </article>
-      </div>
-    </section>
-
-    <section id="moments" class="moments">
-      <h2 class="heading">Moments</h2>
-      <div class="gallery">
-        <figure class="shot tall">
-          <img src="images/golf-swing.webp" alt="Anne mid-swing with an iron on the fairway" width="914" height="1400" loading="lazy">
-          <figcaption>On the course</figcaption>
-        </figure>
-        <figure class="shot">
-          <img src="images/golf-green.webp" alt="Anne crouching on the green, lining up a putt with her putter" width="1082" height="716" loading="lazy">
-          <figcaption class="pink">Reading the green</figcaption>
-        </figure>
-        <figure class="shot">
-          <img src="images/team.webp" alt="Anne with a large group of classmates in business attire in a UBC lecture hall" width="1400" height="933" loading="lazy">
-          <figcaption class="blue">Suited up with the team</figcaption>
-        </figure>
-      </div>
-    </section>
-
-    <section id="contact" class="contact">
-      <div class="contact-intro">
-        <h2 class="together"><span class="script">let's</span><span class="heading">Connect</span></h2>
-        <p>Always happy to meet someone new, whether it's about international affairs, business, or a round of golf.</p>
-        <a class="pill-btn dark" href="#cf-name">Start a conversation</a>
-        <div class="email">
-          <a class="email-addr" href="mailto:yianhung11@gmail.com">yianhung11@gmail.com</a>
-          <button type="button" id="copy-email" class="copy">Copy</button>
-        </div>
-        <div class="links">
-          <a href="https://www.linkedin.com/in/annehung11" target="_blank" rel="noopener">LinkedIn</a>
-          <a href="https://www.instagram.com/anneee1103/" target="_blank" rel="noopener">Instagram &middot; @anneee1103</a>
+          <p class="msg-active"><b>golf &#9971;</b><span>my biggest passion</span></p>
+          <p class="msg-row"><b>ubc</b><span>IR major, Commerce minor</span></p>
+        </aside>
+        <div class="chat">
+          <p class="chat-head">my favourite things &#128150;</p>
+          <div class="thread">
+            <p class="msg in">so what do you love doing outside of class?</p>
+            <p class="who">golf</p>
+            <p class="msg out">Golf! It's my biggest passion. Patience, focus, and always chasing a better round. &#9971;</p>
+            <p class="who">people</p>
+            <p class="msg out">I'm an extrovert at heart. I love meeting new people and hearing their stories.</p>
+            <p class="who">adventure</p>
+            <p class="msg out">Endlessly curious, always looking for the next experience, city, or challenge &#10024;</p>
+            <p class="who">growth</p>
+            <p class="msg out">Life's too short to stay in one lane. I'm always pushing myself to grow into the best version of me.</p>
+            <p class="msg in typing" aria-label="typing"><i></i><i></i><i></i></p>
+          </div>
         </div>
       </div>
-      <form id="contact-form" class="form" action="https://formsubmit.co/yianhung11@gmail.com" method="POST" novalidate>
-        <p class="form-title">Contact me</p>
-        <input type="hidden" name="_subject" value="New message from your website">
-        <input type="hidden" name="_template" value="table">
-        <input type="text" name="_honey" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
-        <div class="row">
-          <label for="cf-name">Full name
-            <input id="cf-name" name="name" type="text" autocomplete="name" required>
-          </label>
-          <label for="cf-email">Email
-            <input id="cf-email" name="email" type="email" autocomplete="email" required>
-          </label>
+      <span class="sticker s-chat" aria-hidden="true">&#128172;</span>
+      <span class="sticker s-thumb" aria-hidden="true">&#128077;</span>
+    </section>
+
+    <!-- 5. Journey: Notes + calculator -->
+    <section id="journey" class="win journey">
+      <p class="reminder"><span class="rem-app">REMINDER</span><b>my journey</b></p>
+      <div class="notes">
+        <article class="note">
+          <p class="note-app">Notes</p>
+          <h3>HOME</h3>
+          <ul><li>Taipei, Taiwan</li><li>Where I grew up</li><li>Where my story begins</li></ul>
+        </article>
+        <article class="note now">
+          <p class="note-app">Notes</p>
+          <h3>NOW</h3>
+          <ul><li>University of British Columbia</li><li>Bachelor of Arts, Year 2</li><li>International Relations major</li><li>Commerce minor</li><li>Vancouver, Canada</li></ul>
+        </article>
+        <article class="note">
+          <p class="note-app">Notes</p>
+          <h3>NEXT</h3>
+          <ul><li>Wherever curiosity leads</li><li>New experiences</li><li>New places</li><li>New people</li></ul>
+        </article>
+        <div class="calc" aria-hidden="true">
+          <p class="calc-expr">IR + COMM + GOLF</p>
+          <p class="calc-res">= me</p>
+          <div class="calc-keys">
+            <span>AC</span><span>&plusmn;</span><span>%</span><span class="op">&divide;</span>
+            <span>7</span><span>8</span><span>9</span><span class="op">&times;</span>
+            <span>4</span><span>5</span><span>6</span><span class="op">&minus;</span>
+            <span>1</span><span>2</span><span>3</span><span class="op">+</span>
+            <span class="zero">0</span><span>.</span><span class="op">=</span>
+          </div>
         </div>
-        <label for="cf-subject">Subject <span class="opt">(optional)</span>
-          <input id="cf-subject" name="subject" type="text">
-        </label>
-        <label for="cf-message">Message
-          <textarea id="cf-message" name="message" rows="5" required></textarea>
-        </label>
-        <div class="form-foot">
-          <button type="submit" class="pill-btn dark" id="cf-send">Send message</button>
-          <p class="status" id="cf-status" role="status" aria-live="polite"></p>
+      </div>
+      <span class="sticker s-pin" aria-hidden="true">&#128204;</span>
+      <span class="sticker s-plane" aria-hidden="true">&#9992;&#65039;</span>
+    </section>
+
+    <!-- 6. Instagram feed -->
+    <section id="feed" class="win feed">
+      <p class="tab-label big right">my feed</p>
+      <div class="win-bar"><span class="dots"><i></i><i></i><i></i></span><span class="win-title">INSTAGRAM</span></div>
+      <div class="feed-body">
+        <div class="profile">
+          <img class="avatar" src="images/headshot.webp" alt="" width="1400" height="1227">
+          <div>
+            <p class="handle">anneee1103</p>
+            <p class="realname">Anne Hung</p>
+            <p class="bio">UBC &middot; International Relations &amp; Commerce &middot; golf &#9971;</p>
+            <a class="follow" href="https://www.instagram.com/anneee1103/" target="_blank" rel="noopener">Follow</a>
+          </div>
         </div>
-        <a class="pill-btn pink gmail" id="cf-gmail" href="#" target="_blank" rel="noopener" hidden>Open in Gmail to send</a>
-      </form>
+        <div class="feed-grid">
+          <img src="images/golf-swing.webp" alt="Anne mid-swing on the fairway" width="914" height="1400">
+          <img src="images/anne.webp" alt="Anne on a New York City subway platform" width="668" height="936">
+          <img src="images/pestlo.webp" alt="Anne at the Pestlo office" width="1050" height="1400">
+          <img src="images/team.webp" alt="Anne with classmates at UBC" width="1400" height="933">
+          <img src="images/golf-green.webp" alt="Anne reading the green" width="1082" height="716">
+          <img src="images/headshot.webp" alt="Anne's headshot" width="1400" height="1227">
+        </div>
+      </div>
+      <span class="sticker s-heart" aria-hidden="true">&#129293;</span>
+    </section>
+
+    <!-- 7. Contact: Mail compose + FaceTime -->
+    <section id="contact" class="win contact">
+      <div class="browser-bar">
+        <span class="dots"><i></i><i></i><i></i></span>
+        <span class="nav-btns" aria-hidden="true"><b>&lsaquo;</b><b>&rsaquo;</b></span>
+        <span class="url">www.letsgetincontact.com</span>
+      </div>
+      <div class="contact-body">
+        <aside class="mail-side" aria-hidden="true">
+          <p class="compose">&#9998; Compose</p>
+          <p class="active">Inbox</p><p>Starred</p><p>Sent</p><p>Drafts</p>
+        </aside>
+
+        <div class="compose-win">
+          <p class="compose-head">New Message</p>
+          <dl class="contact-info">
+            <div><dt>EMAIL</dt><dd><a class="email-addr" href="mailto:yianhung11@gmail.com">yianhung11@gmail.com</a> <button type="button" id="copy-email" class="copy">Copy</button></dd></div>
+            <div><dt>INSTAGRAM</dt><dd><a href="https://www.instagram.com/anneee1103/" target="_blank" rel="noopener">@anneee1103</a></dd></div>
+            <div><dt>LINKEDIN</dt><dd><a href="https://www.linkedin.com/in/annehung11" target="_blank" rel="noopener">linkedin.com/in/annehung11</a></dd></div>
+          </dl>
+
+          <form id="contact-form" class="form" action="https://formsubmit.co/yianhung11@gmail.com" method="POST" novalidate>
+            <input type="hidden" name="_subject" value="New message from your website">
+            <input type="hidden" name="_template" value="table">
+            <input type="text" name="_honey" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+            <label class="line" for="cf-to">To<input id="cf-to" type="text" value="Anne Hung" readonly></label>
+            <label class="line" for="cf-name">From<input id="cf-name" name="name" type="text" autocomplete="name" placeholder="Your name" required></label>
+            <label class="line" for="cf-email">Email<input id="cf-email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required></label>
+            <label class="line" for="cf-subject">Subject<input id="cf-subject" name="subject" type="text" placeholder="Let's get in contact! &#9825;"></label>
+            <label class="sr" for="cf-message">Message</label>
+            <textarea id="cf-message" name="message" rows="6" placeholder="Write your message..." required></textarea>
+            <div class="form-foot">
+              <button type="submit" class="send" id="cf-send">Send</button>
+              <p class="status" id="cf-status" role="status" aria-live="polite"></p>
+            </div>
+            <a class="send gmail" id="cf-gmail" href="#" target="_blank" rel="noopener" hidden>Open in Gmail to send</a>
+          </form>
+        </div>
+
+        <div class="side-stack">
+          <div class="facetime">
+            <img src="images/anne.webp" alt="" width="668" height="936">
+            <span class="ft-controls" aria-hidden="true"><i>&#127908;</i><i>&#127909;</i><i class="end">&#10005;</i></span>
+          </div>
+          <div class="folders">
+            <a class="folder-link" href="#feed"><span class="folder"></span>my portfolio</a>
+            <a class="folder-link" href="#experience"><span class="folder"></span>experience</a>
+            <a class="folder-link" href="#cf-name"><span class="folder"></span>contact me</a>
+          </div>
+        </div>
+      </div>
+      <span class="sticker s-hand2" aria-hidden="true">&#128070;</span>
     </section>
   </main>
 
   <footer class="footer">
-    <nav>
-      <a href="#about">About</a>
-      <a href="#experience">Experience</a>
-      <a href="#passions">Passions</a>
-      <a href="#moments">Moments</a>
-      <a href="#contact">Contact</a>
-    </nav>
     <span>&copy; <span id="year"></span> Anne Hung &middot; Vancouver, BC</span>
   </footer>
 
