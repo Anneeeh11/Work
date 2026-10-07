@@ -190,13 +190,13 @@ main {
 .s-spark1 { left: 58%; top: 10%; font-size: clamp(20px, 2.4vw, 32px); }
 .s-spark2 { left: 35%; top: 60%; font-size: clamp(18px, 2vw, 28px); }
 .s-cam { left: 29%; top: 2%; font-size: clamp(30px, 3.6vw, 48px); rotate: -14deg; }
-.s-golf { right: 16%; top: 48%; font-size: clamp(26px, 3vw, 40px); }
+.s-golf { right: 4%; top: 60%; font-size: clamp(26px, 3vw, 40px); }
 .s-laptop { left: 36%; top: 44%; font-size: clamp(26px, 3vw, 40px); rotate: 18deg; }
-.s-star2 { right: 2%; top: 50%; font-size: clamp(26px, 3vw, 40px); rotate: 14deg; }
-.s-hand { left: 66%; top: 74%; font-size: clamp(26px, 3vw, 40px); rotate: -20deg; }
+.s-star2 { right: 2%; top: 36%; font-size: clamp(26px, 3vw, 40px); rotate: 14deg; }
+.s-hand { left: 52%; top: 80%; font-size: clamp(26px, 3vw, 40px); rotate: -20deg; }
 
 .dock {
-  position: absolute; z-index: 6; left: 50%; bottom: 4%; translate: -50% 0;
+  position: absolute; z-index: 6; left: 38%; bottom: 4%; translate: -50% 0;
   display: flex; align-items: center; gap: 10px;
   padding: 8px 12px; border-radius: 18px;
   background: rgba(200, 210, 222, .55); backdrop-filter: blur(14px);
@@ -464,6 +464,15 @@ a.app:hover { transform: translateY(-8px) scale(1.12); }
 .folders { display: flex; flex-wrap: wrap; gap: 14px 18px; justify-content: center; }
 .folder-link { display: grid; justify-items: center; gap: 8px; text-decoration: none; font-size: 13px; font-weight: 500; padding: 8px; border-radius: 8px; }
 .folder-link:hover { background: var(--blue-soft); }
+.s-heart2 { left: 22%; bottom: 6%; font-size: clamp(22px, 2.6vw, 34px); }
+.s-bow { left: 48%; top: 4%; font-size: clamp(24px, 2.8vw, 38px); rotate: 12deg; }
+.s-flower { left: 33%; top: 30%; font-size: clamp(20px, 2.4vw, 32px); }
+.s-globe { left: -22px; bottom: 18%; font-size: 48px; }
+.s-phone { left: 30%; top: 30%; font-size: 52px; rotate: -12deg; }
+.s-spark3 { right: 28%; top: 22%; font-size: 40px; }
+.s-brief { right: -18px; top: -26px; font-size: 50px; rotate: 10deg; }
+.s-cam2 { right: -18px; top: 30%; font-size: 48px; rotate: 12deg; }
+.s-love { left: -20px; top: 20%; font-size: 50px; rotate: -10deg; }
 .s-hand2 { right: 14%; bottom: -26px; font-size: 48px; rotate: -18deg; }
 
 /* Footer */
@@ -472,11 +481,28 @@ a.app:hover { transform: translateY(-8px) scale(1.12); }
 /* Focus and motion */
 a:focus-visible, button:focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; }
 @keyframes float { 0%, 100% { translate: 0 0; } 50% { translate: 0 -6px; } }
-.hero .sticker { animation: float 4s ease-in-out infinite; }
-.hero .sticker:nth-of-type(even) { animation-delay: -2s; }
+.sticker { animation: float 4s ease-in-out infinite; }
+.sticker:nth-of-type(even) { animation-delay: -2s; animation-duration: 5s; }
+.sticker.spin { animation: wiggle 3s ease-in-out infinite; }
+@keyframes wiggle { 0%, 100% { transform: rotate(-12deg) scale(1); } 50% { transform: rotate(12deg) scale(1.15); } }
+/* Emoji drifting up through the sky */
+.floaters { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.floaters span {
+  position: absolute; left: var(--x); bottom: -60px; font-size: clamp(22px, 2.6vw, 34px); opacity: .85;
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,.12));
+  animation: drift var(--d) linear infinite; animation-delay: var(--delay);
+}
+@keyframes drift {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  25% { transform: translate(18px, -27vh) rotate(10deg); }
+  50% { transform: translate(-14px, -55vh) rotate(-8deg); }
+  75% { transform: translate(16px, -82vh) rotate(8deg); }
+  100% { transform: translate(0, -112vh) rotate(0deg); }
+}
 @media (prefers-reduced-motion: reduce) {
   .airdrop.denied { animation: none; outline: 2px solid var(--err); }
-  .hero .sticker, .typing i { animation: none; }
+  .sticker, .sticker.spin, .floaters span, .typing i { animation: none; }
+  .floaters { display: none; }
   html { scroll-behavior: auto; }
 }
 
@@ -511,7 +537,9 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--blue); outline-
   .s-spark1 { left: auto; right: 8%; top: 4%; }
   .s-golf { left: 6%; top: auto; bottom: 22%; }
   .s-star2 { right: 4%; top: auto; bottom: 24%; }
-  .dock { bottom: 16px; }
+  .dock { bottom: 16px; left: 50%; }
+  .s-bow, .s-flower { display: none; }
+  .s-heart2 { left: 4%; bottom: 14%; }
   .about-body { grid-template-columns: 1fr; grid-template-areas: "card" "photo" "maps" "picker"; }
   .albums-body { grid-template-columns: 1fr; }
   .maps-body { grid-template-columns: 1fr; }
