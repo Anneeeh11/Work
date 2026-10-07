@@ -308,6 +308,38 @@ a.app:hover { transform: translateY(-8px) scale(1.12); }
 .app-icon-big { position: absolute; left: 4%; bottom: -28px; width: 78px; height: 78px; filter: drop-shadow(0 10px 18px rgba(0,0,0,.25)); rotate: -8deg; }
 .app-icon-big svg { width: 100%; height: 100%; }
 
+/* ===== Files (desktop folders) ===== */
+.files .win-bar { border-radius: 12px 12px 0 0; }
+.files-body {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 18px 12px;
+  padding: clamp(28px, 4vw, 48px) clamp(16px, 3vw, 40px); background: linear-gradient(180deg, #fbfcfe, #f4f8fd); border-radius: 0 0 12px 12px;
+}
+.file-folder {
+  display: grid; justify-items: center; gap: 12px; padding: 14px 8px; border-radius: 12px;
+  text-decoration: none; color: var(--ink); background: none; border: 0; cursor: pointer;
+  font: 500 clamp(16px, 1.7vw, 20px)/1.2 var(--ui); text-align: center;
+  transition: background .2s;
+}
+.file-folder:hover { background: var(--blue-soft); }
+.file-folder:hover .folder { transform: translateY(-4px) scale(1.04); }
+.folder.big { width: 116px; height: 82px; border-radius: 6px 12px 12px 12px; transition: transform .2s ease; }
+.folder.big::before { top: -12px; width: 40%; height: 16px; border-radius: 6px 6px 0 0; }
+.folder.blue { background: linear-gradient(180deg, #cfe2f8, #a9cbf0); }
+.folder.blue::before { background: #95bbe8; }
+.badge-doc, .badge-out {
+  position: absolute; right: 10px; bottom: 10px; font: 800 11px/1 var(--ui);
+  background: #fff; color: var(--hot-pink); padding: 4px 6px; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,.12);
+}
+.badge-out { color: var(--blue); font-size: 14px; padding: 3px 6px; }
+
+/* Resume opens as a window over the page */
+.modal { position: fixed; inset: 0; z-index: 50; overflow-y: auto; padding: clamp(56px, 8vh, 80px) 16px 40px; display: grid; justify-items: center; align-items: start; }
+.modal-backdrop { position: fixed; inset: 0; background: rgba(120, 160, 205, .45); backdrop-filter: blur(6px); }
+.modal .win { position: relative; width: 100%; max-width: 980px; animation: pop .25s ease; }
+@keyframes pop { from { transform: scale(.96); opacity: 0; } to { transform: none; opacity: 1; } }
+.dot-close { width: 12px; height: 12px; border-radius: 50%; background: #ff5f57; border: 0; padding: 0; cursor: pointer; position: relative; }
+.dot-close:hover::after { content: "\00d7"; position: absolute; inset: 0; display: grid; place-items: center; font: 700 10px/1 var(--ui); color: #6b0f0a; }
+
 /* ===== Resume (PDF viewer) ===== */
 .resume .win-bar { border-radius: 12px 12px 0 0; }
 .resume-body { display: grid; grid-template-columns: 120px 1fr; background: #e9edf2; border-radius: 0 0 12px 12px; }
@@ -342,8 +374,8 @@ a.app:hover { transform: translateY(-8px) scale(1.12); }
 .skill-chips li { padding: 5px 12px; border-radius: 999px; background: var(--blue-soft); font-size: 13px; font-weight: 600; }
 .skill-chips li:nth-child(3n+2) { background: var(--pink-soft); }
 .skill-chips li:nth-child(3n) { background: #fff6bf; }
-.s-doc { left: -22px; top: 22%; font-size: 52px; rotate: -10deg; }
-.s-trophy { right: -18px; top: 44%; font-size: 50px; rotate: 10deg; }
+.s-doc { left: -22px; top: 30%; font-size: 52px; rotate: -10deg; }
+.s-trophy { right: -16px; top: 56%; font-size: 46px; rotate: 10deg; }
 
 /* ===== 4. Messages ===== */
 .msg-body { display: grid; grid-template-columns: .8fr 1.5fr; border-radius: 12px; overflow: hidden; min-height: 460px; }
@@ -537,6 +569,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--blue); outline-
   100% { transform: translate(0, -112vh) rotate(0deg); }
 }
 @media (prefers-reduced-motion: reduce) {
+  .modal .win { animation: none; }
   .airdrop.denied { animation: none; outline: 2px solid var(--err); }
   .sticker, .sticker.spin, .floaters span, .typing i { animation: none; }
   .floaters { display: none; }
@@ -585,6 +618,9 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--blue); outline-
   .finder-side { display: none; }
   .msg-body { grid-template-columns: 1fr; }
   .resume-body { grid-template-columns: 1fr; }
+  .files-body { grid-template-columns: repeat(3, 1fr); gap: 10px 4px; }
+  .folder.big { width: 84px; height: 60px; }
+  .file-folder { font-size: 14px; }
   .thumbs { display: none; }
   .paper { width: calc(100% - 20px); margin: 10px auto; }
   .msg-side { border-right: 0; border-bottom: 1px solid var(--line); }
