@@ -314,6 +314,7 @@ a.app:hover { transform: translateY(-8px) scale(1.12); }
   display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 18px 12px;
   padding: clamp(28px, 4vw, 48px) clamp(16px, 3vw, 40px); background: linear-gradient(180deg, #fbfcfe, #f4f8fd); border-radius: 0 0 12px 12px;
 }
+@media (min-width: 1000px) { .files-body { grid-template-columns: repeat(7, 1fr); } }
 .file-folder {
   display: grid; justify-items: center; gap: 12px; padding: 14px 8px; border-radius: 12px;
   text-decoration: none; color: var(--ink); background: none; border: 0; cursor: pointer;
@@ -326,6 +327,13 @@ a.app:hover { transform: translateY(-8px) scale(1.12); }
 .folder.big::before { top: -12px; width: 40%; height: 16px; border-radius: 6px 6px 0 0; }
 .folder.blue { background: linear-gradient(180deg, #cfe2f8, #a9cbf0); }
 .folder.blue::before { background: #95bbe8; }
+.folder.yellow { background: linear-gradient(180deg, #fff3a6, #ffe164); }
+.folder.yellow::before { background: #f5d23c; }
+.deck-link {
+  display: inline-block; margin: 8px 0 0 20px; padding: 4px 12px; border-radius: 999px;
+  background: #fff6bf; color: var(--ink); font-size: 12.5px; font-weight: 700; text-decoration: none;
+}
+.deck-link:hover { background: var(--yellow); }
 .badge-doc, .badge-out {
   position: absolute; right: 10px; bottom: 10px; font: 800 11px/1 var(--ui);
   background: #fff; color: var(--hot-pink); padding: 4px 6px; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,.12);
