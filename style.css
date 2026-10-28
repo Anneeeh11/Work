@@ -422,6 +422,7 @@ a.app:hover { transform: translateY(-8px) scale(1.12); }
 .cover b { font-family: "Noto Serif TC", "PingFang TC", "Songti TC", serif; font-weight: 700; font-size: clamp(15px, 1.65vw, 22px); line-height: 1.2; letter-spacing: .04em; white-space: nowrap; }
 .cover small { font-size: clamp(9px, .9vw, 11px); font-weight: 600; letter-spacing: .06em; text-transform: uppercase; opacity: .85; margin-top: 6px; }
 .cover i { margin-top: auto; font-style: normal; font-size: clamp(10px, 1vw, 13px); font-weight: 600; letter-spacing: .04em; opacity: .9; }
+.cover.photo { display: block; width: 100%; max-width: 100%; height: auto; padding: 0; object-fit: cover; background: #fff; }
 .book:hover .cover { transform: translateY(-8px) rotate(-2deg); }
 .c1 .cover { background: linear-gradient(160deg, #2c3e66, #1a2645); }
 .c2 .cover { background: linear-gradient(160deg, #f07aa6, #d84f86); }
