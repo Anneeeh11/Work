@@ -385,6 +385,35 @@ a.app:hover { transform: translateY(-8px) scale(1.12); }
 .s-doc { left: -22px; top: 30%; font-size: 52px; rotate: -10deg; }
 .s-trophy { right: -16px; top: 56%; font-size: 46px; rotate: 10deg; }
 
+/* ===== Booklist (Books app) ===== */
+.books-app .win-bar { border-radius: 12px 12px 0 0; }
+.books-body { display: grid; gap: clamp(24px, 3.5vw, 40px); padding: clamp(24px, 3.5vw, 44px) clamp(18px, 3.5vw, 44px); background: linear-gradient(180deg, #fffaf3, #fff); border-radius: 0 0 12px 12px; }
+.shelf h3 { margin: 0; display: flex; align-items: center; gap: 10px; font-family: var(--display); font-weight: 900; letter-spacing: -.04em; font-size: clamp(24px, 2.8vw, 32px); line-height: 1.1; }
+.shelf.reading h3 { color: var(--blue); }
+.shelf.fav h3 { color: var(--hot-pink); }
+.shelf-note { margin: 4px 0 14px; color: var(--muted); font-size: 14px; }
+.books {
+  list-style: none; margin: 0; padding: 0 clamp(8px, 2vw, 24px) 0; display: grid; grid-template-columns: repeat(4, minmax(0, 150px)); gap: clamp(12px, 2.4vw, 28px);
+  position: relative; padding-bottom: 14px;
+}
+.books::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 14px; border-radius: 4px;
+  background: linear-gradient(180deg, #f1d9c4, #e2bfa2); box-shadow: 0 8px 14px -8px rgba(120, 80, 40, .5);
+}
+.slot {
+  aspect-ratio: 2 / 3; border-radius: 4px 10px 10px 4px; border: 2px dashed #d3c7bb;
+  background: rgba(255,255,255,.7); display: grid; place-items: center; align-content: center; gap: 4px;
+  color: #a99d91; position: relative; z-index: 1; transition: transform .2s ease;
+}
+.slot span { font-size: 30px; line-height: 1; font-weight: 300; }
+.slot em { font-style: normal; font-size: 12px; font-weight: 600; letter-spacing: .04em; }
+.slot:hover { transform: translateY(-6px) rotate(-1.5deg); }
+.reading .slot { border-color: #b9d3f1; background: rgba(220, 234, 251, .55); color: #6f98c9; }
+.fav .slot { border-color: #f3b9cf; background: rgba(253, 227, 238, .6); color: #d77ba3; }
+.want .slot { border-color: #ecdc86; background: rgba(255, 246, 191, .55); color: #b29a2a; }
+.s-book { right: -18px; top: 18%; font-size: 52px; rotate: 10deg; }
+.s-glasses { left: -20px; bottom: 16%; font-size: 46px; rotate: -10deg; }
+
 /* ===== 4. Messages ===== */
 .msg-body { display: grid; grid-template-columns: .8fr 1.5fr; border-radius: 12px; overflow: hidden; min-height: 460px; }
 .msg-side { background: #f7f8fa; border-right: 1px solid var(--line); padding: 18px 14px; display: grid; align-content: start; gap: 14px; }
@@ -627,6 +656,8 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--blue); outline-
   .msg-body { grid-template-columns: 1fr; }
   .resume-body { grid-template-columns: 1fr; }
   .files-body { grid-template-columns: repeat(3, 1fr); gap: 10px 4px; }
+  .books { grid-template-columns: repeat(4, 1fr); gap: 8px; padding-inline: 4px; }
+  .slot em { font-size: 10px; }
   .folder.big { width: 84px; height: 60px; }
   .file-folder { font-size: 14px; }
   .thumbs { display: none; }
