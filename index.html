@@ -598,6 +598,11 @@
   </div>
 
 
+  <div class="warp" id="warp" aria-hidden="true" hidden>
+    <div class="warp-inner"><span class="warp-emoji"></span><span class="warp-label"></span></div>
+    <span class="warp-spark w1">&#10024;</span><span class="warp-spark w2">&#11088;</span><span class="warp-spark w3">&#128150;</span><span class="warp-spark w4">&#10024;</span><span class="warp-spark w5">&#127800;</span><span class="warp-spark w6">&#11088;</span>
+  </div>
+
   <footer class="footer">
     <span>&copy; <span id="year"></span> Anne Hung &middot; Vancouver, BC</span>
   </footer>
@@ -612,7 +617,28 @@
       pages.forEach((p) => { p.hidden = p.dataset.page !== name; });
       tabs.forEach((t) => t.classList.toggle('active', t.dataset.tab === name));
     };
-    const go = (id, smooth) => {
+    const warp = document.getElementById('warp');
+    const warpInfo = {
+      home: ['&#127968;', 'home sweet home'],
+      experience: ['&#128188;', 'loading my experience'],
+      passion: ['&#128150;', 'opening my passions'],
+    };
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let busy = false;
+    const popIn = (pageName) => {
+      const page = pages.find((p) => p.dataset.page === pageName);
+      [...page.children].forEach((el, i) => el.style.setProperty('--i', Math.min(i, 5)));
+      page.classList.remove('entering');
+      void page.offsetWidth;
+      page.classList.add('entering');
+      setTimeout(() => page.classList.remove('entering'), 1400);
+    };
+    const land = (pageName, target, smooth, changed) => {
+      showPage(pageName);
+      if (target) target.scrollIntoView({ behavior: smooth && !changed ? 'smooth' : 'auto', block: 'start' });
+      else window.scrollTo({ top: 0, behavior: 'auto' });
+    };
+    const go = (id, smooth, origin) => {
       let pageName = pageAlias[id];
       let target = null;
       if (!pageName) {
@@ -622,10 +648,28 @@
         pageName = holder.dataset.page;
       }
       const changed = pages.find((p) => !p.hidden)?.dataset.page !== pageName;
-      showPage(pageName);
-      if (target) target.scrollIntoView({ behavior: smooth && !changed ? 'smooth' : 'auto', block: 'start' });
-      else window.scrollTo({ top: 0, behavior: 'auto' });
       try { history.replaceState(null, '', '#' + id); } catch (e) {}
+      if (!changed || !origin || busy) { land(pageName, target, smooth, changed); return true; }
+      if (reduceMotion) { land(pageName, target, false, true); popIn(pageName); return true; }
+      busy = true;
+      const [emoji, label] = warpInfo[pageName];
+      warp.querySelector('.warp-emoji').innerHTML = emoji;
+      warp.querySelector('.warp-label').innerHTML = label;
+      warp.dataset.page = pageName;
+      warp.style.setProperty('--x', origin.x + 'px');
+      warp.style.setProperty('--y', origin.y + 'px');
+      warp.className = 'warp';
+      warp.hidden = false;
+      void warp.offsetWidth;
+      warp.classList.add('in');
+      setTimeout(() => {
+        land(pageName, target, false, true);
+        setTimeout(() => {
+          warp.classList.add('out');
+          popIn(pageName);
+          setTimeout(() => { warp.hidden = true; warp.className = 'warp'; busy = false; }, 480);
+        }, 380);
+      }, 460);
       return true;
     };
     document.addEventListener('click', (e) => {
@@ -633,7 +677,10 @@
       if (!a) return;
       const id = a.getAttribute('href').slice(1);
       if (!id) return;
-      if (go(id, true)) e.preventDefault();
+      const r = a.getBoundingClientRect();
+      const origin = e.clientX || e.clientY ? { x: e.clientX, y: e.clientY } : { x: r.left + r.width / 2, y: r.top + r.height / 2 };
+      if (a.dataset.tab) { a.classList.remove('boing'); void a.offsetWidth; a.classList.add('boing'); }
+      if (go(id, true, origin)) e.preventDefault();
     });
     window.addEventListener('hashchange', () => go(location.hash.slice(1) || 'home', false));
     go(location.hash.slice(1) || 'home', false);
