@@ -412,23 +412,9 @@ a.app:hover { transform: translateY(-8px) scale(1.12); }
 .fav .slot { border-color: #f3b9cf; background: rgba(253, 227, 238, .6); color: #d77ba3; }
 .want .slot { border-color: #ecdc86; background: rgba(255, 246, 191, .55); color: #b29a2a; }
 .book { position: relative; z-index: 1; min-width: 0; }
-.cover {
-  aspect-ratio: 2 / 3; border-radius: 3px 10px 10px 3px; padding: 18% 8% 12% 12%;
-  display: flex; flex-direction: column; justify-content: flex-start; text-align: center;
-  color: #fff; position: relative; overflow: hidden;
-  box-shadow: inset 6px 0 0 rgba(0,0,0,.12), inset 8px 0 6px -4px rgba(255,255,255,.25), 0 12px 20px -10px rgba(0,0,0,.45);
-  transition: transform .25s ease;
-}
-.cover b { font-family: "Noto Serif TC", "PingFang TC", "Songti TC", serif; font-weight: 700; font-size: clamp(15px, 1.65vw, 22px); line-height: 1.2; letter-spacing: .04em; white-space: nowrap; }
-.cover small { font-size: clamp(9px, .9vw, 11px); font-weight: 600; letter-spacing: .06em; text-transform: uppercase; opacity: .85; margin-top: 6px; }
-.cover i { margin-top: auto; font-style: normal; font-size: clamp(10px, 1vw, 13px); font-weight: 600; letter-spacing: .04em; opacity: .9; }
+.cover { display: block; aspect-ratio: 2 / 3; border-radius: 3px 10px 10px 3px; box-shadow: inset 6px 0 0 rgba(0,0,0,.12), 0 12px 20px -10px rgba(0,0,0,.45); transition: transform .25s ease; }
 .cover.photo { display: block; width: 100%; max-width: 100%; height: auto; padding: 0; object-fit: cover; background: #fff; }
 .book:hover .cover { transform: translateY(-8px) rotate(-2deg); }
-.c1 .cover { background: linear-gradient(160deg, #2c3e66, #1a2645); }
-.c2 .cover { background: linear-gradient(160deg, #f07aa6, #d84f86); }
-.c3 .cover { background: linear-gradient(160deg, #1d1d1f, #3a3a3e); }
-.c3 .cover b { color: var(--yellow); }
-.c4 .cover { background: linear-gradient(160deg, #fbe28a, #f2c94c); color: #1d1d1f; }
 .s-book { right: -18px; top: 18%; font-size: 52px; rotate: 10deg; }
 .s-glasses { left: -20px; bottom: 16%; font-size: 46px; rotate: -10deg; }
 
