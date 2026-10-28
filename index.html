@@ -25,21 +25,17 @@
   </div>
 
   <header class="menubar">
-    <a class="menu-logo" href="#top">anne hung</a>
-    <nav>
-      <a href="#about">about</a>
-      <a href="#experience">experience</a>
-      <a href="#passions">passions</a>
-      <a href="#food">food</a>
-      <a href="#files">files</a>
-      <a href="#feed">feed</a>
-      <a href="#contact">contact</a>
+    <a class="menu-logo" href="#home">Anne Hung</a>
+    <nav class="tabs" aria-label="Pages">
+      <a href="#home" data-tab="home">home</a>
+      <a href="#experience-page" data-tab="experience">experience</a>
+      <a href="#passion" data-tab="passion">passion</a>
+      <a href="#contact" class="tab-contact">contact</a>
     </nav>
   </header>
 
   <main id="top">
-
-    <!-- 1. Browser hero -->
+    <div class="page" id="page-home" data-page="home">
     <section class="win hero" aria-label="Intro">
       <div class="browser-bar">
         <span class="dots"><i></i><i></i><i></i></span>
@@ -108,7 +104,6 @@
       </div>
     </section>
 
-    <!-- 2. About: Hi! I'm + Maps -->
     <section id="files" class="win files">
       <p class="tab-label big">my files</p>
       <div class="win-bar"><span class="dots"><i></i><i></i><i></i></span><span class="win-title">Desktop</span></div>
@@ -184,7 +179,6 @@
       </div>
     </section>
 
-    <!-- 3. Experience: Photos albums + AirDrop -->
     <section id="request" class="win request" aria-label="AirDrop request">
       <p class="tab-label city">There's a request&hellip;</p>
       <span class="sticker s-phone" aria-hidden="true">&#128242;</span>
@@ -199,219 +193,6 @@
       </div>
     </section>
 
-    <section id="experience" class="win experience">
-      <span class="sticker s-brief" aria-hidden="true">&#128188;</span>
-      <div class="exp-body">
-        <div class="albums win-sm">
-          <div class="win-bar sm"><span class="dots"><i></i><i></i><i></i></span></div>
-          <div class="albums-body">
-            <aside class="finder-side" aria-hidden="true">
-              <p class="active">Albums</p><p>Documents</p><p>Pictures</p><p>Videos</p><p>Music</p><p>Desktop</p>
-            </aside>
-            <div class="albums-main">
-              <h2>Experience&hellip;</h2>
-              <div class="album-grid">
-                <figure class="album">
-                  <img src="images/pwc.webp" alt="Anne standing in front of the PwC logo at the office" width="1050" height="1400">
-                  <figcaption><b>PwC</b><span>Audit Summer Intern &middot; Taipei</span><em>July 2026</em></figcaption>
-                </figure>
-                <figure class="album">
-                  <img src="images/pestlo.webp" alt="Anne at the Pestlo office next to a giant product display" width="1050" height="1400">
-                  <figcaption><b>Pestlo</b><span>Intern &middot; Korean skincare brand</span><em>Details coming soon</em></figcaption>
-                </figure>
-                <figure class="album">
-                  <img src="images/imagine-day.webp" alt="Anne with fellow orientation leaders in purple shirts holding handmade signs at UBC" width="1400" height="1050">
-                  <figcaption><b>Imagine UBC</b><span>Orientation Leader &middot; 25 students</span><em>Sep 2026</em></figcaption>
-                </figure>
-                <figure class="album">
-                  <img src="images/aritzia.webp" alt="Anne in a pink staff shirt pushing a cart of boxes at the Aritzia warehouse sale" width="1050" height="1400">
-                  <figcaption><b>Aritzia</b><span>Warehouse Sale &middot; Seasonal Retail</span><em>Sep 2026</em></figcaption>
-                </figure>
-              </div>
-            </div>
-          </div>
-        </div>
-        <span class="app-icon-big" aria-hidden="true">
-          <svg viewBox="0 0 24 24"><rect width="24" height="24" rx="6" fill="#fff"></rect><g transform="translate(12 12)"><ellipse rx="2.6" ry="5.4" cy="-3.6" fill="#f9b233" opacity=".9"></ellipse><ellipse rx="2.6" ry="5.4" cy="-3.6" transform="rotate(60)" fill="#e94e77" opacity=".85"></ellipse><ellipse rx="2.6" ry="5.4" cy="-3.6" transform="rotate(120)" fill="#a05ad8" opacity=".85"></ellipse><ellipse rx="2.6" ry="5.4" cy="-3.6" transform="rotate(180)" fill="#3b8de0" opacity=".85"></ellipse><ellipse rx="2.6" ry="5.4" cy="-3.6" transform="rotate(240)" fill="#3fc1a5" opacity=".85"></ellipse><ellipse rx="2.6" ry="5.4" cy="-3.6" transform="rotate(300)" fill="#9ccc3c" opacity=".85"></ellipse></g></svg>
-        </span>
-      </div>
-    </section>
-
-    <!-- 4. Passions: Messages -->
-    <section id="passions" class="win messages">
-      <p class="tab-label big">my passions</p>
-      <div class="msg-body">
-        <aside class="msg-side">
-          <p class="msg-search">Search</p>
-          <ul class="msg-pins">
-            <li><img src="images/golf-swing.webp" alt="" width="914" height="1400"><span>golf</span></li>
-            <li><img src="images/team.webp" alt="" width="1400" height="933"><span>people</span></li>
-            <li><img src="images/anne.webp" alt="" width="668" height="936"><span>adventure</span></li>
-            <li><img src="images/headshot.webp" alt="" width="1400" height="1227"><span>growth</span></li>
-            <li><span class="emoji-av" aria-hidden="true">&#127836;</span><span>food</span></li>
-          </ul>
-          <p class="msg-active"><b>golf &#9971;</b><span>my biggest passion</span></p>
-          <p class="msg-row"><b>ubc</b><span>IR major, Commerce minor</span></p>
-        </aside>
-        <div class="chat">
-          <p class="chat-head">my favourite things &#128150;</p>
-          <div class="thread">
-            <p class="msg in">so what do you love doing outside of class?</p>
-            <p class="who">golf</p>
-            <p class="msg out">Golf! It's my biggest passion. I play competitively (4 handicap), I'm TPI Level 1 certified, and I've coached 50+ junior golfers &#9971;</p>
-            <p class="who">people</p>
-            <p class="msg out">I'm an extrovert at heart. I love meeting new people and hearing their stories.</p>
-            <p class="who">adventure</p>
-            <p class="msg out">Endlessly curious, always looking for the next experience, city, or challenge &#10024;</p>
-            <p class="who">growth</p>
-            <p class="msg out">Life's too short to stay in one lane. I'm always pushing myself to grow into the best version of me.</p>
-            <p class="who">food</p>
-            <p class="msg out">Outside of school, I'm a big foodie! I love trying different food and recording it on my food Instagram &#127836;&#127846;</p>
-            <p class="msg in typing" aria-label="typing"><i></i><i></i><i></i></p>
-          </div>
-        </div>
-      </div>
-      <span class="sticker s-chat" aria-hidden="true">&#128172;</span>
-      <span class="sticker s-thumb" aria-hidden="true">&#128077;</span>
-    </section>
-
-    <!-- 4b. Food diary -->
-    <section id="food" class="win food">
-      <p class="tab-label big">food diary</p>
-      <div class="win-bar"><span class="dots"><i></i><i></i><i></i></span><span class="win-title">foodie.app</span></div>
-      <div class="food-body">
-        <div class="food-intro">
-          <p class="food-kicker">big foodie &#127860;</p>
-          <h2>Trying everything, <span class="hl-y">recording it all.</span></h2>
-          <p>Outside of school, I'm a big foodie. I love trying different food and keeping a record of every bite on my food Instagram.</p>
-          <p class="food-note">Food account link coming soon</p>
-        </div>
-        <div class="food-shots">
-          <figure class="phone">
-            <img src="images/food-1.webp" alt="A grid of food photos: Hainanese chicken, pastas, steak tartare, mango shaved ice, uni and caviar, crab, and wagyu" width="920" height="1630">
-          </figure>
-          <figure class="phone tilt">
-            <img src="images/food-2.webp" alt="A grid of food photos: pizza, beef noodle soup, matcha ice cream, oysters, brunch, wagyu hot pot, katsu don, unagi don, and a matcha drink" width="920" height="1632">
-          </figure>
-        </div>
-      </div>
-      <span class="sticker s-fork" aria-hidden="true">&#127860;</span>
-      <span class="sticker s-boba" aria-hidden="true">&#129483;</span>
-    </section>
-
-    <!-- 5. Journey: Notes + calculator -->
-    <section id="books" class="win books-app">
-      <p class="tab-label big">my booklist</p>
-      <div class="win-bar"><span class="dots"><i></i><i></i><i></i></span><span class="win-title">Books</span></div>
-      <div class="books-body">
-        <div class="shelf reading">
-          <h3><span aria-hidden="true">&#128214;</span> currently reading</h3>
-          <p class="shelf-note">On my nightstand right now</p>
-          <ul class="books" aria-label="currently reading: books coming soon">
-              <li class="slot s1"><span aria-hidden="true">+</span><em>coming soon</em></li>
-              <li class="slot s2"><span aria-hidden="true">+</span><em>coming soon</em></li>
-              <li class="slot s3"><span aria-hidden="true">+</span><em>coming soon</em></li>
-              <li class="slot s4"><span aria-hidden="true">+</span><em>coming soon</em></li>
-          </ul>
-        </div>
-        <div class="shelf fav">
-          <h3><span aria-hidden="true">&#11088;</span> favourites</h3>
-          <p class="shelf-note">The ones I keep recommending</p>
-          <ul class="books">
-            <li class="book c1">
-              <img class="cover photo" src="images/book-logic.webp" alt="底層邏輯 (The Underlying Logic) by 劉潤" width="300" height="450">
-            </li>
-            <li class="book c2">
-              <img class="cover photo" src="images/book-strategy.webp" alt="The Art of Strategy by Avinash K. Dixit and Barry J. Nalebuff" width="440" height="660">
-            </li>
-            <li class="book c3">
-              <img class="cover photo" src="images/book-ceo.webp" alt="The Diary of a CEO by Steven Bartlett" width="440" height="660">
-            </li>
-            <li class="book c4">
-              <img class="cover photo" src="images/book-atomic.webp" alt="Atomic Habits by James Clear" width="440" height="660">
-            </li>
-          </ul>
-        </div>
-        <div class="shelf want">
-          <h3><span aria-hidden="true">&#128278;</span> want to read</h3>
-          <p class="shelf-note">Next up on my list</p>
-          <ul class="books" aria-label="want to read: books coming soon">
-              <li class="slot s1"><span aria-hidden="true">+</span><em>coming soon</em></li>
-              <li class="slot s2"><span aria-hidden="true">+</span><em>coming soon</em></li>
-              <li class="slot s3"><span aria-hidden="true">+</span><em>coming soon</em></li>
-              <li class="slot s4"><span aria-hidden="true">+</span><em>coming soon</em></li>
-          </ul>
-        </div>
-      </div>
-      <span class="sticker s-book" aria-hidden="true">&#128218;</span>
-      <span class="sticker s-glasses" aria-hidden="true">&#128083;</span>
-    </section>
-
-    <section id="journey" class="win journey">
-      <p class="reminder"><span class="rem-app">REMINDER</span><b>my journey</b></p>
-      <div class="notes">
-        <article class="note">
-          <p class="note-app">Notes</p>
-          <h3>HOME</h3>
-          <ul><li>Taipei, Taiwan</li><li>Where I grew up</li><li>Where my story begins</li></ul>
-        </article>
-        <article class="note now">
-          <p class="note-app">Notes</p>
-          <h3>NOW</h3>
-          <ul><li>University of British Columbia</li><li>Bachelor of Arts, Year 2</li><li>Expected graduation 2028</li><li>International Relations major</li><li>Commerce minor</li><li>Vancouver, Canada</li></ul>
-        </article>
-        <article class="note">
-          <p class="note-app">Notes</p>
-          <h3>NEXT</h3>
-          <ul><li>Wherever curiosity leads</li><li>New experiences</li><li>New places</li><li>New people</li></ul>
-        </article>
-        <div class="calc" aria-hidden="true">
-          <p class="calc-expr">IR + COMM + GOLF</p>
-          <p class="calc-res">= me</p>
-          <div class="calc-keys">
-            <span>AC</span><span>&plusmn;</span><span>%</span><span class="op">&divide;</span>
-            <span>7</span><span>8</span><span>9</span><span class="op">&times;</span>
-            <span>4</span><span>5</span><span>6</span><span class="op">&minus;</span>
-            <span>1</span><span>2</span><span>3</span><span class="op">+</span>
-            <span class="zero">0</span><span>.</span><span class="op">=</span>
-          </div>
-        </div>
-      </div>
-      <span class="sticker s-pin" aria-hidden="true">&#128204;</span>
-      <span class="sticker s-plane" aria-hidden="true">&#9992;&#65039;</span>
-    </section>
-
-    <!-- 6. Instagram feed -->
-    <section id="feed" class="win feed">
-      <p class="tab-label big right">my feed</p>
-      <div class="win-bar"><span class="dots"><i></i><i></i><i></i></span><span class="win-title">INSTAGRAM</span></div>
-      <div class="feed-body">
-        <div class="profile">
-          <img class="avatar" src="images/headshot.webp" alt="" width="1400" height="1227">
-          <div>
-            <p class="handle">anneee1103</p>
-            <p class="realname">Anne Hung</p>
-            <p class="bio">UBC &middot; International Relations &amp; Commerce &middot; golf &#9971;</p>
-            <a class="follow" href="https://www.instagram.com/anneee1103/" target="_blank" rel="noopener">Follow</a>
-          </div>
-        </div>
-        <div class="feed-grid">
-          <img src="images/golf-swing.webp" alt="Anne mid-swing on the fairway" width="914" height="1400">
-          <img src="images/anne.webp" alt="Anne on a New York City subway platform" width="668" height="936">
-          <img src="images/pestlo.webp" alt="Anne at the Pestlo office" width="1050" height="1400">
-          <img src="images/team.webp" alt="Anne with classmates at UBC" width="1400" height="933">
-          <img src="images/golf-green.webp" alt="Anne reading the green" width="1082" height="716">
-          <img src="images/headshot.webp" alt="Anne's headshot" width="1400" height="1227">
-          <img src="images/pwc.webp" alt="Anne at PwC" width="1050" height="1400">
-          <img src="images/imagine-day.webp" alt="Anne with orientation leaders on UBC Imagine Day" width="1400" height="1050">
-          <img src="images/aritzia.webp" alt="Anne at the Aritzia warehouse sale" width="1050" height="1400">
-        </div>
-      </div>
-      <span class="sticker s-heart" aria-hidden="true">&#129293;</span>
-      <span class="sticker s-cam2" aria-hidden="true">&#128247;</span>
-    </section>
-
-    <!-- 7. Contact: Mail compose + FaceTime -->
     <section id="contact" class="win contact">
       <div class="browser-bar">
         <span class="dots"><i></i><i></i><i></i></span>
@@ -465,6 +246,244 @@
       <span class="sticker s-hand2" aria-hidden="true">&#128070;</span>
       <span class="sticker s-love" aria-hidden="true">&#128140;</span>
     </section>
+    </div>
+
+    <div class="page" id="page-experience" data-page="experience" hidden>
+    <section class="win page-head" aria-label="my experience">
+      <div class="browser-bar">
+        <span class="dots"><i></i><i></i><i></i></span>
+        <span class="nav-btns" aria-hidden="true"><b>&lsaquo;</b><b>&rsaquo;</b></span>
+        <span class="url"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"></circle><path d="M16 16l4.5 4.5"></path></svg>www.annehung.com/experience</span>
+      </div>
+      <div class="page-head-body">
+        <h1 class="page-title">my <span class="hl">experience</span></h1>
+        <p>Internships, leadership and case competitions, from PwC in Taipei to Imagine UBC in Vancouver.</p>
+        <button type="button" class="send" data-open-resume>Open my resume</button>
+      </div>
+    </section>
+
+    <section id="experience" class="win experience">
+      <span class="sticker s-brief" aria-hidden="true">&#128188;</span>
+      <div class="exp-body">
+        <div class="albums win-sm">
+          <div class="win-bar sm"><span class="dots"><i></i><i></i><i></i></span></div>
+          <div class="albums-body">
+            <aside class="finder-side" aria-hidden="true">
+              <p class="active">Albums</p><p>Documents</p><p>Pictures</p><p>Videos</p><p>Music</p><p>Desktop</p>
+            </aside>
+            <div class="albums-main">
+              <h2>Experience&hellip;</h2>
+              <div class="album-grid">
+                <figure class="album">
+                  <img src="images/pwc.webp" alt="Anne standing in front of the PwC logo at the office" width="1050" height="1400">
+                  <figcaption><b>PwC</b><span>Audit Summer Intern &middot; Taipei</span><em>July 2026</em></figcaption>
+                </figure>
+                <figure class="album">
+                  <img src="images/pestlo.webp" alt="Anne at the Pestlo office next to a giant product display" width="1050" height="1400">
+                  <figcaption><b>Pestlo</b><span>Intern &middot; Korean skincare brand</span><em>Details coming soon</em></figcaption>
+                </figure>
+                <figure class="album">
+                  <img src="images/imagine-day.webp" alt="Anne with fellow orientation leaders in purple shirts holding handmade signs at UBC" width="1400" height="1050">
+                  <figcaption><b>Imagine UBC</b><span>Orientation Leader &middot; 25 students</span><em>Sep 2026</em></figcaption>
+                </figure>
+                <figure class="album">
+                  <img src="images/aritzia.webp" alt="Anne in a pink staff shirt pushing a cart of boxes at the Aritzia warehouse sale" width="1050" height="1400">
+                  <figcaption><b>Aritzia</b><span>Warehouse Sale &middot; Seasonal Retail</span><em>Sep 2026</em></figcaption>
+                </figure>
+              </div>
+            </div>
+          </div>
+        </div>
+        <span class="app-icon-big" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><rect width="24" height="24" rx="6" fill="#fff"></rect><g transform="translate(12 12)"><ellipse rx="2.6" ry="5.4" cy="-3.6" fill="#f9b233" opacity=".9"></ellipse><ellipse rx="2.6" ry="5.4" cy="-3.6" transform="rotate(60)" fill="#e94e77" opacity=".85"></ellipse><ellipse rx="2.6" ry="5.4" cy="-3.6" transform="rotate(120)" fill="#a05ad8" opacity=".85"></ellipse><ellipse rx="2.6" ry="5.4" cy="-3.6" transform="rotate(180)" fill="#3b8de0" opacity=".85"></ellipse><ellipse rx="2.6" ry="5.4" cy="-3.6" transform="rotate(240)" fill="#3fc1a5" opacity=".85"></ellipse><ellipse rx="2.6" ry="5.4" cy="-3.6" transform="rotate(300)" fill="#9ccc3c" opacity=".85"></ellipse></g></svg>
+        </span>
+      </div>
+    </section>
+
+    <section id="journey" class="win journey">
+      <p class="reminder"><span class="rem-app">REMINDER</span><b>my journey</b></p>
+      <div class="notes">
+        <article class="note">
+          <p class="note-app">Notes</p>
+          <h3>HOME</h3>
+          <ul><li>Taipei, Taiwan</li><li>Where I grew up</li><li>Where my story begins</li></ul>
+        </article>
+        <article class="note now">
+          <p class="note-app">Notes</p>
+          <h3>NOW</h3>
+          <ul><li>University of British Columbia</li><li>Bachelor of Arts, Year 2</li><li>Expected graduation 2028</li><li>International Relations major</li><li>Commerce minor</li><li>Vancouver, Canada</li></ul>
+        </article>
+        <article class="note">
+          <p class="note-app">Notes</p>
+          <h3>NEXT</h3>
+          <ul><li>Wherever curiosity leads</li><li>New experiences</li><li>New places</li><li>New people</li></ul>
+        </article>
+        <div class="calc" aria-hidden="true">
+          <p class="calc-expr">IR + COMM + GOLF</p>
+          <p class="calc-res">= me</p>
+          <div class="calc-keys">
+            <span>AC</span><span>&plusmn;</span><span>%</span><span class="op">&divide;</span>
+            <span>7</span><span>8</span><span>9</span><span class="op">&times;</span>
+            <span>4</span><span>5</span><span>6</span><span class="op">&minus;</span>
+            <span>1</span><span>2</span><span>3</span><span class="op">+</span>
+            <span class="zero">0</span><span>.</span><span class="op">=</span>
+          </div>
+        </div>
+      </div>
+      <span class="sticker s-pin" aria-hidden="true">&#128204;</span>
+      <span class="sticker s-plane" aria-hidden="true">&#9992;&#65039;</span>
+    </section>
+    </div>
+
+    <div class="page" id="page-passion" data-page="passion" hidden>
+    <section class="win page-head" aria-label="my passions">
+      <div class="browser-bar">
+        <span class="dots"><i></i><i></i><i></i></span>
+        <span class="nav-btns" aria-hidden="true"><b>&lsaquo;</b><b>&rsaquo;</b></span>
+        <span class="url"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"></circle><path d="M16 16l4.5 4.5"></path></svg>www.annehung.com/passion</span>
+      </div>
+      <div class="page-head-body">
+        <h1 class="page-title">my <span class="hl">passions</span></h1>
+        <p>Golf, people, food, books and the photos in between.</p>
+      </div>
+    </section>
+
+    <section id="passions" class="win messages">
+      <p class="tab-label big">let's chat</p>
+      <div class="msg-body">
+        <aside class="msg-side">
+          <p class="msg-search">Search</p>
+          <ul class="msg-pins">
+            <li><img src="images/golf-swing.webp" alt="" width="914" height="1400"><span>golf</span></li>
+            <li><img src="images/team.webp" alt="" width="1400" height="933"><span>people</span></li>
+            <li><img src="images/anne.webp" alt="" width="668" height="936"><span>adventure</span></li>
+            <li><img src="images/headshot.webp" alt="" width="1400" height="1227"><span>growth</span></li>
+            <li><span class="emoji-av" aria-hidden="true">&#127836;</span><span>food</span></li>
+          </ul>
+          <p class="msg-active"><b>golf &#9971;</b><span>my biggest passion</span></p>
+          <p class="msg-row"><b>ubc</b><span>IR major, Commerce minor</span></p>
+        </aside>
+        <div class="chat">
+          <p class="chat-head">my favourite things &#128150;</p>
+          <div class="thread">
+            <p class="msg in">so what do you love doing outside of class?</p>
+            <p class="who">golf</p>
+            <p class="msg out">Golf! It's my biggest passion. I play competitively (4 handicap), I'm TPI Level 1 certified, and I've coached 50+ junior golfers &#9971;</p>
+            <p class="who">people</p>
+            <p class="msg out">I'm an extrovert at heart. I love meeting new people and hearing their stories.</p>
+            <p class="who">adventure</p>
+            <p class="msg out">Endlessly curious, always looking for the next experience, city, or challenge &#10024;</p>
+            <p class="who">growth</p>
+            <p class="msg out">Life's too short to stay in one lane. I'm always pushing myself to grow into the best version of me.</p>
+            <p class="who">food</p>
+            <p class="msg out">Outside of school, I'm a big foodie! I love trying different food and recording it on my food Instagram &#127836;&#127846;</p>
+            <p class="msg in typing" aria-label="typing"><i></i><i></i><i></i></p>
+          </div>
+        </div>
+      </div>
+      <span class="sticker s-chat" aria-hidden="true">&#128172;</span>
+      <span class="sticker s-thumb" aria-hidden="true">&#128077;</span>
+    </section>
+
+    <section id="food" class="win food">
+      <p class="tab-label big">food diary</p>
+      <div class="win-bar"><span class="dots"><i></i><i></i><i></i></span><span class="win-title">foodie.app</span></div>
+      <div class="food-body">
+        <div class="food-intro">
+          <p class="food-kicker">big foodie &#127860;</p>
+          <h2>Trying everything, <span class="hl-y">recording it all.</span></h2>
+          <p>Outside of school, I'm a big foodie. I love trying different food and keeping a record of every bite on my food Instagram.</p>
+          <p class="food-note">Food account link coming soon</p>
+        </div>
+        <div class="food-shots">
+          <figure class="phone">
+            <img src="images/food-1.webp" alt="A grid of food photos: Hainanese chicken, pastas, steak tartare, mango shaved ice, uni and caviar, crab, and wagyu" width="920" height="1630">
+          </figure>
+          <figure class="phone tilt">
+            <img src="images/food-2.webp" alt="A grid of food photos: pizza, beef noodle soup, matcha ice cream, oysters, brunch, wagyu hot pot, katsu don, unagi don, and a matcha drink" width="920" height="1632">
+          </figure>
+        </div>
+      </div>
+      <span class="sticker s-fork" aria-hidden="true">&#127860;</span>
+      <span class="sticker s-boba" aria-hidden="true">&#129483;</span>
+    </section>
+
+    <section id="books" class="win books-app">
+      <p class="tab-label big">my booklist</p>
+      <div class="win-bar"><span class="dots"><i></i><i></i><i></i></span><span class="win-title">Books</span></div>
+      <div class="books-body">
+        <div class="shelf reading">
+          <h3><span aria-hidden="true">&#128214;</span> currently reading</h3>
+          <p class="shelf-note">On my nightstand right now</p>
+          <ul class="books" aria-label="currently reading: books coming soon">
+              <li class="slot s1"><span aria-hidden="true">+</span><em>coming soon</em></li>
+              <li class="slot s2"><span aria-hidden="true">+</span><em>coming soon</em></li>
+              <li class="slot s3"><span aria-hidden="true">+</span><em>coming soon</em></li>
+              <li class="slot s4"><span aria-hidden="true">+</span><em>coming soon</em></li>
+          </ul>
+        </div>
+        <div class="shelf fav">
+          <h3><span aria-hidden="true">&#11088;</span> favourites</h3>
+          <p class="shelf-note">The ones I keep recommending</p>
+          <ul class="books">
+            <li class="book c1">
+              <img class="cover photo" src="images/book-logic.webp" alt="底層邏輯 (The Underlying Logic) by 劉潤" width="300" height="450">
+            </li>
+            <li class="book c2">
+              <img class="cover photo" src="images/book-strategy.webp" alt="The Art of Strategy by Avinash K. Dixit and Barry J. Nalebuff" width="440" height="660">
+            </li>
+            <li class="book c3">
+              <img class="cover photo" src="images/book-ceo.webp" alt="The Diary of a CEO by Steven Bartlett" width="440" height="660">
+            </li>
+            <li class="book c4">
+              <img class="cover photo" src="images/book-atomic.webp" alt="Atomic Habits by James Clear" width="440" height="660">
+            </li>
+          </ul>
+        </div>
+        <div class="shelf want">
+          <h3><span aria-hidden="true">&#128278;</span> want to read</h3>
+          <p class="shelf-note">Next up on my list</p>
+          <ul class="books" aria-label="want to read: books coming soon">
+              <li class="slot s1"><span aria-hidden="true">+</span><em>coming soon</em></li>
+              <li class="slot s2"><span aria-hidden="true">+</span><em>coming soon</em></li>
+              <li class="slot s3"><span aria-hidden="true">+</span><em>coming soon</em></li>
+              <li class="slot s4"><span aria-hidden="true">+</span><em>coming soon</em></li>
+          </ul>
+        </div>
+      </div>
+      <span class="sticker s-book" aria-hidden="true">&#128218;</span>
+      <span class="sticker s-glasses" aria-hidden="true">&#128083;</span>
+    </section>
+
+    <section id="feed" class="win feed">
+      <p class="tab-label big right">my feed</p>
+      <div class="win-bar"><span class="dots"><i></i><i></i><i></i></span><span class="win-title">INSTAGRAM</span></div>
+      <div class="feed-body">
+        <div class="profile">
+          <img class="avatar" src="images/headshot.webp" alt="" width="1400" height="1227">
+          <div>
+            <p class="handle">anneee1103</p>
+            <p class="realname">Anne Hung</p>
+            <p class="bio">UBC &middot; International Relations &amp; Commerce &middot; golf &#9971;</p>
+            <a class="follow" href="https://www.instagram.com/anneee1103/" target="_blank" rel="noopener">Follow</a>
+          </div>
+        </div>
+        <div class="feed-grid">
+          <img src="images/golf-swing.webp" alt="Anne mid-swing on the fairway" width="914" height="1400">
+          <img src="images/anne.webp" alt="Anne on a New York City subway platform" width="668" height="936">
+          <img src="images/pestlo.webp" alt="Anne at the Pestlo office" width="1050" height="1400">
+          <img src="images/team.webp" alt="Anne with classmates at UBC" width="1400" height="933">
+          <img src="images/golf-green.webp" alt="Anne reading the green" width="1082" height="716">
+          <img src="images/headshot.webp" alt="Anne's headshot" width="1400" height="1227">
+          <img src="images/pwc.webp" alt="Anne at PwC" width="1050" height="1400">
+          <img src="images/imagine-day.webp" alt="Anne with orientation leaders on UBC Imagine Day" width="1400" height="1050">
+          <img src="images/aritzia.webp" alt="Anne at the Aritzia warehouse sale" width="1050" height="1400">
+        </div>
+      </div>
+      <span class="sticker s-heart" aria-hidden="true">&#129293;</span>
+      <span class="sticker s-cam2" aria-hidden="true">&#128247;</span>
+    </section>
+    </div>
   </main>
 
   <div class="modal" id="resume-modal" hidden>
@@ -585,6 +604,40 @@
 
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
+    // Pages: home / experience / passion. Links to any section open the page that holds it.
+    const pages = [...document.querySelectorAll('.page')];
+    const tabs = [...document.querySelectorAll('[data-tab]')];
+    const pageAlias = { home: 'home', top: 'home', 'experience-page': 'experience', passion: 'passion' };
+    const showPage = (name) => {
+      pages.forEach((p) => { p.hidden = p.dataset.page !== name; });
+      tabs.forEach((t) => t.classList.toggle('active', t.dataset.tab === name));
+    };
+    const go = (id, smooth) => {
+      let pageName = pageAlias[id];
+      let target = null;
+      if (!pageName) {
+        target = document.getElementById(id);
+        const holder = target && target.closest('.page');
+        if (!holder) return false;
+        pageName = holder.dataset.page;
+      }
+      const changed = pages.find((p) => !p.hidden)?.dataset.page !== pageName;
+      showPage(pageName);
+      if (target) target.scrollIntoView({ behavior: smooth && !changed ? 'smooth' : 'auto', block: 'start' });
+      else window.scrollTo({ top: 0, behavior: 'auto' });
+      try { history.replaceState(null, '', '#' + id); } catch (e) {}
+      return true;
+    };
+    document.addEventListener('click', (e) => {
+      const a = e.target.closest('a[href^="#"]');
+      if (!a) return;
+      const id = a.getAttribute('href').slice(1);
+      if (!id) return;
+      if (go(id, true)) e.preventDefault();
+    });
+    window.addEventListener('hashchange', () => go(location.hash.slice(1) || 'home', false));
+    go(location.hash.slice(1) || 'home', false);
+
     const modal = document.getElementById('resume-modal');
     let lastFocus = null;
     const openResume = () => {
