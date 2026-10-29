@@ -1,0 +1,17 @@
+# The Golf Lab
+
+A static golf learning site (Traditional Chinese + English), styled after the Masters:
+deep green, cream and gold, serif headlines and scorecard-style tables.
+No build step. Open `index.html` in a browser.
+
+| Page | File | What it does |
+|---|---|---|
+| Home | `index.html` | Intro, search across all content, toolkit, Chipping Academy, short-game club chart |
+| Learn Golf | `learn.html` | Lessons by category (Chipping, Putting, Pitching, Bunker, Full Swing), each in the same six steps: 適用情境 → 選桿 → Setup → 動作步驟 → 常見錯誤 → 練習方法 |
+| Club Guide | `clubs.html` | Driver, Wood, Hybrid, Iron, Wedge, Putter: loft, distance (men/women, yards/meters), when to use it, how to choose one |
+| Fix My Shot | `fix.html` | Answer 3–4 questions, get the most likely cause, a fix and a drill (fixed rules, no AI) |
+| Shot Selector | `shot.html` | Four questions about the lie and the green, then a recommended short-game shot and club |
+| Practice | `practice.html` | 15 / 30 minute plans with a timer, and a 9-station Up & Down scorecard |
+
+All content is in `assets/data.js`. Edit lessons, clubs, diagnosis rules and plans there.
+Layout and logic are in `assets/app.js`, styles are in `assets/style.css`.
