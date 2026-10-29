@@ -1,4 +1,4 @@
-# The Golf Lab
+# PAR/A — The Golf Lab
 
 A static golf learning site (Traditional Chinese + English), styled after the Masters:
 deep green, cream and gold, serif headlines and scorecard-style tables.

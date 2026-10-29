@@ -240,12 +240,15 @@
     { href: 'my-game.html', key: 'mygame', en: 'My Game', zh: '我的成績' }
   ];
 
+  // PAR/A wordmark: serif capitals with the tan slash from the logo
+  function wordmark() { return '<span class="wordmark" aria-hidden="true">PAR<i class="sl"></i>A</span>'; }
+
   function renderChrome(page) {
     var h = $('#site-header');
     if (h) {
       h.className = 'site-header';
       h.innerHTML = '<div class="bar">' +
-        '<a class="brand" href="index.html" aria-label="The Golf Lab home"><span class="brand-mark">' + icon('flag') + '</span><span class="brand-text">The Golf Lab</span></a>' +
+        '<a class="brand" href="index.html" aria-label="PAR/A 首頁">' + wordmark() + '</a>' +
         '<nav class="nav" id="nav" aria-label="Main">' + NAV.map(function (n) {
           return '<a href="' + n.href + '"' + (n.key === page ? ' aria-current="page"' : '') + '><span>' + n.en + '</span><small>' + n.zh + '</small></a>';
         }).join('') + '<a class="nav-contact" href="index.html#contact"><span>Contact Us</span><small>聯絡我們</small></a></nav>' +
@@ -262,10 +265,10 @@
     if (f) {
       f.className = 'site-footer';
       f.innerHTML = '<div class="wrap foot">' +
-        '<div><a class="brand light" href="index.html"><span class="brand-mark">' + icon('flag') + '</span><span class="brand-text">The Golf Lab</span></a>' +
+        '<div><a class="brand light" href="index.html" aria-label="PAR/A 首頁">' + wordmark() + '</a><p class="brand-tag">The Golf Lab</p>' +
         '<p class="foot-note">把高爾夫拆解成可以練習的方法。<br>所有說明皆以右手球員為準。</p></div>' +
         '<div class="foot-links">' + NAV.map(function (n) { return '<a href="' + n.href + '">' + n.en + '<small>' + n.zh + '</small></a>'; }).join('') + '<a href="index.html#contact">Contact Us<small>聯絡我們</small></a></div>' +
-        '</div><div class="wrap foot-base"><span>&copy; ' + new Date().getFullYear() + ' The Golf Lab</span><span>Practice with purpose.</span></div>';
+        '</div><div class="wrap foot-base"><span>&copy; ' + new Date().getFullYear() + ' PAR/A · The Golf Lab</span><span>Practice with purpose.</span></div>';
     }
   }
 
@@ -390,7 +393,7 @@
       new FormData(form).forEach(function (v, k) { d[k] = String(v).trim(); });
       if (d._honey) return;
       if (!d.name || !d.message || !d.email || !form.elements.email.checkValidity()) { say('請填寫姓名、有效的 Email 和訊息。', 'err'); return; }
-      var subject = 'The Golf Lab：' + d.topic + '（' + d.name + '）';
+      var subject = 'PAR/A：' + d.topic + '（' + d.name + '）';
       send.disabled = true; say('傳送中…');
       fetch('https://formsubmit.co/ajax/' + TO, {
         method: 'POST',
@@ -530,7 +533,7 @@
   function renderList(root, cat) {
     var c = catById(cat);
     var ls = GL.lessons.filter(function (l) { return l.cat === cat; });
-    document.title = 'Learn Golf — ' + c.name + ' | The Golf Lab';
+    document.title = 'Learn Golf — ' + c.name + ' | PAR/A';
     root.innerHTML = '<header class="page-head wrap"><span class="eyebrow">Learn Golf · 技巧教學</span><h1>Learn Golf</h1>' +
       '<p class="lead">每一篇教學都用相同的六個步驟：<b>適用情境 → 選桿 → Setup → 動作步驟 → 常見錯誤 → 練習方法</b>。</p></header>' +
       '<div class="wrap"><div class="pill-tabs" role="tablist">' + GL.categories.map(function (x) {
@@ -546,7 +549,7 @@
     var c = catById(l.cat);
     var sib = GL.lessons;
     var idx = sib.indexOf(l), prev = sib[(idx - 1 + sib.length) % sib.length], next = sib[(idx + 1) % sib.length];
-    document.title = l.title + ' — ' + l.zh + ' | The Golf Lab';
+    document.title = l.title + ' — ' + l.zh + ' | PAR/A';
     var sec = [
       ['situation', '適用情境', 'When'], ['club', '選桿', 'Club'], ['setup', 'Setup', 'Address'],
       ['steps', '動作步驟', 'Motion'], ['mistakes', '常見錯誤', 'Mistakes'], ['drills', '練習方法', 'Practice']
