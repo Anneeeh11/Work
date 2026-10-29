@@ -12,6 +12,8 @@ No build step. Open `index.html` in a browser.
 | Fix My Shot | `fix.html` | Answer 3–4 questions, get the most likely cause, a fix and a drill (fixed rules, no AI) |
 | Shot Selector | `shot.html` | Four questions about the lie and the green, then a recommended short-game shot and club |
 | Practice | `practice.html` | 15 / 30 minute plans with a timer, and a 9-station Up & Down scorecard |
+| My Game | `my-game.html` | Upload a scorecard (CSV/TXT, pasted text or a photo to type from) or enter it hole by hole; Masters-style Scoring Summary, Greens / Fairways / Putting stats, hole-by-hole averages and practice suggestions. Rounds are saved in the browser |
+| Contact Us | `index.html#contact` | Contact form (sent through FormSubmit, same as the personal site; falls back to Gmail) plus email, Instagram and LinkedIn |
 
 All content is in `assets/data.js`. Edit lessons, clubs, diagnosis rules and plans there.
-Layout and logic are in `assets/app.js`, styles are in `assets/style.css`.
+My Game logic is in `assets/mygame.js`. Layout and logic are in `assets/app.js`, styles are in `assets/style.css`.

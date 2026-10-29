@@ -35,6 +35,11 @@
     pause: '<path d="M9 5v14M15 5v14"/>',
     reset: '<path d="M4 12a8 8 0 1 0 2.4-5.7"/><path d="M4 4v4.5h4.5"/>',
     ball: '<circle cx="12" cy="11" r="7"/><path d="M9 21h6M12 18v3"/><circle cx="10" cy="9" r=".6"/><circle cx="13" cy="8" r=".6"/><circle cx="12.5" cy="11.5" r=".6"/><circle cx="9.5" cy="12" r=".6"/>',
+    chart: '<path d="M4 20h16"/><path d="M7 16v-5M12 16V6M17 16v-8"/>',
+    upload: '<path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/>',
+    image: '<rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 17l-5-5-9 8"/>',
+    plus: '<path d="M12 5v14M5 12h14"/>',
+    edit: '<path d="M4 20h4L19 9l-4-4L4 16z"/>',
     trophy: '<path d="M8 4h8v5a4 4 0 0 1-8 0z"/><path d="M8 6H5a3 3 0 0 0 3 3M16 6h3a3 3 0 0 1-3 3"/><path d="M12 13v4M8.5 21h7M9.5 17h5v4h-5z"/>'
   };
   var icon = function (n, cls) {
@@ -84,6 +89,9 @@
     return out + '</svg>';
   }
   GL.shotSVG = shotSVG;
+  GL.esc = esc;
+  GL.store = store;
+  GL.lessonById = function (id) { return lessonById(id); };
 
   /* Toe-view of a club head showing its loft angle. */
   function loftSVG(club) {
@@ -164,7 +172,8 @@
     { href: 'clubs.html', key: 'clubs', en: 'Club Guide', zh: '球桿選擇' },
     { href: 'fix.html', key: 'fix', en: 'Fix My Shot', zh: '擊球診斷' },
     { href: 'shot.html', key: 'shot', en: 'Shot Selector', zh: '短桿選擇' },
-    { href: 'practice.html', key: 'practice', en: 'Practice', zh: '練習計畫' }
+    { href: 'practice.html', key: 'practice', en: 'Practice', zh: '練習計畫' },
+    { href: 'my-game.html', key: 'mygame', en: 'My Game', zh: '我的成績' }
   ];
 
   function renderChrome(page) {
@@ -175,7 +184,8 @@
         '<a class="brand" href="index.html" aria-label="The Golf Lab home"><span class="brand-mark">' + icon('flag') + '</span><span class="brand-text">The Golf Lab</span></a>' +
         '<nav class="nav" id="nav" aria-label="Main">' + NAV.map(function (n) {
           return '<a href="' + n.href + '"' + (n.key === page ? ' aria-current="page"' : '') + '><span>' + n.en + '</span><small>' + n.zh + '</small></a>';
-        }).join('') + '</nav>' +
+        }).join('') + '<a class="nav-contact" href="index.html#contact"><span>Contact Us</span><small>聯絡我們</small></a></nav>' +
+        '<a class="contact-cta" href="index.html#contact">Contact</a>' +
         '<button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false">' + icon('menu') + '</button>' +
         '</div>';
       $('#navToggle').addEventListener('click', function () {
@@ -190,7 +200,7 @@
       f.innerHTML = '<div class="wrap foot">' +
         '<div><a class="brand light" href="index.html"><span class="brand-mark">' + icon('flag') + '</span><span class="brand-text">The Golf Lab</span></a>' +
         '<p class="foot-note">把高爾夫拆解成可以練習的方法。<br>所有說明皆以右手球員為準。</p></div>' +
-        '<div class="foot-links">' + NAV.map(function (n) { return '<a href="' + n.href + '">' + n.en + '<small>' + n.zh + '</small></a>'; }).join('') + '</div>' +
+        '<div class="foot-links">' + NAV.map(function (n) { return '<a href="' + n.href + '">' + n.en + '<small>' + n.zh + '</small></a>'; }).join('') + '<a href="index.html#contact">Contact Us<small>聯絡我們</small></a></div>' +
         '</div><div class="wrap foot-base"><span>&copy; ' + new Date().getFullYear() + ' The Golf Lab</span><span>Practice with purpose.</span></div>';
     }
   }
@@ -209,6 +219,7 @@
       items.push({ t: p.title, s: p.desc, k: p.en + ' 診斷 問題', type: 'Fix My Shot', url: 'fix.html#' + p.id });
     });
     items.push({ t: 'Shot Selector', s: '回答 4 個問題，推薦短桿打法', k: '短桿 切球 選擇 推薦 chipping', type: 'Tool', url: 'shot.html' });
+    items.push({ t: 'My Game', s: '上傳計分卡，分析你的成績', k: '計分卡 成績 分析 scorecard 推桿 上果嶺 球道 stats', type: 'Tool', url: 'my-game.html' });
     items.push({ t: 'Practice Plans', s: '15 / 30 分鐘練習菜單', k: '練習 計畫 菜單 up and down', type: 'Tool', url: 'practice.html' });
     return items;
   }
@@ -277,7 +288,7 @@
     var tools = $('#tools');
     if (tools) {
       var T = [['book', 'learn.html', 'Learn Golf', '技巧教學', '5 類 · ' + GL.lessons.length + ' 篇'], ['club', 'clubs.html', 'Club Guide', '球桿選擇', '6 種球桿'],
-        ['compass', 'fix.html', 'Fix My Shot', '擊球問題診斷', GL.problems.length + ' 種問題'], ['target', 'shot.html', 'Shot Selector', '短桿打法推薦', '4 個問題'], ['clock', 'practice.html', 'Practice', '練習計畫', '15 / 30 分鐘']];
+        ['compass', 'fix.html', 'Fix My Shot', '擊球問題診斷', GL.problems.length + ' 種問題'], ['target', 'shot.html', 'Shot Selector', '短桿打法推薦', '4 個問題'], ['clock', 'practice.html', 'Practice', '練習計畫', '15 / 30 分鐘'], ['chart', 'my-game.html', 'My Game', '我的成績分析', '計分卡 + 統計']];
       tools.innerHTML = T.map(function (t) {
         return '<a class="tool" href="' + t[1] + '"><span class="ti">' + icon(t[0]) + '</span><strong>' + t[2] + '</strong><small>' + t[3] + '</small><span class="tag">' + t[4] + '</span></a>';
       }).join('');
@@ -293,6 +304,47 @@
     }
     var inp = $('#search');
     if (inp) bindSearch(inp, $('#searchResults'));
+    contact();
+  }
+
+
+  /* ---------- CONTACT (home) ---------- */
+  function contact() {
+    var form = $('#contactForm');
+    if (!form) return;
+    var TO = $('#ctEmail').textContent.trim();
+    var status = $('#ctStatus'), send = $('#ctSend'), gmail = $('#ctGmail');
+    var say = function (t, cls) { status.textContent = t; status.className = 'cf-status ' + (cls || ''); };
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      gmail.hidden = true;
+      var d = {};
+      new FormData(form).forEach(function (v, k) { d[k] = String(v).trim(); });
+      if (d._honey) return;
+      if (!d.name || !d.message || !d.email || !form.elements.email.checkValidity()) { say('請填寫姓名、有效的 Email 和訊息。', 'err'); return; }
+      var subject = 'The Golf Lab：' + d.topic + '（' + d.name + '）';
+      send.disabled = true; say('傳送中…');
+      fetch('https://formsubmit.co/ajax/' + TO, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({ name: d.name, email: d.email, _replyto: d.email, _subject: subject, topic: d.topic, message: d.message, _template: 'table' })
+      }).then(function (res) {
+        if (!res.ok) throw new Error(res.status);
+        form.reset(); say('謝謝！訊息已送出，我們會盡快回覆你。', 'ok');
+      }).catch(function () {
+        // Offline, blocked or the service is down: hand the message to Gmail instead.
+        gmail.href = 'https://mail.google.com/mail/?view=cm&fs=1&to=' + encodeURIComponent(TO) + '&su=' + encodeURIComponent(subject) +
+          '&body=' + encodeURIComponent(d.message + '\n\n— ' + d.name + ' (' + d.email + ')');
+        gmail.hidden = false;
+        say('目前無法直接送出。請用 Gmail 開啟並按下傳送，或寄信到 ' + TO + '。', 'err');
+      }).then(function () { send.disabled = false; });
+    });
+    var copy = $('#ctCopy');
+    copy.addEventListener('click', function () {
+      var done = function () { copy.textContent = '已複製'; setTimeout(function () { copy.textContent = '複製'; }, 1800); };
+      var select = function () { var r = document.createRange(); r.selectNodeContents($('#ctEmail')); var s = getSelection(); s.removeAllRanges(); s.addRange(r); };
+      try { navigator.clipboard.writeText(TO).then(done, select); } catch (e) { select(); }
+    });
   }
 
   /* ---------- LEARN ---------- */

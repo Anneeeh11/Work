@@ -79,7 +79,7 @@
         <div class="section-head reveal">
           <span class="eyebrow">The Toolkit</span>
           <h2>你的練習工具</h2>
-          <p>五個工具，從學習動作到診斷問題、選擇打法與安排練習。</p>
+          <p>六個工具，從學習動作、診斷問題、選擇打法，到安排練習與分析成績。</p>
         </div>
         <div class="tools reveal" id="tools"></div>
       </div>
@@ -103,6 +103,41 @@
         </div>
         <div class="legend reveal"><span><i class="c"></i>高拋</span><span><i></i>切滾</span><span><i class="dd"></i>長滾</span></div>
         <div class="score-wrap reveal" id="homeScore"></div>
+      </div>
+    </section>
+    <section class="section contact" id="contact">
+      <div class="wrap contact-grid">
+        <div class="contact-intro reveal">
+          <span class="eyebrow">Contact Us · 聯絡我們</span>
+          <h2>Contact Us</h2>
+          <p>有想學的技巧、想看的教學，或對網站有建議？寫信給我們，通常兩到三天內回覆。</p>
+          <dl class="contact-list">
+            <div><dt>Email</dt><dd><span class="email-addr" id="ctEmail">yianhung11@gmail.com</span><button type="button" class="copy-btn" id="ctCopy">複製</button></dd></div>
+            <div><dt>Instagram</dt><dd><a href="https://www.instagram.com/anneee1103/" target="_blank" rel="noopener">@anneee1103</a></dd></div>
+            <div><dt>LinkedIn</dt><dd><a href="https://www.linkedin.com/in/annehung11" target="_blank" rel="noopener">linkedin.com/in/annehung11</a></dd></div>
+            <div><dt>Based in</dt><dd>Vancouver, BC</dd></div>
+          </dl>
+        </div>
+        <form class="contact-form reveal" id="contactForm" novalidate>
+          <input type="text" name="_honey" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <div class="cf-row">
+            <label for="ctName">姓名 Name<input id="ctName" name="name" type="text" autocomplete="name" placeholder="你的名字" required></label>
+            <label for="ctMail">Email<input id="ctMail" name="email" type="email" autocomplete="email" placeholder="you@example.com" required></label>
+          </div>
+          <fieldset class="cf-topic">
+            <legend>想聊什麼？</legend>
+            <label><input type="radio" name="topic" value="教學問題" checked><span>教學問題</span></label>
+            <label><input type="radio" name="topic" value="想看的新內容"><span>想看的新內容</span></label>
+            <label><input type="radio" name="topic" value="網站建議"><span>網站建議</span></label>
+            <label><input type="radio" name="topic" value="合作邀約"><span>合作邀約</span></label>
+          </fieldset>
+          <label for="ctMsg">訊息 Message<textarea id="ctMsg" name="message" rows="5" placeholder="例如：可以多教一點沙坑的打法嗎？" required></textarea></label>
+          <div class="cf-foot">
+            <button type="submit" class="btn" id="ctSend">送出訊息</button>
+            <p class="cf-status" id="ctStatus" role="status" aria-live="polite"></p>
+          </div>
+          <a class="btn ghost" id="ctGmail" href="#" target="_blank" rel="noopener" hidden>用 Gmail 開啟並送出</a>
+        </form>
       </div>
     </section>
   </main>

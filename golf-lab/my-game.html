@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>My Game — 我的成績分析 | The Golf Lab</title>
+  <meta name="description" content="上傳或輸入你的計分卡，用 Masters 風格的統計分析你的成績。">
+  <meta name="theme-color" content="#063524">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%23006747'/%3E%3Cpath d='M12 25V8l10 4-10 4' fill='none' stroke='%23f2c75c' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;500;600&family=Noto+Sans+TC:wght@400;500;600&family=Noto+Serif+TC:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body data-page="mygame">
+  <header id="site-header"></header>
+  <main class="page mygame">
+    <header class="page-head wrap">
+      <span class="eyebrow">My Game · 我的成績分析</span>
+      <h1>My Game</h1>
+      <p class="lead">上傳或輸入你的計分卡，馬上看到 <b>成績分布、上果嶺率、球道命中率與推桿</b>，以及下一步該練什麼。</p>
+    </header>
+
+    <div class="wrap">
+      <section class="upload-sec" aria-labelledby="up-h">
+        <h2 id="up-h" class="sr-only">上傳計分卡</h2>
+        <div class="upload-grid">
+          <label class="drop" id="dropZone">
+            <input id="fileCsv" type="file" accept=".csv,.txt,.tsv,text/csv,text/plain,image/*" class="sr-only">
+            <span class="drop-ico" data-icon="upload"></span>
+            <strong>上傳計分卡檔案</strong>
+            <span>拖曳或點擊選擇 CSV / TXT 檔</span>
+            <small>從 Excel、Google Sheets 或計分 App 匯出</small>
+          </label>
+          <label class="drop">
+            <input id="filePhoto" type="file" accept="image/*" class="sr-only">
+            <span class="drop-ico" data-icon="image"></span>
+            <strong>上傳計分卡照片</strong>
+            <span>照片會顯示在計分卡旁邊</span>
+            <small>對照照片輸入每洞桿數（不會自動辨識）</small>
+          </label>
+          <button type="button" class="drop" id="manualBtn">
+            <span class="drop-ico" data-icon="edit"></span>
+            <strong>直接輸入</strong>
+            <span>在計分卡上一洞一洞填寫</span>
+            <small>輸入桿數後自動跳到下一洞</small>
+          </button>
+        </div>
+        <details class="paste">
+          <summary>貼上成績文字 · 查看檔案格式範本</summary>
+          <div class="paste-body">
+            <div>
+              <p>每一列以名稱開頭，接著 18 洞的數字。Putts 與 Fairway（1 = 上球道、0 = 沒上）可以省略。</p>
+              <pre id="tpl">Course,Pacific Links
+Date,2026-10-25
+Par,4,5,4,3,4,3,4,5,4,4,4,3,5,4,5,3,4,4
+Score,5,5,4,4,5,3,5,6,4,5,4,3,6,4,6,4,4,5
+Putts,2,2,1,2,2,2,2,2,2,2,2,1,2,2,2,2,2,2
+Fairway,1,1,0,,1,,1,0,1,0,1,,1,1,0,,1,1</pre>
+              <button type="button" class="btn ghost" id="copyTpl">複製範本</button>
+            </div>
+            <div>
+              <label for="pasteArea" class="paste-label">貼上你的成績</label>
+              <textarea id="pasteArea" rows="7" placeholder="Score,5,5,4,4,5,3,5,6,4,5,4,3,6,4,6,4,4,5"></textarea>
+              <button type="button" class="btn" id="pasteBtn">匯入成績</button>
+            </div>
+          </div>
+        </details>
+      </section>
+
+      <p class="sample-note" id="sampleNote" hidden>目前顯示的是 <b>範例回合</b>。上傳或輸入你的計分卡後，範例會自動移除。<button type="button" class="link-btn" id="clearSample">現在清除範例</button></p>
+
+      <section class="round-sec" id="scorecardSec">
+        <div class="pill-tabs round-tabs" role="tablist" id="roundTabs"></div>
+        <div class="round-head" id="roundHead"></div>
+        <div class="card-layout">
+          <div class="score-wrap" id="editCard"></div>
+          <figure class="photo-box" id="photoBox" hidden>
+            <img id="photoImg" alt="上傳的計分卡照片">
+            <figcaption>計分卡照片 <button type="button" class="link-btn" id="removePhoto">移除</button></figcaption>
+          </figure>
+        </div>
+        <div class="card-foot">
+          <div class="legend"><span><i class="cc"></i>Eagle</span><span><i class="c"></i>Birdie</span><span><i></i>Bogey</span><span><i class="dd"></i>D Bogey +</span></div>
+          <button type="button" class="btn ghost danger" id="delRound">刪除這一回合</button>
+        </div>
+      </section>
+
+      <section class="stats-sec">
+        <h2 class="sec-title">Statistics</h2>
+        <div class="pill-tabs stat-tabs" role="tablist" id="statTabs"></div>
+        <div class="stat-body" id="statBody"></div>
+      </section>
+
+      <section class="insight-sec">
+        <span class="eyebrow">Next Steps · 下一步練習</span>
+        <h2 class="sec-title">根據這一回合</h2>
+        <div class="insights" id="insights"></div>
+      </section>
+
+      <section class="official-sec">
+        <h2 class="sec-title">Official Score Card</h2>
+        <p class="sec-sub">你所有的回合。點擊 R1、R2… 切換回合。</p>
+        <div class="score-wrap" id="officialCard"></div>
+      </section>
+    </div>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </main>
+
+  <footer id="site-footer"></footer>
+  <script src="assets/data.js"></script>
+  <script src="assets/app.js"></script>
+  <script src="assets/mygame.js"></script>
+  <script>document.querySelectorAll('[data-icon]').forEach(function (el) { el.innerHTML = GL.icon(el.getAttribute('data-icon')); });</script>
+</body>
+</html>
