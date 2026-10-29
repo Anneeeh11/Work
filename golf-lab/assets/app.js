@@ -173,6 +173,7 @@
     { href: 'fix.html', key: 'fix', en: 'Fix My Shot', zh: '擊球診斷' },
     { href: 'shot.html', key: 'shot', en: 'Shot Selector', zh: '短桿選擇' },
     { href: 'practice.html', key: 'practice', en: 'Practice', zh: '練習計畫' },
+    { href: 'rules.html', key: 'rules', en: 'Rules', zh: '高球規則' },
     { href: 'my-game.html', key: 'mygame', en: 'My Game', zh: '我的成績' }
   ];
 
@@ -219,6 +220,10 @@
       items.push({ t: p.title, s: p.desc, k: p.en + ' 診斷 問題', type: 'Fix My Shot', url: 'fix.html#' + p.id });
     });
     items.push({ t: 'Shot Selector', s: '回答 4 個問題，推薦短桿打法', k: '短桿 切球 選擇 推薦 chipping', type: 'Tool', url: 'shot.html' });
+    GL.rules.forEach(function (r) {
+      var a = GL.ruleAreas.filter(function (x) { return x.id === r.area; })[0];
+      items.push({ t: r.q, s: a.zh + ' · ' + (r.pen === 0 ? '免罰' : r.pen === 'x' ? '規則說明' : '罰 ' + r.pen + ' 桿'), k: r.a + ' 規則 rules ' + a.name, type: 'Rules · ' + a.name, url: 'rules.html#' + r.area });
+    });
     items.push({ t: 'My Game', s: '上傳計分卡，分析你的成績', k: '計分卡 成績 分析 scorecard 推桿 上果嶺 球道 stats', type: 'Tool', url: 'my-game.html' });
     items.push({ t: 'Practice Plans', s: '15 / 30 分鐘練習菜單', k: '練習 計畫 菜單 up and down', type: 'Tool', url: 'practice.html' });
     return items;
@@ -345,6 +350,103 @@
       var select = function () { var r = document.createRange(); r.selectNodeContents($('#ctEmail')); var s = getSelection(); s.removeAllRanges(); s.addRange(r); };
       try { navigator.clipboard.writeText(TO).then(done, select); } catch (e) { select(); }
     });
+  }
+
+
+  /* ---------- RULES ---------- */
+  function holeMapSVG() {
+    // Side-by-side schematic of one hole: tee → fairway → bunker / water → green, OB along the top.
+    return '<svg class="hole-map" viewBox="0 0 900 300" role="img" aria-label="球場區域圖，點擊區域查看規則">' +
+      '<rect width="900" height="300" rx="22" fill="#2c5e2a"/>' +
+      '<g class="zone" data-zone="lost" tabindex="0" role="button" aria-label="界外"><rect x="0" y="0" width="900" height="46" rx="22" fill="#1b4220"/>' +
+      Array.apply(null, Array(11)).map(function (_, i) { return '<rect x="' + (40 + i * 80) + '" y="34" width="6" height="26" rx="2" fill="#fbf8ef"/>'; }).join('') +
+      '<text x="450" y="28" text-anchor="middle" class="zl">OUT OF BOUNDS · 界外（白樁）</text></g>' +
+      '<g class="zone" data-zone="general" tabindex="0" role="button" aria-label="一般區域"><path d="M118 196 C 260 120 420 110 560 150 S 700 230 760 190 L 760 250 C 640 290 520 230 400 230 S 200 270 118 250 Z" fill="#4c8738"/><text x="330" y="200" text-anchor="middle" class="zl">GENERAL AREA · 一般區域</text></g>' +
+      '<g class="zone" data-zone="tee" tabindex="0" role="button" aria-label="開球區"><rect x="36" y="180" width="80" height="70" rx="10" fill="#5fa64a"/><circle cx="54" cy="196" r="5" fill="#fbf8ef"/><circle cx="98" cy="196" r="5" fill="#fbf8ef"/><text x="76" y="272" text-anchor="middle" class="zl">TEE · 開球區</text></g>' +
+      '<g class="zone" data-zone="penalty" tabindex="0" role="button" aria-label="罰桿區"><path d="M470 66 C 540 56 620 70 640 100 C 656 124 600 140 540 136 C 480 132 430 112 440 90 C 446 76 456 68 470 66 Z" fill="#3d7fa8"/><path d="M470 66 C 540 56 620 70 640 100 C 656 124 600 140 540 136 C 480 132 430 112 440 90 C 446 76 456 68 470 66 Z" fill="none" stroke="#c8102e" stroke-width="3" stroke-dasharray="2 9" stroke-linecap="round"/><text x="540" y="104" text-anchor="middle" class="zl">PENALTY AREA · 罰桿區</text></g>' +
+      '<g class="zone" data-zone="bunker" tabindex="0" role="button" aria-label="沙坑"><path d="M690 250 c 20 -26 70 -26 86 -6 c 12 16 -20 30 -50 30 c -26 0 -46 -8 -36 -24z" fill="#efe6cf"/><text x="732" y="292" text-anchor="middle" class="zl">BUNKER · 沙坑</text></g>' +
+      '<g class="zone" data-zone="green" tabindex="0" role="button" aria-label="果嶺"><ellipse cx="808" cy="170" rx="70" ry="52" fill="#86c062"/><line x1="814" y1="172" x2="814" y2="124" stroke="#fbf8ef" stroke-width="2.5"/><path d="M814 124 l20 7 l-20 7z" fill="#f2c75c"/><ellipse cx="814" cy="173" rx="5" ry="2" fill="#0b2a18"/><text x="808" y="208" text-anchor="middle" class="zl">GREEN · 果嶺</text></g>' +
+      '<g class="zone" data-zone="relief" tabindex="0" role="button" aria-label="免罰救濟"><path d="M150 286 C 300 262 480 262 680 300" fill="none" stroke="#b9b3a1" stroke-width="10" stroke-linecap="round"/><text x="250" y="294" class="zl small">CART PATH · 電車道（免罰救濟）</text></g>' +
+      '</svg>';
+  }
+
+  function reliefSVG() {
+    // Penalty area relief: entry point X on the margin, back-on-the-line, lateral (red only), stroke & distance.
+    return '<svg class="relief-svg" viewBox="0 0 520 360" role="img" aria-label="罰桿區救濟選項示意圖">' +
+      '<rect width="520" height="360" rx="20" fill="#2f6b34"/>' +
+      '<ellipse cx="430" cy="70" rx="70" ry="44" fill="#86c062"/><line x1="440" y1="72" x2="440" y2="34" stroke="#fbf8ef" stroke-width="2"/><path d="M440 34 l16 6 l-16 6z" fill="#f2c75c"/>' +
+      '<path d="M210 120 C 290 100 360 130 350 180 C 340 226 260 236 214 214 C 170 192 160 136 210 120 Z" fill="#3d7fa8"/>' +
+      '<path d="M210 120 C 290 100 360 130 350 180 C 340 226 260 236 214 214 C 170 192 160 136 210 120 Z" fill="none" stroke="#c8102e" stroke-width="3" stroke-dasharray="2 8" stroke-linecap="round"/>' +
+      '<line x1="440" y1="72" x2="40" y2="318" stroke="#fbf8ef" stroke-width="1.5" stroke-dasharray="5 6" opacity=".8"/>' +
+      '<path d="M 70 330 Q 160 260 238 213" fill="none" stroke="#fbf8ef" stroke-width="1.6" opacity=".55"/>' +
+      '<circle cx="70" cy="330" r="7" fill="#fbf8ef"/>' +
+      '<g transform="translate(222 206)"><path d="M-7 -7 L7 7 M7 -7 L-7 7" stroke="#f2c75c" stroke-width="3" stroke-linecap="round"/></g>' +
+      '<path d="M 186 230 A 44 44 0 0 1 258 244" fill="rgba(242,199,92,.18)" stroke="#f2c75c" stroke-width="1.6"/>' +
+      '<path d="M222 206 L 186 230 M222 206 L 258 244" stroke="#f2c75c" stroke-width="1" opacity=".6"/>' +
+      '<circle cx="130" cy="263" r="13" fill="#f2c75c"/><text x="130" y="268" text-anchor="middle" class="rn">2</text>' +
+      '<circle cx="272" cy="238" r="13" fill="#f2c75c"/><text x="272" y="243" text-anchor="middle" class="rn">3</text>' +
+      '<circle cx="96" cy="336" r="13" fill="#f2c75c"/><text x="96" y="341" text-anchor="middle" class="rn">1</text>' +
+      '<text x="238" y="196" class="rl">X 越過邊界的點</text>' +
+      '<text x="18" y="300" class="rl">上一桿位置</text>' +
+      '<text x="150" y="292" class="rl">往後的直線（不限距離）</text>' +
+      '</svg>';
+  }
+
+  function rules() {
+    var state = { area: 'all', q: '' };
+    var penBadge = function (p) {
+      return p === 0 ? '<span class="pen free">免罰</span>' : p === 'x' ? '<span class="pen info">規則說明</span>' : '<span class="pen p' + p + '">罰 ' + p + ' 桿</span>';
+    };
+    $('#holeMap').innerHTML = holeMapSVG();
+    $('#reliefArt').innerHTML = reliefSVG();
+    $('#penaltyRef').innerHTML = GL.penaltyTable.map(function (r) {
+      var cls = r[1] === '免罰' ? 'free' : /2 桿/.test(r[1]) ? 'p2' : 'p1';
+      return '<li><span>' + esc(r[0]) + '</span><b class="pen ' + cls + '">' + esc(r[1]) + '</b></li>';
+    }).join('');
+    $('#scoreTerms').innerHTML = '<table class="scorecard terms"><thead><tr><th>Score</th>' + GL.scoreTerms.map(function (t) { return '<th>' + t.t + '</th>'; }).join('') + '</tr></thead><tbody>' +
+      '<tr class="par"><th>中文</th>' + GL.scoreTerms.map(function (t) { return '<td>' + t.zh + '</td>'; }).join('') + '</tr>' +
+      '<tr><th>To Par</th>' + GL.scoreTerms.map(function (t) { return '<td><span class="sym ' + t.sym + '">' + t.v + '</span></td>'; }).join('') + '</tr>' +
+      '<tr class="desc"><th>說明</th>' + GL.scoreTerms.map(function (t) { return '<td>' + esc(t.d) + '</td>'; }).join('') + '</tr></tbody></table>';
+    $('#etiquette').innerHTML = GL.etiquette.map(function (e, i) { return '<li><span class="pn">' + (i + 1) + '</span><div><h4>' + esc(e[0]) + '</h4><p>' + esc(e[1]) + '</p></div></li>'; }).join('');
+
+    function draw() {
+      $$('[data-area]').forEach(function (b) { b.setAttribute('aria-selected', b.getAttribute('data-area') === state.area); });
+      $$('.zone').forEach(function (z) { z.classList.toggle('on', z.getAttribute('data-zone') === state.area); });
+      var q = state.q.toLowerCase();
+      var areas = GL.ruleAreas.filter(function (a) { return state.area === 'all' || a.id === state.area; });
+      var html = '', n = 0;
+      areas.forEach(function (a) {
+        var list = GL.rules.filter(function (r) { return r.area === a.id && (!q || (r.q + r.a + r.rule).toLowerCase().indexOf(q) !== -1); });
+        if (!list.length) return;
+        n += list.length;
+        html += '<section class="rule-group" id="g-' + a.id + '"><div class="rg-head"><h2>' + a.name + ' <span class="zh">' + a.zh + '</span></h2><p>' + a.desc + '</p></div>' +
+          '<div class="rule-list">' + list.map(function (r) {
+            return '<details class="rule"' + (q ? ' open' : '') + '><summary><span class="rq">' + esc(r.q) + '</span>' + penBadge(r.pen) + '</summary>' +
+              '<div class="ra"><p>' + esc(r.a) + '</p><span class="rno">Rule ' + esc(r.rule) + '</span></div></details>';
+          }).join('') + '</div></section>';
+      });
+      $('#ruleList').innerHTML = html || '<p class="empty-stats">找不到「' + esc(state.q) + '」相關的規則，試試「沙坑」、「界外」或「旗桿」。</p>';
+      $('#ruleCount').textContent = n + ' 條規則';
+    }
+    $('#areaTabs').innerHTML = '<button type="button" role="tab" data-area="all">全部<small>All</small></button>' + GL.ruleAreas.map(function (a) {
+      return '<button type="button" role="tab" data-area="' + a.id + '">' + a.zh + '<small>' + a.name + '</small></button>';
+    }).join('');
+    var pick = function (a, scroll) {
+      state.area = a;
+      if (location.hash.slice(1) !== a) history.replaceState(null, '', a === 'all' ? location.pathname : '#' + a);
+      draw();
+      if (scroll) { var t = $('#ruleList'); window.scrollTo({ top: t.getBoundingClientRect().top + window.pageYOffset - 150, behavior: 'smooth' }); }
+    };
+    $$('[data-area]').forEach(function (b) { b.addEventListener('click', function () { pick(b.getAttribute('data-area')); }); });
+    $$('.zone').forEach(function (z) {
+      var go = function () { pick(z.getAttribute('data-zone'), true); };
+      z.addEventListener('click', go);
+      z.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } });
+    });
+    $('#ruleSearch').addEventListener('input', function () { state.q = this.value.trim(); draw(); });
+    var h = location.hash.slice(1);
+    state.area = GL.ruleAreas.some(function (a) { return a.id === h; }) ? h : 'all';
+    draw();
   }
 
   /* ---------- LEARN ---------- */
@@ -736,7 +838,7 @@
   document.addEventListener('DOMContentLoaded', function () {
     var page = document.body.getAttribute('data-page');
     renderChrome(page);
-    ({ home: home, learn: learn, clubs: clubs, fix: fix, shot: shot, practice: practice }[page] || function () {})();
+    ({ home: home, learn: learn, clubs: clubs, fix: fix, shot: shot, practice: practice, rules: rules }[page] || function () {})();
     var reveal = $$('.reveal');
     if ('IntersectionObserver' in window) {
       var io = new IntersectionObserver(function (en) { en.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }); }, { threshold: 0.12 });
