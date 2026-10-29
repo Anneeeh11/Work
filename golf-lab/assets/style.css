@@ -594,14 +594,10 @@ main.page { padding-bottom: 110px; min-height: 60vh; }
 .foot-links small { font: 400 12px var(--sans); color: rgba(251, 248, 239, .5); }
 .foot-base { display: flex; justify-content: space-between; margin-top: 54px; padding-top: 22px; border-top: 1px solid rgba(251, 248, 239, .12); font-size: 12px; color: rgba(251, 248, 239, .5); letter-spacing: .06em; }
 
-/* ---------- reveal ---------- */
-.reveal { opacity: 0; transform: translateY(22px); transition: opacity .9s cubic-bezier(.2, .7, .2, 1), transform .9s cubic-bezier(.2, .7, .2, 1); }
-.reveal.in { opacity: 1; transform: none; }
-
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
   .ticker { animation: none; }
-  .reveal { opacity: 1; transform: none; }
+  .rv { opacity: 1 !important; transform: none !important; }
 }
 
 /* ---------- responsive ---------- */
@@ -991,3 +987,58 @@ main.page { padding-bottom: 110px; min-height: 60vh; }
   .nav a { flex-direction: row; justify-content: space-between; padding: 14px 18px; font-size: 17px; border-radius: 14px; }
   .nav a small { font-size: 13px; margin: 0; }
 }
+
+/* ---------- motion ---------- */
+@keyframes rise { from { opacity: 0; transform: translateY(26px); } to { opacity: 1; transform: none; } }
+@keyframes page-in { from { opacity: 0; } }
+body { animation: page-in .5s ease both; }
+body.leaving { opacity: 0; transition: opacity .25s ease; }
+
+/* scroll reveal */
+.rv { opacity: 0; transform: translateY(32px); transition: opacity .8s cubic-bezier(.2, .7, .2, 1), transform .8s cubic-bezier(.2, .7, .2, 1); transition-delay: calc(var(--i, 0) * 90ms); }
+.rv.in { opacity: 1; transform: none; }
+.photo-card.rv, .academy-card.rv, .club-card.rv { transform: translateY(40px) scale(.98); }
+.photo-card.rv.in, .academy-card.rv.in, .club-card.rv.in { transform: none; }
+.lesson-card.rv.in:hover, .problem.rv.in:hover, .tool.rv.in:hover { transform: translateY(-4px); transition-delay: 0s; }
+.photo-card.rv.in:hover img, .photo-card.rv.in:hover .pc-art { transform: scale(1.05); }
+
+/* things that play when their block is revealed */
+.rv:not(.in) .shot-svg .flight, .rv:not(.in) .shot-svg .land, .rv:not(.in) .shot-svg .roll { animation: none; }
+.arc { transition: stroke-dasharray 1.5s cubic-bezier(.2, .7, .2, 1) .25s, stroke-dashoffset 1.5s cubic-bezier(.2, .7, .2, 1) .25s; }
+.rv:not(.in) .arc { stroke-dasharray: 0 1000; stroke-dashoffset: 0; }
+.gap-bar i, .par-bar i, .meter i, .hc-bar i, .plan-bar i { transition: width 1.1s cubic-bezier(.2, .7, .2, 1) .2s, background .3s; }
+.ps i { transition: height .9s cubic-bezier(.2, .7, .2, 1) calc(.2s + var(--k, 0) * 30ms); }
+.rv:not(.in) .gap-bar i, .rv:not(.in) .par-bar i, .rv:not(.in) .meter i, .rv:not(.in) .hc-bar i { width: 0 !important; }
+.rv:not(.in) .ps i { height: 0 !important; }
+.rv .sym { transition: transform .5s cubic-bezier(.3, 1.4, .5, 1), opacity .4s; }
+.rv:not(.in) .scorecard .sym { transform: scale(.4); opacity: 0; }
+.gap-row:nth-child(n) i { transition-delay: .2s; }
+
+/* hero entrance */
+.hero-est, .hero h1, .hero .sub, .hero-cta, .hero-foot { animation: rise 1s cubic-bezier(.2, .7, .2, 1) both; }
+.hero h1 { animation-delay: .15s; }
+.hero .sub { animation-delay: .35s; }
+.hero-cta { animation-delay: .55s; }
+.hero-foot { animation-delay: .8s; }
+.search-card { animation: rise 1s cubic-bezier(.2, .7, .2, 1) .7s both; }
+.hero-art svg { animation: drift 40s ease-in-out infinite alternate; transform-origin: 70% 30%; }
+@keyframes drift { to { transform: scale(1.08) translate(-1%, 1%); } }
+
+/* flags */
+.wave { transform-box: fill-box; transform-origin: left center; animation: wave 2.8s ease-in-out infinite; }
+@keyframes wave { 0%, 100% { transform: none; } 50% { transform: skewY(-8deg) scaleX(.86); } }
+
+/* small interactions */
+.btn .ico, .cta-band > .ico, .pc-go, .lc-meta .go .ico, .problem em .ico, .insight a .ico, .bl-body a .ico { transition: transform .25s ease; }
+.btn:hover .ico, .cta-band:hover > .ico, .photo-card:hover .pc-go, .lesson-card:hover .go .ico, .problem:hover em .ico, .insight a:hover .ico, .bl-body a:hover .ico { transform: translateX(4px); }
+.site-header { transition: box-shadow .3s, background .3s; }
+.site-header.scrolled { box-shadow: 0 10px 30px -18px rgba(6, 53, 36, .35); }
+.site-header.open .nav { animation: drop .3s cubic-bezier(.2, .7, .2, 1); }
+@keyframes drop { from { opacity: 0; transform: translateY(-8px); } }
+.rule[open] .ra { animation: drop .35s ease; }
+.also-item[open] p { animation: drop .35s ease; }
+.timer-card .btn.round { position: relative; }
+.timer-card .btn.round[aria-label="暫停"]::after { content: ''; position: absolute; inset: -6px; border-radius: 50%; border: 2px solid var(--gold); animation: pulse 1.6s ease-out infinite; }
+@keyframes pulse { from { opacity: .9; transform: scale(.9); } to { opacity: 0; transform: scale(1.3); } }
+.toggle button, .seg button, .pill-tabs button, .pill-tabs a { transition: background .25s, color .25s, transform .15s; }
+.seg button:active, .toggle button:active, .opt:active, .cell:active .sym { transform: scale(.96); }

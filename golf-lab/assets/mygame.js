@@ -88,8 +88,8 @@
     var ro = 50, ri = 34, co = 2 * Math.PI * ro, ci = 2 * Math.PI * ri;
     return '<svg class="ring" viewBox="0 0 124 124" aria-hidden="true">' +
       '<circle cx="62" cy="62" r="' + ro + '" fill="none" stroke="#efece3" stroke-width="22"/>' +
-      '<circle cx="62" cy="62" r="' + ro + '" fill="none" stroke="#006747" stroke-width="22" stroke-dasharray="' + (co * outer) + ' ' + co + '" transform="rotate(-90 62 62)"/>' +
-      (inner == null ? '' : '<circle cx="62" cy="62" r="' + ri + '" fill="none" stroke="#8d918e" stroke-width="3" stroke-linecap="round" stroke-dasharray="' + (ci * inner) + ' ' + ci + '" transform="rotate(-90 62 62)"/>') +
+      '<circle cx="62" cy="62" r="' + ro + '" class="arc" fill="none" stroke="#006747" stroke-width="22" stroke-dasharray="' + (co * outer) + ' ' + co + '" transform="rotate(-90 62 62)"/>' +
+      (inner == null ? '' : '<circle class="arc" cx="62" cy="62" r="' + ri + '" fill="none" stroke="#8d918e" stroke-width="3" stroke-linecap="round" stroke-dasharray="' + (ci * inner) + ' ' + ci + '" transform="rotate(-90 62 62)"/>') +
       '</svg>';
   }
   var CAT = [['Eagles', '老鷹以上', '#c8a24a'], ['Birdies', '博蒂', '#127a56'], ['Par', '標準桿', '#d9d8d2'], ['Bogey', '柏忌', '#a7aaa6'], ['Double +', '雙柏忌以上', '#17251e']];
@@ -98,7 +98,7 @@
     cat.forEach(function (n, k) {
       if (!n) return;
       var len = n / total * c;
-      out += '<circle cx="110" cy="110" r="' + r + '" fill="none" stroke="' + CAT[k][2] + '" stroke-width="42" stroke-dasharray="' + len + ' ' + c + '" stroke-dashoffset="' + (-off) + '" transform="rotate(-90 110 110)"/>';
+      out += '<circle class="arc" cx="110" cy="110" r="' + r + '" fill="none" stroke="' + CAT[k][2] + '" stroke-width="42" stroke-dasharray="' + len + ' ' + c + '" stroke-dashoffset="' + (-off) + '" transform="rotate(-90 110 110)"/>';
       off += len;
     });
     return '<svg class="donut" viewBox="0 0 220 220" role="img" aria-label="Scoring breakdown"><circle cx="110" cy="110" r="' + r + '" fill="none" stroke="#efece3" stroke-width="42"/>' + out + '</svg>';
@@ -303,7 +303,7 @@
     if (r.photo) $('#photoImg').src = r.photo;
   }
 
-  function drawAll() { drawRounds(); drawHeader(); drawCard(); drawOfficial(); drawStats(); drawInsights(); drawPhoto(); drawDelete(); }
+  function drawAll() { drawRounds(); drawHeader(); drawCard(); drawOfficial(); drawStats(); drawInsights(); drawPhoto(); drawDelete(); GL.reveal($('main')); }
 
   var delArmed = false;
   function drawDelete() {

@@ -49,6 +49,7 @@
 
   /* ---------- illustrations ---------- */
   var uid = 0;
+  var REDUCED = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   /* Side-on ball flight: ball → carry arc → roll to the flag. */
   function shotSVG(s, opts) {
@@ -73,18 +74,23 @@
     // flag + hole
     out += '<ellipse cx="' + hx + '" cy="' + (gy + 3) + '" rx="7" ry="2.2" fill="#0b2a18"/>' +
       '<line x1="' + hx + '" y1="' + (gy + 2) + '" x2="' + hx + '" y2="' + (gy - 62) + '" stroke="#f6f1e3" stroke-width="1.6"/>' +
-      '<path d="M' + hx + ' ' + (gy - 62) + ' l20 7 l-20 7z" fill="#f2c75c"/>';
+      '<path class="wave" d="M' + hx + ' ' + (gy - 62) + ' l20 7 l-20 7z" fill="#f2c75c"/>';
     // flight
-    var stopX = hx - 9;
+    var stopX = hx - 9, mp;
     if (s.air > 0) {
+      mp = 'M' + bx + ' ' + (gy - 4) + ' Q ' + ((bx + land) / 2) + ' ' + (gy - 4 - 2 * peak) + ' ' + land + ' ' + (gy - 4) + (land < stopX - 4 ? ' L' + stopX + ' ' + (gy - 4) : '');
       out += '<path class="flight" pathLength="1" d="M' + bx + ' ' + (gy - 4) + ' Q ' + ((bx + land) / 2) + ' ' + (gy - 4 - 2 * peak) + ' ' + land + ' ' + (gy - 4) + '" fill="none" stroke="#fbf8ef" stroke-width="1.8" stroke-linecap="round"/>';
       out += '<circle class="land" cx="' + land + '" cy="' + (gy - 3) + '" r="5" fill="none" stroke="#f2c75c" stroke-width="1.4"/>';
       if (land < stopX - 4) out += '<path class="roll" d="M' + land + ' ' + (gy - 4) + ' L' + stopX + ' ' + (gy - 4) + '" stroke="#fbf8ef" stroke-width="1.8" stroke-dasharray="1 6" stroke-linecap="round"/>';
     } else {
       var c = s.curve || 0;
+      mp = 'M' + bx + ' ' + (gy - 4) + ' Q ' + ((bx + stopX) / 2) + ' ' + (gy - 4 - c * 60) + ' ' + stopX + ' ' + (gy - 4);
       out += '<path class="roll" d="M' + bx + ' ' + (gy - 4) + ' Q ' + ((bx + stopX) / 2) + ' ' + (gy - 4 - c * 60) + ' ' + stopX + ' ' + (gy - 4) + '" fill="none" stroke="#fbf8ef" stroke-width="1.8" stroke-dasharray="1 6" stroke-linecap="round"/>';
     }
-    out += '<circle cx="' + bx + '" cy="' + (gy - 4) + '" r="4.2" fill="#ffffff"/>';
+    // the ball travels along the shot; it restarts each time the drawing scrolls into view
+    if (opts.still || REDUCED) out += '<circle cx="' + bx + '" cy="' + (gy - 4) + '" r="4.2" fill="#ffffff"/>';
+    else out += '<ellipse cx="' + bx + '" cy="' + (gy - 1) + '" rx="5" ry="1.6" fill="rgba(0,0,0,.25)"/>' +
+      '<circle r="4.2" fill="#ffffff"><animateMotion dur="' + (s.air > 0 ? 2.2 : 1.9) + 's" begin="0s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines=".3 0 .3 1" path="' + mp + '"/></circle>';
     if (opts.tag) out += '<text x="' + (W - 14) + '" y="24" text-anchor="end" class="svg-tag">' + esc(opts.tag) + '</text>';
     return out + '</svg>';
   }
@@ -154,7 +160,12 @@
       '<path d="M560 330 c 40 -26 96 -18 104 10 c 6 22 -60 30 -98 22 c -20 -4 -22 -22 -6 -32z" fill="#efe6cf"/>' +
       '<path d="M300 560 c 20 -30 70 -36 84 -12 c 12 22 -30 44 -62 44 c -24 0 -32 -14 -22 -32z" fill="#efe6cf"/>' +
       trees +
-      '<ellipse cx="1031" cy="172" rx="4" ry="2" fill="#0b2a18"/><line x1="1031" y1="172" x2="1031" y2="132" stroke="#fff" stroke-width="2"/><path d="M1031 132 l16 6 l-16 6z" fill="#f2c75c"/>' +
+      '<ellipse cx="1031" cy="172" rx="4" ry="2" fill="#0b2a18"/><line x1="1031" y1="172" x2="1031" y2="132" stroke="#fff" stroke-width="2"/><path class="wave" d="M1031 132 l16 6 l-16 6z" fill="#f2c75c"/>' +
+      (REDUCED ? '<circle cx="1022" cy="176" r="5" fill="#fff"/>' :
+        '<ellipse rx="0" ry="0" fill="rgba(0,0,0,.35)"><animate attributeName="rx" values="0;6;3;5" keyTimes="0;.05;.5;1" dur="2.8s" begin="1s" fill="freeze"/><animate attributeName="ry" values="0;3;1.5;2.5" keyTimes="0;.05;.5;1" dur="2.8s" begin="1s" fill="freeze"/>' +
+        '<animateMotion path="M330 640 L 1022 178" dur="2.8s" begin="1s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines=".25 .1 .3 1"/></ellipse>' +
+        '<circle r="0" fill="#fff"><animate attributeName="r" values="0;5;11;5" keyTimes="0;.05;.45;1" dur="2.8s" begin="1s" fill="freeze"/>' +
+        '<animateMotion path="M330 640 Q 640 240 1022 176" dur="2.8s" begin="1s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines=".25 .1 .3 1"/></circle>') +
       '<rect width="1200" height="760" fill="url(#hv)"/>' +
       '</svg>';
   }
@@ -163,8 +174,60 @@
   function ringSVG(pct) {
     var r = 46, c = 2 * Math.PI * r, v = Math.max(0, Math.min(1, pct));
     return '<svg class="ring" viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="' + r + '" fill="none" stroke="#efece3" stroke-width="20"/>' +
-      '<circle cx="60" cy="60" r="' + r + '" fill="none" stroke="#006747" stroke-width="20" stroke-dasharray="' + (c * v) + ' ' + c + '" transform="rotate(-90 60 60)"/></svg>';
+      '<circle cx="60" cy="60" r="' + r + '" class="arc" fill="none" stroke="#006747" stroke-width="20" stroke-dasharray="' + (c * v) + ' ' + c + '" transform="rotate(-90 60 60)"/></svg>';
   }
+
+
+  /* ---------- scroll reveal ---------- */
+  // Elements fade and rise in as they scroll into view; rings, bars, numbers and ball flights inside
+  // start when their block is revealed.
+  var REVEAL_SEL = ['.reveal', '.page-head > *', '.photo-card', '.tool', '.academy-card', '.lesson-card', '.cat-intro', '.lesson-head > *',
+    '.lsec', '.pager', '.cta-band', '.club-card', '.gapping', '#clubTable', '.problem', '.wizard h2', '.opt', '.diag-main', '.also-item', '.q',
+    '.principle', '.result-card', '.plan-card', '.timer-card', '.game-head', '#udCard', '.stats', '.upload-grid > *', '.paste', '.round-sec',
+    '.stats-sec', '.insight-sec', '.official-sec', '.map-card', '.rules-bar', '.rule', '.rg-head', '.ref-card', '.terms-sec', '.etiquette li',
+    '.contact-intro', '.contact-form', '.foot > *', '.pill-tabs:not(.round-tabs)'].join(',');
+  var revealIO = 'IntersectionObserver' in window ? new IntersectionObserver(function (en) {
+    en.forEach(function (e) { if (e.isIntersecting) { revealEl(e.target); revealIO.unobserve(e.target); } });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }) : null;
+
+  function revealEl(el) {
+    el.classList.add('in');
+    $$('svg', el).concat(el.tagName === 'svg' ? [el] : []).forEach(function (svg) { if (svg.setCurrentTime) svg.setCurrentTime(0); });
+    if (!REDUCED) $$('.stat-v strong, .tile strong, .par-card strong, .half strong, .cc-stats dd, .topar', el).forEach(countUp);
+  }
+  function countUp(el) {
+    var node = el.firstChild;
+    if (!node || node.nodeType !== 3) return;
+    var txt = node.nodeValue.trim(), m = /^([+-]?)(\d+(?:\.\d+)?)$/.exec(txt);
+    if (!m) return;
+    var target = parseFloat(m[2]), dec = (m[2].split('.')[1] || '').length, t0 = null;
+    var step = function (t) {
+      if (!t0) t0 = t;
+      var k = Math.min(1, (t - t0) / 1100), e = 1 - Math.pow(1 - k, 3);
+      node.nodeValue = m[1] + (target * e).toFixed(dec);
+      if (k < 1) requestAnimationFrame(step); else node.nodeValue = txt;
+    };
+    requestAnimationFrame(step);
+  }
+  /* fresh = a new view (page load, new lesson, next question): animate even what is already on screen.
+     Otherwise (live updates while typing or toggling) on-screen elements appear at once. */
+  var booted = false;
+  function reveal(root, fresh) {
+    fresh = fresh || !booted;
+    var vh = window.innerHeight || 800, seen = new Map();
+    $$(REVEAL_SEL, root || document).forEach(function (el) {
+      if (el.classList.contains('rv')) return;
+      var i = seen.get(el.parentNode) || 0;
+      seen.set(el.parentNode, i + 1);
+      el.classList.add('rv');
+      el.style.setProperty('--i', Math.min(i, 6));
+      var r = el.getBoundingClientRect();
+      if (!revealIO || REDUCED) return el.classList.add('in');
+      if (!fresh && r.top < vh && r.bottom > 0) el.classList.add('in');
+      else revealIO.observe(el);
+    });
+  }
+  GL.reveal = reveal;
 
   /* ---------- layout ---------- */
   var NAV = [
@@ -273,7 +336,7 @@
       tick.innerHTML = '<div class="tk-badge"><span>R1</span><small>Featured<br>Lessons</small></div>' + feat.concat(feat).map(function (l, i) {
         var c = catById(l.cat);
         return '<a class="tk" href="learn.html#' + l.id + '"' + (i >= feat.length ? ' aria-hidden="true" tabindex="-1"' : '') + '><span class="tk-pos">' + ((i % feat.length) + 1) + '</span>' +
-          '<span class="tk-art">' + shotSVG(l.shot) + '</span>' +
+          '<span class="tk-art">' + shotSVG(l.shot, { still: true }) + '</span>' +
           '<span class="tk-name">' + esc(l.title) + '<small>' + c.name + ' · <em>' + l.mins + '′</em></small></span>' + icon('star', 'tk-star') + '</a>';
       }).join('');
     }
@@ -427,6 +490,7 @@
       });
       $('#ruleList').innerHTML = html || '<p class="empty-stats">找不到「' + esc(state.q) + '」相關的規則，試試「沙坑」、「界外」或「旗桿」。</p>';
       $('#ruleCount').textContent = n + ' 條規則';
+      reveal($('#ruleList'));
     }
     $('#areaTabs').innerHTML = '<button type="button" role="tab" data-area="all">全部<small>All</small></button>' + GL.ruleAreas.map(function (a) {
       return '<button type="button" role="tab" data-area="' + a.id + '">' + a.zh + '<small>' + a.name + '</small></button>';
@@ -475,6 +539,7 @@
       }).join('') + '</div>' +
       '<div class="cat-intro"><h2>' + c.name + ' <span class="zh">' + c.zh + '</span></h2><p>' + c.desc + '</p></div>' +
       '<div class="lesson-grid">' + ls.map(lessonCard).join('') + '</div></div>';
+    reveal(root, true);
   }
 
   function renderLesson(root, l) {
@@ -509,6 +574,7 @@
       (l.cat === 'chipping' || l.cat === 'pitching' ? '<a class="cta-band" href="shot.html"><div><strong>不確定該打哪一種？</strong><span>用 Shot Selector 回答 4 個問題，馬上得到建議。</span></div>' + icon('arrow') + '</a>' : '') +
       '<div class="pager"><a href="#' + prev.id + '"><small>上一篇</small>' + esc(prev.title) + '</a><a href="#' + next.id + '" class="next"><small>下一篇</small>' + esc(next.title) + '</a></div>' +
       '</div></div></div>';
+    reveal(root, true);
     $$('[data-jump]', root).forEach(function (a) {
       a.addEventListener('click', function (e) {
         e.preventDefault();
@@ -554,6 +620,7 @@
           '<h4>如何挑選</h4><ul class="ticks">' + c.pick.map(function (p) { return '<li>' + icon('check') + '<span>' + esc(p) + '</span></li>'; }).join('') + '</ul>' +
           '<p class="tip">' + icon('flag') + esc(c.tip) + '</p></div></article>';
       }).join('');
+      reveal($('main'));
     }
     $$('[data-who]').forEach(function (b) { b.addEventListener('click', function () { state.who = b.getAttribute('data-who'); store.set('who', state.who); draw(); }); });
     $$('[data-unit]').forEach(function (b) { b.addEventListener('click', function () { state.unit = b.getAttribute('data-unit'); store.set('unit', state.unit); draw(); }); });
@@ -571,6 +638,7 @@
       root.innerHTML = '<div class="problem-grid">' + GL.problems.map(function (p, i) {
         return '<button class="problem" data-p="' + p.id + '"><span class="pn">' + String(i + 1).padStart(2, '0') + '</span><strong>' + esc(p.title) + '</strong><span>' + esc(p.desc) + '</span><em>' + esc(p.en) + ' ' + icon('arrow') + '</em></button>';
       }).join('') + '</div>';
+      reveal(root, true);
       $$('[data-p]', root).forEach(function (b) { b.addEventListener('click', function () { start(b.getAttribute('data-p')); }); });
     }
     function start(id) {
@@ -587,6 +655,7 @@
         '<div class="wz-bar"><i style="width:' + (st.i / p.questions.length * 100) + '%"></i></div>' +
         '<span class="eyebrow">' + esc(p.title) + '</span><h2>' + esc(q.q) + '</h2>' +
         '<div class="wz-options">' + q.a.map(function (a, k) { return '<button class="opt' + (st.ans[st.i] === k ? ' sel' : '') + '" data-k="' + k + '"><span class="ok">' + String.fromCharCode(65 + k) + '</span>' + esc(a.t) + '</button>'; }).join('') + '</div></div>';
+      reveal(root, true);
       $('#wzBack').addEventListener('click', function () { if (st.i) { st.i--; ask(); } else { history.replaceState(null, '', location.pathname); pickList(); } });
       $$('.opt', root).forEach(function (b) {
         b.addEventListener('click', function () {
@@ -615,6 +684,7 @@
             '<p>' + esc(c.why) + '</p><p><b>修正：</b>' + esc(c.fix) + '</p><p><b>練習：</b>' + esc(c.drill) + '</p></details>';
         }).join('') + '</div>' +
         '<p class="disclaimer">結果依照固定的規則判斷，只是方向參考。若問題持續，建議找教練錄影分析。</p></div>';
+      reveal(root, true);
       $('#again').addEventListener('click', function () { start(p.id); });
       $('#all').addEventListener('click', function () { history.replaceState(null, '', location.pathname); pickList(); });
       window.scrollTo({ top: root.getBoundingClientRect().top + window.pageYOffset - 100, behavior: 'smooth' });
@@ -839,10 +909,21 @@
     var page = document.body.getAttribute('data-page');
     renderChrome(page);
     ({ home: home, learn: learn, clubs: clubs, fix: fix, shot: shot, practice: practice, rules: rules }[page] || function () {})();
-    var reveal = $$('.reveal');
-    if ('IntersectionObserver' in window) {
-      var io = new IntersectionObserver(function (en) { en.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }); }, { threshold: 0.12 });
-      reveal.forEach(function (r) { io.observe(r); });
-    } else reveal.forEach(function (r) { r.classList.add('in'); });
+    reveal(document, true);
+    booted = true;
+    var hd = $('#site-header');
+    var onScroll = function () { if (hd) hd.classList.toggle('scrolled', window.pageYOffset > 8); };
+    window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
+    // gentle fade between pages of the site
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest && e.target.closest('a[href]');
+      if (!a || a.target || e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0 || REDUCED) return;
+      var url = new URL(a.getAttribute('href'), location.href);
+      if (url.origin !== location.origin || url.pathname === location.pathname || !/\.html$/.test(url.pathname)) return;
+      e.preventDefault();
+      document.body.classList.add('leaving');
+      setTimeout(function () { location.href = url.href; }, 260);
+    });
+    window.addEventListener('pageshow', function () { document.body.classList.remove('leaving'); });
   });
 })();
