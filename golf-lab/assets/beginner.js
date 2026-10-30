@@ -81,7 +81,7 @@
     new: [
       { w: '第 1 週', t: '認識球桿與準備動作', items: [P('guide.html#range', '第一次去練習場', '要帶什麼、怎麼買球、練習順序'), P('clubs.html#starter', '新手第一套球桿', '只需要 5–7 支'), L('grip'), L('stance'), L('posture'), L('alignment'), P('practice.html#r30', '練習場 30 分鐘', '照著菜單練一次')] },
       { w: '第 2 週', t: '半揮桿，打到球', items: [L('backswing'), L('downswing'), L('iron-basics'), P('fix.html#air', '球飛不起來？', '新手最常見的問題'), P('practice.html#r30', '練習場 30 分鐘', '這週練兩次')] },
-      { w: '第 3 週', t: '完整揮桿與短桿', items: [L('finish-tempo'), L('bump-and-run'), L('short-putts'), P('practice.html#15', '短桿 15 分鐘', '每次練習的最後 15 分鐘')] },
+      { w: '第 3 週', t: '完整揮桿與短桿', items: [L('finish-tempo'), L('bump-and-run'), L('short-putts'), P('practice.html#p20', '推桿 20 分鐘', '每次練習的最後 20 分鐘')] },
       { w: '第 4 週', t: '準備第一次下場', items: [P('guide.html#course', '第一次下場', '服裝、時間、要帶什麼'), P('guide.html#score', '計分卡怎麼填', '每洞最多記雙倍標準桿'), P('rules.html#basics', '基本規則', '最常遇到的幾條'), L('driver-basics'), L('lag-putting')] }
     ],
     range: [
@@ -92,7 +92,7 @@
     ],
     course: [
       { w: '第 1 週', t: '找出漏掉的桿數', items: [P('my-game.html', '輸入一場成績', '用新手模式看看桿數掉在哪'), P('fix.html', '擊球診斷', '最常出現的失誤'), P('guide.html#score', '每洞上限', '避免一洞打到十幾桿')] },
-      { w: '第 2 週', t: '少掉三推', items: [L('lag-putting'), L('short-putts'), L('green-reading'), P('practice.html#15', '短桿 15 分鐘', '以推桿為主')] },
+      { w: '第 2 週', t: '少掉三推', items: [L('lag-putting'), L('short-putts'), L('green-reading'), P('practice.html#p20', '推桿 20 分鐘', '直線、定頭、距離感一次練到')] },
       { w: '第 3 週', t: '果嶺周圍兩桿進洞', items: [L('bump-and-run'), L('standard-chip'), L('putter-from-fringe'), P('shot.html', '短桿選擇', '選最簡單的打法'), P('practice.html#30', 'Up & Down 挑戰', '9 站計分卡')] },
       { w: '第 4 週', t: '避免大數字', items: [L('driver-basics'), L('bunker-splash'), P('rules.html#lost', '遺失球與界外', '正確處理罰桿'), P('practice.html#r60', '練習場 60 分鐘', '開球與鐵桿')] }
     ]
@@ -164,6 +164,27 @@
       { mins: 5, cat: 'Short Game', name: '切球收尾', how: '到練習果嶺用 Bump & Run 打 10 顆，或在打位用 PW 打 30 碼。', lesson: 'bump-and-run', fig: 'towel', cap: '最後用短桿收尾，讓手感留在最常用到的距離。' }
     ]
   };
+  /* Putting-only plans. */
+  GL.plans.p20 = {
+    name: 'Putting Basics', zh: '推桿 20 分鐘',
+    blocks: [
+      { mins: 3, cat: 'Warm-up', name: '軌道直線推', how: '地上平行放兩支球桿當軌道，從 1 公尺推 10 顆，推桿頭不能碰到球桿。', lesson: 'short-putts', fig: 'rails', cap: '兩支球桿之間只比推桿頭寬一點，推桿頭沿著軌道直直來回。' },
+      { mins: 5, cat: 'Putting', name: 'Gate Drill', how: '在球前方插兩支 tee 做成門，1 公尺推 15 顆，球要從門中間穿過。', lesson: 'short-putts', fig: 'gate', cap: '兩支 tee 的間距只比球寬一點，球碰到 tee 就代表桿面沒有對正。' },
+      { mins: 5, cat: 'Putting', name: '硬幣定頭', how: '把球放在一枚硬幣上推，推完先看到硬幣、數一秒才抬頭。2 公尺推 10 顆。', lesson: 'short-putts', fig: 'coin', cap: '球滾走之後，眼睛還留在硬幣上，頭就不會提早抬起來。' },
+      { mins: 7, cat: 'Putting', name: '停進圈內', how: '在洞周圍用一支推桿長度當半徑畫一個圈，從 8、12、16 步各推 5 顆，目標是停在圈裡。', lesson: 'lag-putting', fig: 'zone', cap: '長推不用進洞，停在一支推桿長度內，下一推就很好進。' }
+    ]
+  };
+  GL.plans.p30 = {
+    name: 'Complete Putting', zh: '推桿 30 分鐘',
+    blocks: [
+      { mins: 3, cat: 'Warm-up', name: 'Gate Drill 暖身', how: '1 公尺推 10 顆，找回推桿頭方正的感覺。', lesson: 'short-putts', fig: 'gate', cap: '兩支 tee 的間距只比球寬一點，球要從中間穿過。' },
+      { mins: 6, cat: 'Putting', name: 'Circle Drill', how: '洞周圍 1 公尺放 8 顆，全部連續推進才能退到 1.5 公尺。', lesson: 'short-putts', fig: 'circle', cap: '以洞為中心，在 1 公尺處插 8 支 tee 圍成一圈，每支 tee 旁放一顆球。' },
+      { mins: 6, cat: 'Putting', name: '速度練習', how: '在洞後方 40 公分橫放一支球桿，從 3 公尺推 10 顆，球要過洞、但不能碰到球桿。', lesson: 'short-putts', fig: 'speed', cap: '球停在洞和球桿之間，就是最容易進洞的速度。' },
+      { mins: 6, cat: 'Putting', name: 'Lag Ladder', how: '10、15、20 步各插一支 tee，每一顆都要比上一顆遠，但不能超過 20 步。', lesson: 'lag-putting', fig: 'ladder', cap: '練的是距離感，方向偏一點沒關係。' },
+      { mins: 9, cat: 'Pressure', name: 'Par 18 推桿小遊戲', how: '在練習果嶺選 9 個洞、各種距離和坡度，每洞標準桿 2。新手先以 22 桿以內為目標。', lesson: 'green-reading', fig: 'par18', cap: '每洞只推一顆球，像真的下場一樣認真看線，最後加總桿數。' }
+    ]
+  };
+
   GL.plans.r60 = {
     name: 'Complete Range Session', zh: '練習場 60 分鐘',
     blocks: [

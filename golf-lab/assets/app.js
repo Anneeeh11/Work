@@ -1257,6 +1257,34 @@
             '<circle cx="' + r[1] + '" cy="' + r[0] + '" r="4" fill="none" stroke="#f2c75c" stroke-width="1.4"/>' + T(r[1] + 9, r[0] + 4, r[2], 'start', 'dg-t gold');
         });
       }
+    } else if (type === 'rails') {
+      o = green + ball(60, 96) + '<rect x="42" y="88" width="9" height="16" rx="2" fill="#1f3b2f"/>' +
+        [80, 112].map(function (y) { return '<line x1="28" y1="' + y + '" x2="236" y2="' + y + '" stroke="#c9c4b4" stroke-width="4" stroke-linecap="round"/><line x1="28" y1="' + y + '" x2="64" y2="' + y + '" stroke="#2a2f2c" stroke-width="6" stroke-linecap="round"/>'; }).join('') +
+        path('M66 96 L 266 96', '1 6') + hole(276, 96) + T(132, 66, '兩支球桿做成軌道', 'middle', 'dg-t gold') +
+        '<path d="M60 140 L276 140 M60 134 L60 146 M276 134 L276 146" stroke="#fbf8ef" stroke-opacity=".7"/>' + T(168, 158, '1 公尺');
+    } else if (type === 'coin') {
+      o = green + '<circle cx="80" cy="104" r="8" fill="#f2c75c" stroke="#8a6514"/>' + path('M88 104 L 248 100', '1 6') + ball(214, 101) + hole(260, 100) +
+        '<ellipse cx="80" cy="40" rx="11" ry="7" fill="none" stroke="#f2c75c" stroke-width="1.6"/><circle cx="80" cy="40" r="3" fill="#f2c75c"/>' +
+        '<line x1="80" y1="48" x2="80" y2="92" stroke="#f2c75c" stroke-dasharray="2 4"/>' + T(96, 44, '眼睛留在硬幣上', 'start', 'dg-t gold') +
+        T(80, 130, '硬幣', 'middle', 'dg-t') + T(160, 170, '推完數一秒，再抬頭看球', 'middle', 'dg-t');
+    } else if (type === 'zone') {
+      o = green + '<circle cx="232" cy="92" r="40" fill="rgba(242,199,92,.14)" stroke="#f2c75c" stroke-width="1.4" stroke-dasharray="4 4"/>' + hole(232, 92) +
+        '<line x1="232" y1="92" x2="272" y2="92" stroke="#f2c75c"/>' + T(232, 44, '半徑 = 1 支推桿', 'middle', 'dg-t gold');
+      [[34, '16 步'], [76, '12 步'], [118, '8 步']].forEach(function (p, i) { o += tee(p[0], 150) + T(p[0], 170, p[1], 'middle', 'dg-t') + path('M' + p[0] + ' 144 Q ' + ((p[0] + 220) / 2) + ' ' + (120 - i * 8) + ' ' + (214 + i * 10) + ' ' + (104 - i * 14), '1 6'); });
+      o += ball(214, 104) + ball(224, 90) + ball(244, 78) + T(232, 156, '停在圈裡就成功', 'middle', 'dg-t gold');
+    } else if (type === 'speed') {
+      o = green + ball(46, 96) + path('M52 96 L 232 96', '1 6') + hole(196, 96) +
+        '<rect x="200" y="62" width="34" height="68" fill="rgba(242,199,92,.18)"/>' +
+        '<line x1="240" y1="44" x2="240" y2="148" stroke="#c9c4b4" stroke-width="4" stroke-linecap="round"/><line x1="240" y1="44" x2="240" y2="74" stroke="#2a2f2c" stroke-width="6" stroke-linecap="round"/>' +
+        ball(222, 96) + T(184, 56, '停在這裡', 'middle', 'dg-t gold') + T(270, 100, '球桿', 'start', 'dg-t') +
+        '<path d="M196 150 L240 150 M196 145 L196 155 M240 145 L240 155" stroke="#fbf8ef" stroke-opacity=".7"/>' + T(218, 170, '30–40 公分');
+    } else if (type === 'par18') {
+      o = '<rect width="320" height="190" rx="16" fill="#3f7d3a"/><ellipse cx="160" cy="95" rx="146" ry="80" fill="#5fa64a"/><ellipse cx="160" cy="95" rx="146" ry="80" fill="url(#dgs)"/>';
+      [[62, 70], [104, 42], [160, 36], [218, 46], [262, 82], [240, 132], [178, 150], [112, 140], [160, 96]].forEach(function (p, i) {
+        o += '<circle cx="' + p[0] + '" cy="' + p[1] + '" r="5" fill="#0b2a18"/><line x1="' + p[0] + '" y1="' + p[1] + '" x2="' + p[0] + '" y2="' + (p[1] - 16) + '" stroke="#fbf8ef" stroke-width="1.2"/><path d="M' + p[0] + ' ' + (p[1] - 16) + ' l9 3 l-9 3z" fill="#f2c75c"/>' +
+          T(p[0] + 10, p[1] + 4, i + 1, 'start', 'dg-n');
+      });
+      o += T(160, 184, '9 洞 · 每洞標準桿 2 · 總共 18', 'middle', 'dg-t gold');
     } else if (type === 'targets') {
       o = '<rect width="320" height="190" rx="16" fill="#3f7d3a"/><rect width="320" height="190" rx="16" fill="url(#dgs)"/>' +
         '<rect x="128" y="160" width="64" height="22" rx="4" fill="#2a3a30"/><circle cx="160" cy="166" r="4" fill="#fff"/>' + T(160, 186, '打位', 'middle', 'dg-t');
@@ -1362,6 +1390,10 @@
     }
     $$('[data-plan]').forEach(function (b) {
       b.addEventListener('click', function () { pause(); plan = b.getAttribute('data-plan'); store.set('plan', plan); timer.i = 0; timer.left = 0; drawPlan(); });
+    });
+    window.addEventListener('hashchange', function () {
+      var h = location.hash.slice(1);
+      if (GL.plans[h] && h !== plan) { pause(); plan = h; store.set('plan', plan); timer.i = 0; timer.left = 0; drawPlan(); }
     });
 
     function symClass(v) { return !v ? '' : v === 1 ? 'circle' : v === 2 ? '' : v === 3 ? 'square' : 'dsquare'; }

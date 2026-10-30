@@ -1598,3 +1598,5 @@ h1, h2, h3 { text-wrap: balance; }
 .contact-list dt { font: 600 14px var(--sans); letter-spacing: 0; text-transform: none; color: var(--muted); }
 .brand-tag { display: none; }
 .plan-sub { color: var(--muted); }
+
+#planHead h2 { font-family: 'Noto Serif TC', Georgia, serif; font-size: 34px; }
