@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>PAR/A — The Golf Lab</title>
+  <title>PAR/A｜給高爾夫新手的入門教學</title>
   <meta name="description" content="技巧教學、球桿選擇、擊球問題診斷與短桿打法推薦。">
   <meta name="theme-color" content="#192821">
   <link rel="icon" type="image/png" href="assets/img/para-favicon.png">
@@ -14,123 +14,103 @@
   <link rel="stylesheet" href="assets/style.css">
 </head>
 <body data-page="home">
-  <div class="ticker-wrap" aria-label="Featured lessons"><div class="ticker" id="ticker"></div></div>
   <header id="site-header"></header>
 
-  <main>
-    <section class="hero-shell">
-      <div class="wrap">
-        <div class="hero">
-          <div class="hero-art" id="heroArt"></div>
-          <div>
-            <p class="hero-est">The Golf Lab · Est. 2026</p>
-            <h1 class="hero-logo" aria-label="PAR/A"><span aria-hidden="true">PAR<i class="sl"></i>A</span></h1>
-            <p class="sub">把高爾夫拆解成可以練習的方法。<span>Learn it. Fix it. Practice it.</span></p>
-            <div class="hero-cta">
-              <a class="btn light" href="start.html">新手從這裡開始</a>
-              <a class="btn outline" href="learn.html">直接看教學</a>
-            </div>
-          </div>
-          <p class="hero-foot">Chipping · Putting · Pitching · Bunker · Full Swing</p>
+  <main class="home">
+    <section class="h-hero wrap">
+      <div class="h-text">
+        <p class="h-kicker">給剛開始學高爾夫的人</p>
+        <h1>第一次打高爾夫，<br>不用一個人摸索。</h1>
+        <p class="h-lead">我把當助理教練時最常跟學生講的東西，整理成一步一步的教學：從怎麼握桿、第一次去練習場，到第一次下場、慢慢打進 100 桿。全部免費，也不用註冊。</p>
+        <div class="h-cta">
+          <a class="btn" href="start.html">我是新手，從哪裡開始？</a>
+          <a class="text-link" href="learn.html">直接看教學 &rarr;</a>
         </div>
+        <p class="h-cred">Anne · 4 差點業餘球員 · TPI Level 1 認證 · 教過 50 多位青少年球員</p>
       </div>
+      <figure class="h-photo">
+        <img src="assets/img/golf-swing.webp" alt="Anne 在球道上用鐵桿擊球" width="914" height="1400">
+        <figcaption>這是我。照片裡在練的，就是網站上教的鐵桿揮桿。</figcaption>
+      </figure>
+    </section>
+
+    <section class="h-search wrap">
+      <label for="search" class="h-label">想找什麼？</label>
       <div class="search-card">
-        <label class="search-box">
+        <div class="search-box">
           <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
-          <input id="search" type="search" autocomplete="off" placeholder="搜尋技巧、球桿或問題…" aria-label="搜尋">
-          <kbd>Enter</kbd>
-        </label>
-        <div class="quick"><span>熱門搜尋</span>
+          <input id="search" type="search" autocomplete="off" placeholder="例如：打厚、握桿、要買幾支球桿" aria-label="搜尋">
+        </div>
+        <div class="quick"><span>大家常搜尋</span>
           <button type="button" data-q="打厚">打厚</button>
-          <button type="button" data-q="往右">球往右飛</button>
-          <button type="button" data-q="Bump">Bump &amp; Run</button>
-          <button type="button" data-q="推桿">推桿</button>
-          <button type="button" data-q="Hybrid">Hybrid</button>
+          <button type="button" data-q="飛不起來">球飛不起來</button>
+          <button type="button" data-q="握桿">握桿</button>
+          <button type="button" data-q="練習場">練習場</button>
+          <button type="button" data-q="差點">差點是什麼</button>
         </div>
         <div class="results" id="searchResults" hidden></div>
       </div>
     </section>
 
-    <section class="section beginner-band">
-      <div class="wrap">
-        <div class="split-head reveal">
-          <div><span class="eyebrow">New to Golf</span><h2>第一次打高爾夫？</h2><p>從還沒摸過球桿，到穩定破百、打進 95 桿。照著順序，一次學一件事。</p></div>
-          <a class="btn" href="start.html">取得我的 4 週路線 &rarr;</a>
-        </div>
-        <div class="more-grid">
-          <a class="more-card reveal" href="start.html"><span class="mc-n">01</span><strong>新手入門路線</strong><p>選擇你的程度，取得 4 週學習計畫與進度。</p></a>
-          <a class="more-card reveal" href="guide.html#range"><span class="mc-n">02</span><strong>第一次去練習場</strong><p>要帶什麼、怎麼買球、練習順序。</p></a>
-          <a class="more-card reveal" href="guide.html#course"><span class="mc-n">03</span><strong>第一次下場</strong><p>服裝、時間、桿弟與球車、計分卡。</p></a>
-          <a class="more-card reveal" href="clubs.html#starter"><span class="mc-n">04</span><strong>新手第一套球桿</strong><p>只需要 4 支必備，其他之後再買。</p></a>
+    <section class="h-stage wrap">
+      <h2>你現在在哪裡？</h2>
+      <p class="h-sub">選一個最像你的，我會告訴你接下來四週該學什麼、練什麼。</p>
+      <div class="stage-grid">
+        <a class="stage" href="start.html#new"><strong>還沒摸過球桿</strong><span>想開始，但不知道第一步是什麼。</span><em>看我的路線 &rarr;</em></a>
+        <a class="stage" href="start.html#range"><strong>去過練習場</strong><span>可以把球打出去，但時好時壞，還沒下過場。</span><em>看我的路線 &rarr;</em></a>
+        <a class="stage" href="start.html#course"><strong>下過場，100 桿以上</strong><span>想穩定破百，最好打進 95。</span><em>看我的路線 &rarr;</em></a>
+      </div>
+    </section>
+
+    <section class="h-note">
+      <div class="wrap note-grid">
+        <figure class="note-photo"><img src="assets/img/golf-green.webp" alt="Anne 蹲在果嶺上看推桿線" width="1082" height="716" loading="lazy"></figure>
+        <div class="note-text">
+          <h2>嗨，我是 Anne。</h2>
+          <p>我是台北人，現在是 4 差點的業餘選手，也拿到了 TPI Level 1 認證。之前當高爾夫助理教練的時候，教過 50 多位 6 到 18 歲的學生，發現大家剛開始卡住的地方都很像：握桿怪怪的、不知道練習場要練什麼、第一次下場緊張到忘了怎麼揮桿。</p>
+          <p>所以我做了 PAR/A。這裡不賣課程，也盡量不用艱深的術語，只想把「下一步該做什麼」講清楚。你不需要一次學會全部，一次做好一件事就好。</p>
+          <p>如果哪裡寫得不清楚，或你想看什麼教學，<a href="#contact">寫信告訴我</a>，我都會看。</p>
+          <p class="sign">Anne</p>
         </div>
       </div>
     </section>
 
-    <section class="section">
-      <div class="wrap">
-        <div class="section-head reveal">
-          <span class="eyebrow">About</span>
-          <h2>關於我們</h2>
-          <p>PAR/A 是為想變得更好的球員設計的練習手冊——不只教你「做什麼」，也告訴你「什麼時候用、為什麼會錯、怎麼練」。</p>
-        </div>
-        <div class="about-cards">
-          <a class="photo-card reveal" href="learn.html#fullswing">
-            <img src="assets/img/golf-swing.webp" alt="鐵桿擊球瞬間" loading="lazy">
-            <div class="pc-label"><div><strong>Learn Golf</strong><small>技巧教學・從 Setup 到練習</small></div><span class="pc-go">&rarr;</span></div>
-          </a>
-          <a class="photo-card reveal" href="learn.html#putting">
-            <img src="assets/img/golf-green.webp" alt="在果嶺上看推桿線" loading="lazy" style="object-position:58% 50%">
-            <div class="pc-label"><div><strong>Putting</strong><small>短推、長推與看線</small></div><span class="pc-go">&rarr;</span></div>
-          </a>
-          <a class="photo-card reveal" href="shot.html">
-            <div class="pc-art" id="aboutArt"></div>
-            <div class="pc-label"><div><strong>Shot Selector</strong><small>回答 4 題，推薦短桿打法</small></div><span class="pc-go">&rarr;</span></div>
-          </a>
-        </div>
+    <section class="h-popular wrap">
+      <div class="row-head"><h2>從這幾篇開始</h2><a class="text-link" href="learn.html">全部教學 &rarr;</a></div>
+      <p class="h-sub">如果你只有一點時間，先看這六篇。前四篇是每一桿都會用到的基本功。</p>
+      <ol class="pop-list" id="popular"></ol>
+    </section>
+
+    <section class="h-faq wrap">
+      <h2>新手常問我的問題</h2>
+      <div class="faq">
+        <details><summary>一定要先買球桿嗎？</summary><p>不用。很多練習場可以租球桿，先去幾次確定自己喜歡再買。真的要買的時候，第一套只需要 4 支：7 號鐵、PW、沙坑桿和推桿。<a href="clubs.html#starter">看新手第一套球桿</a></p></details>
+        <details><summary>練習場一次要打多少顆？</summary><p>新手 50 到 100 顆就很夠了。比起打很多顆，每一顆都選一個目標、打完停下來想一想更重要。打太多只會累，動作也會越來越亂。<a href="practice.html#r30">照著練習場 30 分鐘練</a></p></details>
+        <details><summary>要練多久才可以下場？</summary><p>沒有標準答案。我的建議是：在練習場用 7 號鐵打 10 顆，大部分都能往前飛，就可以考慮了。第一次最好找有經驗的朋友一起去。<a href="guide.html#course">第一次下場要準備什麼</a></p></details>
+        <details><summary>第一次下場打了 120 幾桿，正常嗎？</summary><p>非常正常，很多人第一次都打超過 120。先不要管分數，記得每洞最多記到雙倍標準桿就把球撿起來，打得開心、不拖慢別人就很好了。<a href="guide.html#score">計分卡怎麼填</a></p></details>
+        <details><summary>需要請教練嗎？</summary><p>如果預算允許，剛開始上幾堂教練課很值得，特別是握桿和站姿，一開始做對可以少走很多冤枉路。這個網站可以當你上課後的複習。</p></details>
+        <details><summary>我是左手打球的，可以用嗎？</summary><p>可以。在每一頁最下面打開「左手球員模式」，所有圖都會左右對調。文字還是用右手寫的，讀的時候把左、右換過來就好。</p></details>
       </div>
     </section>
 
-    <section class="green-band">
-      <div class="wrap">
-        <div class="section-head reveal">
-          <span class="eyebrow">The Toolkit</span>
-          <h2>你的練習工具</h2>
-          <p>六個工具，從學習動作、診斷問題、選擇打法，到安排練習與分析成績。</p>
-        </div>
-        <div class="tools reveal" id="tools"></div>
+    <section class="h-tools wrap">
+      <h2>網站裡還有這些</h2>
+      <div class="tool-cols">
+        <div><h3>學</h3><a href="learn.html">技巧教學<span>握桿、揮桿、切球、推桿，每篇 5–8 分鐘</span></a><a href="clubs.html">球桿選擇<span>每支球桿是做什麼的、該怎麼挑</span></a><a href="rules.html">高球規則<span>球進水、出界、在沙坑裡怎麼辦</span></a><a href="glossary.html">名詞小辭典<span>Par、Loft、差點⋯⋯看不懂就來查</span></a></div>
+        <div><h3>練</h3><a href="practice.html">練習計畫<span>去練習場前選一份菜單，照著練就好</span></a><a href="shot.html">短桿選擇<span>球在果嶺旁邊，不知道該怎麼打的時候</span></a><a href="guide.html">第一次指南<span>練習場、下場、計分卡</span></a></div>
+        <div><h3>看自己</h3><a href="fix.html">擊球診斷<span>一直打厚、往右飛？回答幾個問題找原因</span></a><a href="my-game.html">我的成績<span>輸入計分卡，看看桿數掉在哪裡</span></a></div>
       </div>
     </section>
 
-    <section class="section academy">
-      <div class="wrap">
-        <div class="split-head reveal">
-          <div><span class="eyebrow">Short Game · 短桿</span><h2>Chipping Academy</h2><p>果嶺周圍的四種基本打法。先學會辨認情境，再選擇最簡單的那一種。</p></div>
-          <a class="btn ghost" href="learn.html#chipping">所有短桿教學 &rarr;</a>
-        </div>
-        <div class="academy-grid reveal" id="academy"></div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="wrap">
-        <div class="split-head reveal">
-          <div><span class="eyebrow">Official Score Card</span><h2>短桿選桿表</h2><p>同樣的動作、不同的球桿，滾動距離就不同。用這張表找到你的選擇。</p></div>
-          <a class="btn" href="shot.html">開始選擇打法 &rarr;</a>
-        </div>
-        <div class="legend reveal"><span><i class="c"></i>高拋</span><span><i></i>切滾</span><span><i class="dd"></i>長滾</span></div>
-        <div class="score-wrap reveal" id="homeScore"></div>
-      </div>
-    </section>
     <section class="section contact" id="contact">
       <div class="wrap contact-grid">
         <div class="contact-intro reveal">
-          <span class="eyebrow">Contact Us · 聯絡我們</span>
-          <h2>Contact Us</h2>
-          <p>有想學的技巧、想看的教學，或對網站有建議？寫信給我們，通常兩到三天內回覆。</p>
+          <h2>有問題，直接問我</h2>
+          <p>揮桿卡住、不知道該買什麼球桿，或發現網站哪裡寫錯了，都可以寫信給我。我會自己看每一封信，通常幾天內回覆。</p>
           <dl class="contact-list">
-            <div><dt>Email</dt><dd><span class="email-addr" id="ctEmail">yianhung11@gmail.com</span><button type="button" class="copy-btn" id="ctCopy">複製</button></dd></div>
+            <div><dt>信箱</dt><dd><span class="email-addr" id="ctEmail">yianhung11@gmail.com</span><button type="button" class="copy-btn" id="ctCopy">複製</button></dd></div>
             <div><dt>Instagram</dt><dd><a href="https://www.instagram.com/anneee1103/" target="_blank" rel="noopener">@anneee1103</a></dd></div>
-            <div><dt>Based in</dt><dd>Vancouver, BC</dd></div>
+            <div><dt>我在</dt><dd>溫哥華（UBC）· 台北</dd></div>
           </dl>
         </div>
         <form class="contact-form reveal" id="contactForm" novalidate>
@@ -146,7 +126,7 @@
             <label><input type="radio" name="topic" value="網站建議"><span>網站建議</span></label>
             <label><input type="radio" name="topic" value="合作邀約"><span>合作邀約</span></label>
           </fieldset>
-          <label for="ctMsg">訊息 Message<textarea id="ctMsg" name="message" rows="5" placeholder="例如：可以多教一點沙坑的打法嗎？" required></textarea></label>
+          <label for="ctMsg">訊息 Message<textarea id="ctMsg" name="message" rows="5" placeholder="例如：我一直打厚，練習場要怎麼練？" required></textarea></label>
           <div class="cf-foot">
             <button type="submit" class="btn" id="ctSend">送出訊息</button>
             <p class="cf-status" id="ctStatus" role="status" aria-live="polite"></p>

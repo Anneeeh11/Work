@@ -298,11 +298,11 @@
       f.className = 'site-footer';
       f.innerHTML = '<div class="wrap foot">' +
         '<div><a class="brand light" href="index.html" aria-label="PAR/A 首頁">' + wordmark() + '</a><p class="brand-tag">The Golf Lab</p>' +
-        '<p class="foot-note">給新手的高爾夫入門教學：<br>從第一次拿球桿，到穩定破百。</p>' +
+        '<p class="foot-note">PAR/A 是 Anne 一個人整理的小網站，寫給剛開始學高爾夫的人。內容有錯、或想看什麼教學，<a href="index.html#contact">歡迎寫信告訴我</a>。</p>' +
         '<button type="button" class="lefty-btn" id="leftyBtn" aria-pressed="' + lefty + '">左手球員模式：' + (lefty ? '開' : '關') + '</button></div>' +
         '<div class="foot-cols"><div class="foot-col"><h5>開始</h5><a href="start.html">新手入門<small>Start Here</small></a><a href="index.html#contact">聯絡我們<small>Contact Us</small></a></div>' +
         NAV_GROUPS.map(function (g) { return '<div class="foot-col"><h5>' + g.zh + '</h5>' + g.items.map(function (n) { return '<a href="' + n.href + '">' + n.zh + '<small>' + n.en + '</small></a>'; }).join('') + '</div>'; }).join('') + '</div>' +
-        '</div><div class="wrap foot-base"><span>&copy; ' + new Date().getFullYear() + ' PAR/A · The Golf Lab</span><span>Practice with purpose.</span></div>';
+        '</div><div class="wrap foot-base"><span>&copy; ' + new Date().getFullYear() + ' PAR/A</span><span>最後更新：2026 年 10 月</span></div>';
       $('#leftyBtn').addEventListener('click', function () {
         var on = !store.get('lefty', false);
         store.set('lefty', on);
@@ -387,18 +387,18 @@
     var items = [];
     GL.lessons.forEach(function (l) {
       var c = catById(l.cat);
-      items.push({ t: l.title, s: l.zh, k: c.name + ' ' + c.zh + ' ' + l.situation + ' ' + l.club.pick, type: 'Learn · ' + c.name, url: 'learn.html#' + l.id });
+      items.push({ t: l.title, s: l.zh, k: c.name + ' ' + c.zh + ' ' + l.situation + ' ' + l.club.pick, type: '技巧教學 · ' + c.zh, url: 'learn.html#' + l.id });
     });
     GL.clubs.forEach(function (c) {
-      items.push({ t: c.name, s: c.zh, k: c.best.join(' ') + ' loft 球桿', type: 'Club Guide', url: 'clubs.html#' + c.id });
+      items.push({ t: c.name, s: c.zh, k: c.best.join(' ') + ' loft 球桿', type: '球桿選擇', url: 'clubs.html#' + c.id });
     });
     GL.problems.forEach(function (p) {
-      items.push({ t: p.title, s: p.desc, k: p.en + ' 診斷 問題', type: 'Fix My Shot', url: 'fix.html#' + p.id });
+      items.push({ t: p.title, s: p.desc, k: p.en + ' 診斷 問題', type: '擊球診斷', url: 'fix.html#' + p.id });
     });
-    items.push({ t: 'Shot Selector', s: '回答 4 個問題，推薦短桿打法', k: '短桿 切球 選擇 推薦 chipping', type: 'Tool', url: 'shot.html' });
+    items.push({ t: '短桿選擇', s: '球在果嶺旁，回答 4 個問題告訴你怎麼打', k: 'Shot Selector 短桿 切球 選擇 推薦 chipping', type: '練習', url: 'shot.html' });
     GL.rules.forEach(function (r) {
       var a = GL.ruleAreas.filter(function (x) { return x.id === r.area; })[0];
-      items.push({ t: r.q, s: a.zh + ' · ' + (r.pen === 0 ? '免罰' : r.pen === 'x' ? '規則說明' : '罰 ' + r.pen + ' 桿'), k: r.a + ' 規則 rules ' + a.name, type: 'Rules · ' + a.name, url: 'rules.html#' + r.area });
+      items.push({ t: r.q, s: a.zh + ' · ' + (r.pen === 0 ? '免罰' : r.pen === 'x' ? '規則說明' : '罰 ' + r.pen + ' 桿'), k: r.a + ' 規則 rules ' + a.name, type: '高球規則 · ' + a.zh, url: 'rules.html#' + r.area });
     });
     (GL.glossary || []).forEach(function (g) { items.push({ t: g.zh + '（' + g.t + '）', s: g.d, k: g.t + ' ' + (g.auto || []).join(' ') + ' 名詞 辭典', type: '名詞小辭典', url: 'glossary.html#' + encodeURIComponent(g.t) }); });
     items.push({ t: '新手入門', s: '依你的程度，給你 4 週學習路線', k: '新手 開始 入門 路線 start 第一次', type: '新手入門', url: 'start.html' });
@@ -406,8 +406,8 @@
     items.push({ t: '第一次下場', s: '服裝、時間、要帶什麼、桿弟與球車', k: '下場 球場 第一次 服裝 預約', type: '第一次指南', url: 'guide.html#course' });
     items.push({ t: '計分卡怎麼填', s: '每洞記桿數，最多記雙倍標準桿', k: '計分 計分卡 撿球 雙倍標準桿 scorecard', type: '第一次指南', url: 'guide.html#score' });
     items.push({ t: '新手第一套球桿', s: '只需要 5–7 支', k: '買球桿 新手 套桿 第一套', type: '球桿選擇', url: 'clubs.html#starter' });
-    items.push({ t: 'My Game', s: '上傳計分卡，分析你的成績', k: '計分卡 成績 分析 scorecard 推桿 上果嶺 球道 stats', type: 'Tool', url: 'my-game.html' });
-    items.push({ t: 'Practice Plans', s: '15 / 30 分鐘練習菜單', k: '練習 計畫 菜單 up and down', type: 'Tool', url: 'practice.html' });
+    items.push({ t: '我的成績', s: '輸入計分卡，看看桿數掉在哪裡', k: 'My Game 計分卡 成績 分析 scorecard 推桿 上果嶺 球道 stats 破百', type: '分析', url: 'my-game.html' });
+    items.push({ t: '練習計畫', s: '練習場 30 / 60 分鐘、短桿 15 / 30 分鐘菜單', k: 'Practice 練習 計畫 菜單 練習場 up and down', type: '練習', url: 'practice.html' });
     return items;
   }
 
@@ -439,8 +439,8 @@
     var c = catById(l.cat);
     return '<a class="lesson-card" href="learn.html#' + l.id + '">' +
       '<div class="lc-art">' + (step ? '<span class="lc-step">STEP ' + step + '</span>' : '') + (isLearned(l.id) ? '<span class="lc-done">' + icon('check') + '已學會</span>' : '') + lessonArt(l) + '</div>' +
-      '<div class="lc-body"><span class="eyebrow">' + c.name + ' · ' + c.zh + '</span>' +
-      '<h3>' + esc(l.title) + '</h3><p>' + esc(l.zh) + '</p>' +
+      '<div class="lc-body"><span class="eyebrow">' + c.zh + '</span>' +
+      '<h3>' + esc(l.zh) + '</h3><p>' + esc(l.title) + '</p>' +
       '<span class="lc-meta">' + icon('clock') + l.mins + ' min<span class="dot"></span>' + l.level + '<span class="go">' + icon('arrow') + '</span></span></div></a>';
   }
 
@@ -653,6 +653,11 @@
         '<tr><th>用途</th>' + rows.map(function (r, i) { return '<td><span class="sym ' + (i < 2 ? 'circle' : i < 4 ? 'square' : 'dsquare') + '">' + r[2] + '</span></td>'; }).join('') + '</tr>' +
         '</tbody></table>';
     }
+    var pop = $('#popular');
+    if (pop) pop.innerHTML = ['grip', 'stance', 'posture', 'alignment', 'iron-basics', 'short-putts'].map(function (id) {
+      var l = lessonById(id);
+      return '<li><a href="learn.html#' + l.id + '"><span class="pl-art">' + lessonArt(l) + '</span><span class="pl-t"><strong>' + esc(l.zh) + '</strong><small>' + esc(l.key || '') + '</small></span><span class="pl-m">' + l.mins + ' 分鐘</span></a></li>';
+    }).join('');
     var inp = $('#search');
     if (inp) bindSearch(inp, $('#searchResults'));
     contact();
@@ -800,7 +805,8 @@
 
   /* ---------- START HERE ---------- */
   function start() {
-    var level = store.get('level', null);
+    var level = store.get('level', null), hl = location.hash.slice(1);
+    if (GL.paths[hl]) { level = hl; store.set('level', hl); }
     var linkDone = store.get('pathdone', {});
     function itemHTML(it, wk, k) {
       if (it.lesson) {
@@ -836,6 +842,7 @@
       });
     });
     draw();
+    if (GL.paths[hl]) setTimeout(function () { var t = $('#pathBox'); window.scrollTo({ top: t.getBoundingClientRect().top + window.pageYOffset - 90 }); }, 80);
   }
 
   /* ---------- FIRST TIME GUIDE ---------- */
@@ -886,13 +893,13 @@
 
   function renderList(root, sec, focusCat) {
     var count = function (x) { return GL.lessons.filter(function (l) { return x.cats.indexOf(l.cat) > -1; }).length; };
-    document.title = 'Learn Golf — ' + sec.name + ' | PAR/A';
-    root.innerHTML = '<header class="page-head wrap"><span class="eyebrow">Learn Golf</span><h1>技巧教學</h1>' +
-      '<p class="lead">分成四個單元，建議依照順序學習。每一篇教學都用相同的六個步驟：<b>適用情境 → 選桿 → Setup → 動作步驟 → 常見錯誤 → 練習方法</b>。</p></header>' +
+    document.title = sec.zh + '｜技巧教學 | PAR/A';
+    root.innerHTML = '<header class="page-head wrap"><nav class="crumbs" aria-label="目前位置"><a href="index.html">首頁</a><span>/</span>學習</nav><h1>技巧教學</h1>' +
+      '<p class="lead">分成四個單元，建議照順序來。每一篇都用一樣的寫法：什麼時候用、選哪支桿、怎麼站、怎麼揮、常見錯誤，最後是練習方法。一篇大約 5–8 分鐘就能看完。</p></header>' +
       '<div class="wrap"><nav class="units" aria-label="Learn Golf 單元">' + GL.sections.map(function (x, i) {
-        return '<a href="#' + x.id + '" class="unit"' + (x.id === sec.id ? ' aria-current="true"' : '') + '><span class="u-n">0' + (i + 1) + '</span><strong>' + x.zh + '</strong><small>' + x.name + ' · 已學會 ' + GL.lessons.filter(function (l) { return x.cats.indexOf(l.cat) > -1 && isLearned(l.id); }).length + ' / ' + count(x) + '</small></a>';
+        return '<a href="#' + x.id + '" class="unit"' + (x.id === sec.id ? ' aria-current="true"' : '') + '><span class="u-n">第 ' + (i + 1) + ' 步</span><strong>' + x.zh + '</strong><small>已學會 ' + GL.lessons.filter(function (l) { return x.cats.indexOf(l.cat) > -1 && isLearned(l.id); }).length + ' / ' + count(x) + '</small></a>';
       }).join('') + '</nav>' +
-      '<div class="unit-intro"><span class="eyebrow">Unit 0' + (GL.sections.indexOf(sec) + 1) + '</span><h2>' + sec.zh + ' <span class="zh">' + sec.name + '</span></h2><p>' + sec.desc + '</p></div>' +
+      '<div class="unit-intro"><span class="eyebrow">第 ' + (GL.sections.indexOf(sec) + 1) + ' 單元</span><h2>' + sec.zh + '</h2><p>' + sec.desc + '</p></div>' +
       sec.cats.map(function (cid) {
         var c = catById(cid), ls = GL.lessons.filter(function (l) { return l.cat === cid; });
         return '<section class="cat-block" id="cat-' + cid + '">' + (sec.cats.length > 1 ? '<div class="cat-intro"><h2>' + c.name + ' <span class="zh">' + c.zh + '</span></h2><p>' + c.desc + '</p></div>' : '') +
@@ -910,9 +917,9 @@
     var c = catById(l.cat);
     var sib = lessonOrder(), sec0 = sectionOf(l.cat);
     var idx = sib.indexOf(l), prev = sib[(idx - 1 + sib.length) % sib.length], next = sib[(idx + 1) % sib.length];
-    document.title = l.title + ' — ' + l.zh + ' | PAR/A';
+    document.title = l.zh + '｜技巧教學 | PAR/A';
     var sec = [
-      ['situation', '適用情境', 'When'], ['club', '選桿', 'Club'], ['setup', 'Setup', 'Address'],
+      ['situation', '適用情境', 'When'], ['club', '選桿', 'Club'], ['setup', '準備姿勢', 'Address'],
       ['steps', '動作步驟', 'Motion'], ['mistakes', '常見錯誤', 'Mistakes'], ['drills', '練習方法', 'Practice']
     ];
     var body = {
@@ -930,21 +937,21 @@
       drills: '<div class="drills">' + l.drills.map(function (d) { return '<div class="drill">' + icon('target') + '<h4>' + esc(d.name) + '</h4><p>' + esc(d.how) + '</p></div>'; }).join('') + '</div>'
     };
     root.innerHTML = '<div class="wrap lesson">' +
-      '<a class="crumb" href="#' + sec0.id + '">' + icon('back') + sec0.zh + ' · ' + sec0.name + '</a>' +
-      '<header class="lesson-head"><div><span class="eyebrow">' + c.name + ' · ' + l.level + ' · ' + l.mins + ' min</span><h1>' + esc(l.title) + '</h1><p class="lead">' + esc(l.zh) + '</p></div>' +
+      '<a class="crumb" href="#' + sec0.id + '">' + icon('back') + '回到「' + sec0.zh + '」</a>' +
+      '<header class="lesson-head"><div><span class="eyebrow">' + c.zh + ' · ' + l.level + ' · 約 ' + l.mins + ' 分鐘</span><h1>' + esc(l.zh) + '</h1><p class="lead">' + esc(l.title) + '</p><p class="byline">Anne 整理 · 2026 年 10 月更新</p></div>' +
       '<div class="lesson-art">' + lessonArt(l, { label: l.title, tag: l.club.pick.split('、')[0] }) + '</div></header>' +
       (l.key ? '<div class="key-point"><span class="kp-label">這篇的重點</span><p>' + esc(l.key) + '</p></div>' : '') +
       '<div class="lesson-layout"><nav class="format-rail" aria-label="Lesson sections">' + sec.map(function (s, i) {
         return '<a href="#' + l.id + '" data-jump="sec-' + s[0] + '"><span class="n">' + (i + 1) + '</span>' + s[1] + '</a>';
       }).join('') + '</nav>' +
       '<div class="lesson-body">' + sec.map(function (s, i) {
-        return '<section class="lsec" id="sec-' + s[0] + '"><div class="lsec-h"><span class="n">' + (i + 1) + '</span><h2>' + s[1] + '</h2><span class="en">' + s[2] + '</span></div>' + body[s[0]] + '</section>';
+        return '<section class="lsec" id="sec-' + s[0] + '"><div class="lsec-h"><span class="n">' + (i + 1) + '</span><h2>' + s[1] + '</h2></div>' + body[s[0]] + '</section>';
       }).join('') +
-      (l.cat === 'setup' || l.cat === 'fullswing' ? '<a class="cta-band" href="fix.html"><div><strong>球一直打厚、往右飛？</strong><span>用 Fix My Shot 回答幾個問題，找出最可能的原因。</span></div>' + icon('arrow') + '</a>' : '') +
-      (l.cat === 'chipping' || l.cat === 'pitching' ? '<a class="cta-band" href="shot.html"><div><strong>不確定該打哪一種？</strong><span>用 Shot Selector 回答 4 個問題，馬上得到建議。</span></div>' + icon('arrow') + '</a>' : '') +
+      (l.cat === 'setup' || l.cat === 'fullswing' ? '<a class="cta-band" href="fix.html"><div><strong>球一直打厚、往右飛？</strong><span>用「擊球診斷」回答幾個問題，找出最可能的原因。</span></div>' + icon('arrow') + '</a>' : '') +
+      (l.cat === 'chipping' || l.cat === 'pitching' ? '<a class="cta-band" href="shot.html"><div><strong>不確定該打哪一種？</strong><span>用「短桿選擇」回答 4 個問題，馬上告訴你怎麼打。</span></div>' + icon('arrow') + '</a>' : '') +
       '<div class="learned-row"><button type="button" class="btn' + (isLearned(l.id) ? ' done' : '') + '" id="learnedBtn" aria-pressed="' + isLearned(l.id) + '">' + icon('check') + '<span>' + (isLearned(l.id) ? '已學會' : '標記為已學會') + '</span></button>' +
         '<p>學會之後，<a href="start.html">新手入門</a>的路線會自動打勾。</p></div>' +
-      '<div class="pager"><a href="#' + prev.id + '"><small>上一篇</small>' + esc(prev.title) + '</a><a href="#' + next.id + '" class="next"><small>下一篇</small>' + esc(next.title) + '</a></div>' +
+      '<div class="pager"><a href="#' + prev.id + '"><small>上一篇</small>' + esc(prev.zh) + '</a><a href="#' + next.id + '" class="next"><small>下一篇</small>' + esc(next.zh) + '</a></div>' +
       '</div></div></div>';
     reveal(root, true);
     linkTerms($('.lesson-body', root));
@@ -1021,7 +1028,7 @@
     function pickList() {
       st = null;
       root.innerHTML = '<div class="problem-grid">' + GL.problems.map(function (p, i) {
-        return '<button class="problem" data-p="' + p.id + '"><span class="pn">' + String(i + 1).padStart(2, '0') + '</span><strong>' + esc(p.title) + '</strong><span>' + esc(p.desc) + '</span><em>' + esc(p.en) + ' ' + icon('arrow') + '</em></button>';
+        return '<button class="problem" data-p="' + p.id + '"><strong>' + esc(p.title) + '</strong><span>' + esc(p.desc) + '</span><em>開始診斷 ' + icon('arrow') + '</em></button>';
       }).join('') + '</div>';
       reveal(root, true);
       $$('[data-p]', root).forEach(function (b) { b.addEventListener('click', function () { start(b.getAttribute('data-p')); }); });
@@ -1282,6 +1289,8 @@
     return '<svg class="drill-svg" viewBox="0 0 320 190" role="img" aria-label="練習示意圖">' + defs + o + '</svg>';
   }
 
+  var CAT_ZH = { 'Putting': '推桿', 'Chipping': '切球', 'Pitching': '劈起球', 'Warm-up': '暖身', 'Pressure': '小挑戰', 'Half Swing': '半揮桿', 'Full Swing': '全揮桿', 'Woods': '木桿', 'Short Game': '短桿', 'Driver': '開球' };
+
   /* ---------- PRACTICE ---------- */
   function practice() {
     var hp = location.hash.slice(1);
@@ -1296,14 +1305,14 @@
       $$('[data-plan]').forEach(function (b) { b.setAttribute('aria-selected', b.getAttribute('data-plan') === plan); });
       var done = store.get('done' + plan, []);
       var total = p.blocks.reduce(function (s, b) { return s + b.mins; }, 0);
-      $('#planHead').innerHTML = '<span class="eyebrow">' + total + ' minutes</span><h2>' + p.name + '</h2><p>' + p.zh + '・' + p.blocks.length + ' 個練習</p>';
+      $('#planHead').innerHTML = '<span class="eyebrow">共 ' + total + ' 分鐘 · ' + p.blocks.length + ' 個練習</span><h2>' + p.zh + '</h2><p class="plan-sub">' + p.name + '</p>';
       $('#planBar').innerHTML = p.blocks.map(function (b, i) { return '<i class="' + (done.indexOf(i) > -1 ? 'done' : '') + (timer.run || timer.left ? (i === timer.i ? ' now' : '') : '') + '" style="flex:' + b.mins + '" title="' + esc(b.name) + '"></i>'; }).join('');
       $('#planList').innerHTML = p.blocks.map(function (b, i) {
         var l = b.lesson && lessonById(b.lesson);
         return '<li class="block' + (done.indexOf(i) > -1 ? ' done' : '') + ((timer.run || timer.left) && i === timer.i ? ' now' : '') + '">' +
           '<label class="chk"><input type="checkbox" data-i="' + i + '"' + (done.indexOf(i) > -1 ? ' checked' : '') + '><span>' + icon('check') + '</span></label>' +
           '<div class="bl-time">' + b.mins + '<small>min</small></div>' +
-          '<div class="bl-body"><span class="eyebrow">' + esc(b.cat) + '</span><h3>' + esc(b.name) + '</h3><p>' + esc(b.how) + '</p>' +
+          '<div class="bl-body"><span class="eyebrow">' + esc(CAT_ZH[b.cat] || b.cat) + '</span><h3>' + esc(b.name) + '</h3><p>' + esc(b.how) + '</p>' +
           (l ? '<a href="learn.html#' + l.id + '">教學：' + esc(l.title) + ' ' + icon('arrow') + '</a>' : '') + '</div>' +
           (b.fig ? '<figure class="bl-fig">' + drillSVG(b.fig) + '<figcaption>' + esc(b.cap) + '</figcaption></figure>' : '') + '</li>';
       }).join('');

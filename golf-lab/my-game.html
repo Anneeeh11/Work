@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>My Game — 我的成績分析 | PAR/A</title>
+  <title>我的成績 | PAR/A</title>
   <meta name="description" content="上傳或輸入你的計分卡，用 Masters 風格的統計分析你的成績。">
   <meta name="theme-color" content="#192821">
   <link rel="icon" type="image/png" href="assets/img/para-favicon.png">
@@ -17,9 +17,9 @@
   <header id="site-header"></header>
   <main class="page mygame">
     <header class="page-head wrap">
-      <span class="eyebrow">My Game</span>
+      <nav class="crumbs" aria-label="目前位置"><a href="index.html">首頁</a><span>/</span>分析</nav>
       <h1>我的成績</h1>
-      <p class="lead">上傳或輸入你的計分卡，馬上看到 <b>成績分布、上果嶺率、球道命中率與推桿</b>，以及下一步該練什麼。</p>
+      <p class="lead">打完一場，把計分卡輸入進來。我會幫你算出桿數主要掉在哪裡，還有下一次練習可以先練什麼。資料只存在你自己的瀏覽器裡。</p>
     </header>
 
     <div class="wrap">
@@ -91,19 +91,18 @@ Bunker,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0</pre>
       </section>
 
       <section class="stats-sec">
-        <div class="stats-head"><h2 class="sec-title">Statistics</h2><div class="toggle mode-toggle" id="modeToggle" role="group" aria-label="統計模式"></div></div>
+        <div class="stats-head"><h2 class="sec-title">成績分析</h2><div class="toggle mode-toggle" id="modeToggle" role="group" aria-label="統計模式"></div></div>
         <div class="pill-tabs stat-tabs" role="tablist" id="statTabs"></div>
         <div class="stat-body" id="statBody"></div>
       </section>
 
       <section class="official-sec">
-        <div class="official-head"><h2 class="sec-title">Official Score Card</h2>
+        <div class="official-head"><h2 class="sec-title">所有回合的計分卡</h2>
         <div class="legend"><span><i class="cc"></i>Eagle</span><span><i class="c"></i>Birdie</span><span><i></i>Bogey</span><span><i class="dd"></i>D Bogey +</span></div></div>
         <div class="score-wrap" id="officialCard"></div>
       </section>
       <section class="insight-sec">
-        <span class="eyebrow">Next Steps · 下一步練習</span>
-        <h2 class="sec-title">根據這一回合</h2>
+                <h2 class="sec-title">下一步可以練什麼</h2>
         <div class="insights" id="insights"></div>
       </section>
 
