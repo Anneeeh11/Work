@@ -15,23 +15,26 @@
     var Y = true, N = false, _ = null;
     return [
       { id: 's1', sample: true, course: '範例球場 Example Golf Club', date: '2026-10-04', par: DEFAULT_PAR.slice(),
-        score: [5, 6, 4, 4, 6, 3, 5, 5, 5, 4, 5, 4, 6, 5, 7, 4, 5, 5],
-        putts: [2, 2, 1, 2, 3, 2, 2, 2, 2, 2, 2, 2, 2, 3, 2, 2, 2, 2],
+        score: [6, 7, 5, 4, 7, 4, 6, 6, 6, 5, 6, 5, 8, 6, 7, 4, 6, 6],
+        putts: [2, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 2, 2, 2, 2, 2, 2],
         fir: [N, Y, Y, _, N, _, Y, Y, N, Y, N, _, Y, N, N, _, Y, N],
         drive: [205, 228, 214, _, 198, _, 220, 236, 202, 218, 196, _, 231, 210, 224, _, 215, 207],
+        pen: [_, 1, _, _, 2, _, _, _, _, _, _, _, 1, _, _, _, _, _],
         sand: [_, _, _, Y, Y, _, _, _, _, _, _, _, _, Y, _, _, _, _] },
       { id: 's2', sample: true, course: '範例球場 Example Golf Club', date: '2026-10-18', par: DEFAULT_PAR.slice(),
-        score: [6, 5, 5, 3, 5, 4, 5, 6, 4, 5, 4, 3, 6, 5, 6, 4, 4, 5],
-        putts: [2, 2, 2, 2, 2, 2, 2, 2, 1, 3, 2, 1, 2, 2, 2, 2, 2, 2],
+        score: [6, 6, 5, 4, 6, 4, 6, 6, 5, 6, 6, 4, 7, 6, 6, 4, 6, 6],
+        putts: [2, 2, 2, 2, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 2],
         fir: [N, Y, Y, _, Y, _, Y, N, Y, N, Y, _, Y, Y, N, _, Y, Y],
         drive: [212, 240, 219, _, 225, _, 221, 233, 216, 209, 222, _, 244, 218, 229, _, 220, 214],
+        pen: [_, _, _, _, _, _, _, 1, _, _, _, _, 1, _, _, _, _, _],
         sand: [_, _, _, _, _, Y, _, _, Y, _, _, Y, _, _, _, _, _, _] }
     ];
   }
 
   var rounds = store.get('rounds', null);
   if (!rounds || !rounds.length || rounds.every(function (r) { return r.sample; })) rounds = sampleRounds();
-  rounds.forEach(function (r) { r.drive = r.drive || blank(); r.sand = r.sand || blank(); });
+  rounds.forEach(function (r) { r.drive = r.drive || blank(); r.sand = r.sand || blank(); r.pen = r.pen || blank(); });
+  var mode = store.get('mgmode', 'beginner');
   var FIELDS = {
     amateur: { name: '業餘 · 約 18 差點', cat: [0, .02, .28, .42, .28], gir: .22, fir: .45, sand: .10, putts: 34, drive: 215, longest: 240 },
     single: { name: '單差點 · 約 5 差點', cat: [.002, .08, .50, .32, .098], gir: .45, fir: .55, sand: .25, putts: 31, drive: 245, longest: 270 },
@@ -50,7 +53,7 @@
   function newRound(data) {
     var last = rounds[rounds.length - 1];
     var r = { id: 'r' + Date.now(), course: last && !last.sample ? last.course : '', date: today(),
-      par: last ? last.par.slice() : DEFAULT_PAR.slice(), score: blank(), putts: blank(), fir: blank(), drive: blank(), sand: blank(), photo: null };
+      par: last ? last.par.slice() : DEFAULT_PAR.slice(), score: blank(), putts: blank(), fir: blank(), drive: blank(), sand: blank(), pen: blank(), photo: null };
     if (data) Object.keys(data).forEach(function (k) { if (data[k] != null) r[k] = data[k]; });
     rounds = rounds.filter(function (x) { return !x.sample; });
     rounds.push(r);
@@ -173,6 +176,9 @@
       row('Putts <small>推桿</small>', 'putt-row', function (i) {
         return '<input class="in-putt" data-h="' + i + '" inputmode="numeric" maxlength="1" aria-label="第 ' + (i + 1) + ' 洞推桿數" value="' + (r.putts[i] == null ? '' : r.putts[i]) + '">';
       }, function (a, b) { return tot(a, b, r.putts); }) +
+      row('Penalty <small>罰桿（已含在桿數裡）</small>', 'pen-row', function (i) {
+        return '<input class="in-pen" data-h="' + i + '" inputmode="numeric" maxlength="1" aria-label="第 ' + (i + 1) + ' 洞罰桿數" value="' + (r.pen[i] ? r.pen[i] : '') + '">';
+      }, function (a, b) { var n = 0; for (var k = a; k < b; k++) n += r.pen[k] || 0; return n || '–'; }) +
       row('Fairway <small>上球道</small>', 'fir-row', function (i) {
         if (r.par[i] === 3) return '<span class="na">·</span>';
         var f = r.fir[i];
@@ -207,7 +213,7 @@
     wrap.addEventListener('input', function (e) {
       var t = e.target;
       if (!t.matches('input')) return;
-      var h = +t.getAttribute('data-h'), raw = t.value.replace(/\D/g, ''), isScore = t.classList.contains('in-score'), isDrive = t.classList.contains('in-drive');
+      var h = +t.getAttribute('data-h'), raw = t.value.replace(/\D/g, ''), isScore = t.classList.contains('in-score'), isDrive = t.classList.contains('in-drive'), isPen = t.classList.contains('in-pen');
       t.value = raw;
       var v = raw === '' ? null : +raw;
       if (isDrive) {
@@ -218,6 +224,15 @@
         if (raw.length === 3) for (var k = h + 1; k < H && !nd; k++) nd = $('.in-drive[data-h="' + k + '"]', wrap);
         var tgt = nd || $('.in-drive[data-h="' + h + '"]', wrap);
         if (tgt) { tgt.focus(); if (nd) tgt.select(); else tgt.setSelectionRange(tgt.value.length, tgt.value.length); }
+        return;
+      }
+      if (isPen) {
+        R().pen[h] = v || null;
+        if (R().sample) R().sample = false;
+        save(); refreshSoft();
+        var np = raw !== '' && h < H - 1 ? $('.in-pen[data-h="' + (h + 1) + '"]', wrap) : null;
+        var tp = np || $('.in-pen[data-h="' + h + '"]', wrap);
+        if (tp) { tp.focus(); tp.select(); }
         return;
       }
       if (isScore) { if (v === 0) v = null; R().score[h] = v; } else R().putts[h] = v;
@@ -263,7 +278,66 @@
     putting: 'Total putts in each round · 每回合推桿總數（越少越好）',
     longest: 'Your longest drive in each round · 每回合最遠的一次開球'
   };
+  /* Beginner mode: the few numbers that matter on the way to breaking 100. */
+  function drawBeginner(replay) {
+    var el = $('#statBody'), r = R(), p = played(r);
+    if (!p.length) { el.innerHTML = '<p class="empty-stats">在上面的計分卡輸入這一回合的桿數，這裡就會告訴你桿數掉在哪裡。</p>'; return; }
+    var tot = sum(p.map(function (i) { return r.score[i]; })), par = sum(p.map(function (i) { return r.par[i]; })), full = p.length === H;
+    var putts = sum(p.map(function (i) { return r.putts[i] || 0; })), hasPutts = p.some(function (i) { return r.putts[i] != null; });
+    var three = p.filter(function (i) { return r.putts[i] >= 3; }).length, pens = sum(p.map(function (i) { return r.pen[i] || 0; }));
+    var big = p.filter(function (i) { return diff(r, i) >= 2; }), good = p.filter(function (i) { return diff(r, i) <= 0; }).length;
+    var capped = sum(p.map(function (i) { return Math.min(r.score[i], r.par[i] * 2); }));
+    // where the strokes over par went
+    // each stroke over par is counted once: penalties first, then putts beyond two, then beyond a double bogey
+    var acc = [0, 0, 0, 0];
+    p.forEach(function (i) {
+      var rem = Math.max(0, diff(r, i)), a = Math.min(r.pen[i] || 0, rem); rem -= a;
+      var b = Math.min(Math.max(0, (r.putts[i] || 0) - 2), rem); rem -= b;
+      var c = Math.max(0, rem - 2);
+      acc[0] += b; acc[1] += a; acc[2] += c; acc[3] += rem - c;
+    });
+    var over = sum(acc);
+    var parts = [['多出來的推桿', acc[0], '#c8102e', '每洞超過 2 推的部分'], ['罰桿', acc[1], '#b88a2a', '出界、進水、遺失球'], ['大數字', acc[2], '#17251e', '超過雙柏忌的部分'], ['其他', acc[3], '#a9abaa', '開球、攻果嶺、切球']];
+    // previous played round
+    var prev = null;
+    for (var k = cur - 1; k >= 0; k--) if (played(rounds[k]).length === H) { prev = rounds[k]; break; }
+    var prevTot = prev ? sum(prev.score) : null;
+    var goal = !full ? null : tot >= 100 ? { t: '破百', n: tot - 99, s: '還差 ' + (tot - 99) + ' 桿就能破百' } : tot >= 95 ? { t: '打進 95', n: tot - 94, s: '已經破百！下一個目標：94 桿以內' } : { t: '打進 90', n: tot - 89, s: '進步很多！下一個目標：90 桿以內' };
+    var worst = p.slice().sort(function (a, b) { return diff(r, b) - diff(r, a); }).slice(0, 3);
+    var trend = rounds.filter(function (x) { return played(x).length === H; });
+    var tmax = Math.max.apply(null, trend.map(function (x) { return sum(x.score); }).concat([110])), tmin = Math.min.apply(null, trend.map(function (x) { return sum(x.score); }).concat([85])) - 5;
+    var ty = function (v) { return (v - tmin) / (tmax - tmin) * 100; };
+
+    el.innerHTML = '<p class="stat-cap">新手模式：只看最重要的幾個數字 · R' + (cur + 1) + (full ? '' : '（已輸入 ' + p.length + ' 洞）') + '</p>' +
+      '<div class="bg-top"><div class="bg-score"><span class="eyebrow">總桿數</span><strong>' + tot + '</strong><small class="' + (tot - par < 0 ? 'under' : '') + '">' + toParStr(tot - par) + '</small>' +
+        (prevTot != null && full ? '<p class="bg-delta ' + (tot < prevTot ? 'up' : tot > prevTot ? 'down' : '') + '">' + (tot < prevTot ? '比上一場少 ' + (prevTot - tot) + ' 桿' : tot > prevTot ? '比上一場多 ' + (tot - prevTot) + ' 桿' : '和上一場一樣') + '</p>' : '') + '</div>' +
+        (goal ? '<div class="bg-goal"><span class="eyebrow">下一個目標 · ' + goal.t + '</span><p>' + goal.s + '</p><div class="goal-bar"><i style="width:' + Math.max(6, 100 - goal.n / 20 * 100) + '%"></i></div>' +
+          (capped < tot ? '<p class="bg-cap">如果每洞最多記雙倍標準桿，這一場是 <b>' + capped + '</b> 桿。</p>' : '') + '</div>' : '') + '</div>' +
+      '<div class="tiles bg-tiles">' + tile('推桿', hasPutts ? putts : '–', hasPutts ? '三推 ' + three + ' 次' : '在計分卡輸入推桿數', three >= 3) + tile('罰桿', pens, '出界、進水等', pens >= 4) +
+        tile('雙柏忌以上', big.length + ' 洞', '每洞多 2 桿以上', big.length >= 8) + tile('標準桿或更好', good + ' 洞', good ? '保持下去' : '目標：每場至少 1 洞') + '</div>' +
+      '<h3 class="bg-h">比標準桿多的 ' + over + ' 桿，掉在哪裡？</h3>' +
+      '<div class="lost-bar">' + parts.map(function (x) { return x[1] ? '<i style="flex:' + x[1] + ';background:' + x[2] + '" title="' + x[0] + ' ' + x[1] + '"></i>' : ''; }).join('') + '</div>' +
+      '<ul class="lost-key">' + parts.map(function (x) { return '<li><i style="background:' + x[2] + '"></i><strong>' + x[0] + ' <b>' + x[1] + '</b></strong><small>' + x[3] + '</small></li>'; }).join('') + '</ul>' +
+      '<div class="bg-split"><div><h3 class="bg-h">這一場最貴的 3 個洞</h3><ol class="worst">' + worst.map(function (i) {
+        return '<li><span class="sym ' + symClass(diff(r, i)) + '">' + r.score[i] + '</span><strong>第 ' + (i + 1) + ' 洞 · Par ' + r.par[i] + '</strong><small>' + toParStr(diff(r, i)) + (r.putts[i] >= 3 ? ' · ' + r.putts[i] + ' 推' : '') + (r.pen[i] ? ' · 罰 ' + r.pen[i] + ' 桿' : '') + '</small></li>';
+      }).join('') + '</ol></div>' +
+      '<div><h3 class="bg-h">每一場的總桿數</h3>' + (trend.length ? '<div class="trend"><span class="tl" style="bottom:' + ty(100) + '%"><em>100</em></span><span class="tl t95" style="bottom:' + ty(95) + '%"><em>95</em></span>' + trend.map(function (x) {
+        var v = sum(x.score); return '<div class="tb' + (x === r ? ' cur' : '') + '"><i style="height:' + ty(v) + '%"></i><b>' + v + '</b><small>R' + (rounds.indexOf(x) + 1) + '</small></div>';
+      }).join('') + '</div>' : '<p class="empty-stats">輸入完整 18 洞後就會出現。</p>') + '</div></div>';
+    if (replay) { el.classList.remove('replay'); void el.offsetWidth; el.classList.add('replay'); }
+  }
+
+  function drawMode() {
+    var t = $('#modeToggle');
+    if (!t) return;
+    t.innerHTML = '<button type="button" data-mode="beginner" aria-pressed="' + (mode === 'beginner') + '">新手模式</button><button type="button" data-mode="masters" aria-pressed="' + (mode === 'masters') + '">進階 · Masters 統計</button>';
+    $$('[data-mode]', t).forEach(function (b) { b.addEventListener('click', function () { mode = b.getAttribute('data-mode'); store.set('mgmode', mode); drawMode(); drawStats(true); }); });
+  }
+
   function drawStats(replay) {
+    $('#statTabs').hidden = mode === 'beginner';
+    $('#statTabs').classList.add('in'); // hidden tabs never scroll into view, so reveal them directly
+    if (mode === 'beginner') return drawBeginner(replay);
     var F = FIELDS[fieldKey];
     var list = rounds.filter(function (r) { return played(r).length; });
     var all = stats(list), per = list.map(function (r) { return { r: r, n: rounds.indexOf(r) + 1, s: stats([r]) }; });
@@ -325,6 +399,8 @@
     if (s.scr[1] >= 3 && pct(s.scr) < 0.3) tips.push({ t: '加強救球（Up & Down）', d: '沒上果嶺時只有 ' + Math.round(pct(s.scr) * 100) + '% 保住 Par。用 Shot Selector 選對打法，再練 Up & Down 挑戰。', l: { href: 'practice.html', label: 'Up & Down Challenge' } });
     if (s.fir[1] >= 4 && pct(s.fir) < 0.45) tips.push({ t: '開球上球道', d: '球道命中 ' + Math.round(pct(s.fir) * 100) + '%。如果總是偏右，先檢查握桿與揮桿路徑。', l: { href: 'fix.html#slice', label: 'Fix My Shot：球往右飛' } });
     if (s.cat[4] >= 3) tips.push({ t: '避免大數字', d: '本回合 ' + s.cat[4] + ' 個雙柏忌以上。遇到麻煩時先求安全出來，短桿選最保守的打法。', l: { href: 'shot.html', label: 'Shot Selector' } });
+    var pn = sum(R().pen.map(function (v) { return v || 0; }));
+    if (pn >= 3) tips.push({ t: '少一點罰桿', d: '這一場有 ' + pn + ' 桿罰桿。開球不確定時，用 Hybrid 或 5 號木開球，寧可短一點也要留在場內。', l: { href: 'rules.html#lost', label: '遺失球與界外的規則' } });
     if (s.byPar[3][1] && s.byPar[3][0] / s.byPar[3][1] - 3 > 0.8) tips.push({ t: 'Par 3 的鐵桿', d: 'Par 3 平均 ' + (s.byPar[3][0] / s.byPar[3][1]).toFixed(1) + ' 桿。確認每支鐵桿的距離，選對桿。', l: { href: 'clubs.html#iron', label: 'Club Guide：Irons' } });
     if (!tips.length) tips.push({ t: '保持下去', d: '這一回合沒有明顯的弱點。用 30 分鐘完整短桿計畫維持手感。', l: { href: 'practice.html', label: 'Practice Plans' } });
     $('#insights').innerHTML = tips.slice(0, 4).map(function (t, i) {
@@ -338,7 +414,7 @@
     if (r.photo) $('#photoImg').src = r.photo;
   }
 
-  function drawAll() { drawRounds(); drawHeader(); drawCard(); drawOfficial(); drawStats(); drawInsights(); drawPhoto(); drawDelete(); GL.reveal($('main')); }
+  function drawAll() { drawMode(); drawRounds(); drawHeader(); drawCard(); drawOfficial(); drawStats(); drawInsights(); drawPhoto(); drawDelete(); GL.reveal($('main')); }
 
   var delArmed = false;
   function drawDelete() {
@@ -350,7 +426,7 @@
   /* ---------- import ---------- */
   function parseText(text) {
     var lines = text.split(/\r?\n/).map(function (l) { return l.split(/[,\t;]/).map(function (c) { return c.trim(); }); }).filter(function (l) { return l.join('') !== ''; });
-    var out = {}, keys = { par: /^(par|標準桿)$/i, score: /^(score|strokes|桿數|成績|scores)$/i, putts: /^(putts?|推桿|推桿數)$/i, fir: /^(fir|fairways?|球道|上球道)$/i, drive: /^(drive|drives|driving|開球|開球距離)$/i, sand: /^(sand|bunker|沙坑)$/i };
+    var out = {}, keys = { par: /^(par|標準桿)$/i, score: /^(score|strokes|桿數|成績|scores)$/i, putts: /^(putts?|推桿|推桿數)$/i, fir: /^(fir|fairways?|球道|上球道)$/i, drive: /^(drive|drives|driving|開球|開球距離)$/i, sand: /^(sand|bunker|沙坑)$/i, pen: /^(penalty|penalties|pen|罰桿)$/i };
     var num = function (c) { var n = parseInt(c, 10); return isNaN(n) ? null : n; };
     var bool = function (c) { c = String(c).toLowerCase(); return /^(1|y|yes|t|true|✓|v|o)$/.test(c) ? true : /^(0|n|no|f|false|✕|x)$/.test(c) ? false : null; };
     var keyOf = function (c) { for (var k in keys) if (keys[k].test(c)) return k; if (/^(course|球場)$/i.test(c)) return 'course'; if (/^(date|日期)$/i.test(c)) return 'date'; return null; };
@@ -384,7 +460,7 @@
     if (!out.score || !out.score.some(function (v) { return v != null; })) return null;
     var fill = function (a, d) { a = (a || []).slice(0, H); while (a.length < H) a.push(d === undefined ? null : d); return a; };
     var par = out.par && out.par.filter(Boolean).length >= 9 ? fill(out.par).map(function (p, i) { return p || DEFAULT_PAR[i]; }) : null;
-    return { score: fill(out.score), putts: fill(out.putts), fir: fill(out.fir), drive: fill(out.drive), sand: fill(out.sand).map(function (v) { return v ? true : null; }), par: par, course: out.course || null, date: /^\d{4}-\d{2}-\d{2}$/.test(out.date || '') ? out.date : null };
+    return { score: fill(out.score), putts: fill(out.putts), fir: fill(out.fir), drive: fill(out.drive), pen: fill(out.pen), sand: fill(out.sand).map(function (v) { return v ? true : null; }), par: par, course: out.course || null, date: /^\d{4}-\d{2}-\d{2}$/.test(out.date || '') ? out.date : null };
   }
 
   function readFile(file) {

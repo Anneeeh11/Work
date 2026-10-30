@@ -230,15 +230,25 @@
   GL.reveal = reveal;
 
   /* ---------- layout ---------- */
-  var NAV = [
-    { href: 'learn.html', key: 'learn', en: 'Learn Golf', zh: '技巧教學' },
-    { href: 'clubs.html', key: 'clubs', en: 'Club Guide', zh: '球桿選擇' },
-    { href: 'fix.html', key: 'fix', en: 'Fix My Shot', zh: '擊球診斷' },
-    { href: 'shot.html', key: 'shot', en: 'Shot Selector', zh: '短桿選擇' },
-    { href: 'practice.html', key: 'practice', en: 'Practice', zh: '練習計畫' },
-    { href: 'rules.html', key: 'rules', en: 'Rules', zh: '高球規則' },
-    { href: 'my-game.html', key: 'mygame', en: 'My Game', zh: '我的成績' }
+  /* Menu: one beginner entry point, then three groups. Chinese first, English second. */
+  var NAV_GROUPS = [
+    { zh: '學習', en: 'Learn', items: [
+      { href: 'learn.html', key: 'learn', zh: '技巧教學', en: 'Learn Golf' },
+      { href: 'clubs.html', key: 'clubs', zh: '球桿選擇', en: 'Club Guide' },
+      { href: 'rules.html', key: 'rules', zh: '高球規則', en: 'Rules' },
+      { href: 'guide.html', key: 'guide', zh: '第一次指南', en: 'First Time' },
+      { href: 'glossary.html', key: 'glossary', zh: '名詞小辭典', en: 'Glossary' }
+    ] },
+    { zh: '練習', en: 'Practice', items: [
+      { href: 'practice.html', key: 'practice', zh: '練習計畫', en: 'Practice Plans' },
+      { href: 'shot.html', key: 'shot', zh: '短桿選擇', en: 'Shot Selector' }
+    ] },
+    { zh: '分析', en: 'Analyse', items: [
+      { href: 'fix.html', key: 'fix', zh: '擊球診斷', en: 'Fix My Shot' },
+      { href: 'my-game.html', key: 'mygame', zh: '我的成績', en: 'My Game' }
+    ] }
   ];
+  var NAV = NAV_GROUPS.reduce(function (a, g) { return a.concat(g.items); }, []);
 
   // PAR/A wordmark: serif capitals with the tan slash from the logo
   function wordmark() { return '<span class="wordmark" aria-hidden="true">PAR<i class="sl"></i>A</span>'; }
@@ -249,27 +259,127 @@
       h.className = 'site-header';
       h.innerHTML = '<div class="bar">' +
         '<a class="brand" href="index.html" aria-label="PAR/A 首頁">' + wordmark() + '</a>' +
-        '<nav class="nav" id="nav" aria-label="Main">' + NAV.map(function (n) {
-          return '<a href="' + n.href + '"' + (n.key === page ? ' aria-current="page"' : '') + '><span>' + n.en + '</span><small>' + n.zh + '</small></a>';
-        }).join('') + '<a class="nav-contact" href="index.html#contact"><span>Contact Us</span><small>聯絡我們</small></a></nav>' +
-        '<a class="contact-cta" href="index.html#contact">Contact</a>' +
-        '<button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false">' + icon('menu') + '</button>' +
+        '<nav class="nav" id="nav" aria-label="Main">' +
+        '<a class="nav-start" href="start.html"' + (page === 'start' ? ' aria-current="page"' : '') + '><span>新手入門</span><small>Start Here</small></a>' +
+        NAV_GROUPS.map(function (g, i) {
+          var on = g.items.some(function (n) { return n.key === page; });
+          return '<div class="nav-group' + (on ? ' on' : '') + '"><button type="button" class="nav-g" aria-expanded="false" aria-controls="ng' + i + '"><span>' + g.zh + '</span><small>' + g.en + '</small>' + icon('arrow', 'chev') + '</button>' +
+            '<div class="nav-menu" id="ng' + i + '">' + g.items.map(function (n) {
+              return '<a href="' + n.href + '"' + (n.key === page ? ' aria-current="page"' : '') + '><span>' + n.zh + '</span><small>' + n.en + '</small></a>';
+            }).join('') + '</div></div>';
+        }).join('') +
+        '<a class="nav-contact" href="index.html#contact"><span>聯絡我們</span><small>Contact Us</small></a></nav>' +
+        '<a class="contact-cta" href="index.html#contact">聯絡我們</a>' +
+        '<button class="nav-toggle" id="navToggle" aria-label="開啟選單" aria-expanded="false">' + icon('menu') + '</button>' +
         '</div>';
       $('#navToggle').addEventListener('click', function () {
         var open = h.classList.toggle('open');
         this.setAttribute('aria-expanded', open);
         this.innerHTML = icon(open ? 'close' : 'menu');
       });
+      var groups = $$('.nav-group', h);
+      var closeAll = function (except) { groups.forEach(function (g) { if (g !== except) { g.classList.remove('open'); $('.nav-g', g).setAttribute('aria-expanded', 'false'); } }); };
+      groups.forEach(function (g) {
+        var b = $('.nav-g', g);
+        b.addEventListener('click', function (e) {
+          e.stopPropagation();
+          var open = !g.classList.contains('open');
+          closeAll(g);
+          g.classList.toggle('open', open);
+          b.setAttribute('aria-expanded', open);
+        });
+      });
+      document.addEventListener('click', function (e) { if (!h.contains(e.target)) closeAll(); });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeAll(); });
     }
     var f = $('#site-footer');
     if (f) {
+      var lefty = !!store.get('lefty', false);
       f.className = 'site-footer';
       f.innerHTML = '<div class="wrap foot">' +
         '<div><a class="brand light" href="index.html" aria-label="PAR/A 首頁">' + wordmark() + '</a><p class="brand-tag">The Golf Lab</p>' +
-        '<p class="foot-note">把高爾夫拆解成可以練習的方法。<br>所有說明皆以右手球員為準。</p></div>' +
-        '<div class="foot-links">' + NAV.map(function (n) { return '<a href="' + n.href + '">' + n.en + '<small>' + n.zh + '</small></a>'; }).join('') + '<a href="index.html#contact">Contact Us<small>聯絡我們</small></a></div>' +
+        '<p class="foot-note">給新手的高爾夫入門教學：<br>從第一次拿球桿，到穩定破百。</p>' +
+        '<button type="button" class="lefty-btn" id="leftyBtn" aria-pressed="' + lefty + '">左手球員模式：' + (lefty ? '開' : '關') + '</button></div>' +
+        '<div class="foot-cols"><div class="foot-col"><h5>開始</h5><a href="start.html">新手入門<small>Start Here</small></a><a href="index.html#contact">聯絡我們<small>Contact Us</small></a></div>' +
+        NAV_GROUPS.map(function (g) { return '<div class="foot-col"><h5>' + g.zh + '</h5>' + g.items.map(function (n) { return '<a href="' + n.href + '">' + n.zh + '<small>' + n.en + '</small></a>'; }).join('') + '</div>'; }).join('') + '</div>' +
         '</div><div class="wrap foot-base"><span>&copy; ' + new Date().getFullYear() + ' PAR/A · The Golf Lab</span><span>Practice with purpose.</span></div>';
+      $('#leftyBtn').addEventListener('click', function () {
+        var on = !store.get('lefty', false);
+        store.set('lefty', on);
+        applyLefty();
+        this.setAttribute('aria-pressed', on);
+        this.textContent = '左手球員模式：' + (on ? '開' : '關');
+      });
     }
+    applyLefty();
+  }
+
+  /* Left-handed mode mirrors every diagram; the text keeps right-handed wording, with a reminder. */
+  function applyLefty() {
+    var on = !!store.get('lefty', false);
+    document.documentElement.classList.toggle('lefty', on);
+    var note = $('#leftyNote');
+    if (on && !note) {
+      note = document.createElement('div');
+      note.id = 'leftyNote'; note.className = 'lefty-note';
+      note.innerHTML = '<span>左手球員模式已開啟：圖示已左右對調。文字說明仍以右手為準，請把「左、右」對調閱讀。</span>';
+      var hd = $('#site-header');
+      if (hd && hd.parentNode) hd.parentNode.insertBefore(note, hd.nextSibling);
+    } else if (!on && note) note.remove();
+  }
+
+  /* ---------- learning progress ---------- */
+  var learned = function () { return store.get('learned', []); };
+  var isLearned = function (id) { return learned().indexOf(id) > -1; };
+  function setLearned(id, on) {
+    var l = learned().filter(function (x) { return x !== id; });
+    if (on) l.push(id);
+    store.set('learned', l);
+  }
+
+  /* ---------- glossary terms ---------- */
+  // Wrap the first mention of each glossary word inside `root` in a button that opens a short definition.
+  function linkTerms(root) {
+    if (!root || !GL.glossary) return;
+    var pairs = [];
+    GL.glossary.forEach(function (g, i) { (g.auto || []).forEach(function (w) { pairs.push([w, i]); }); });
+    pairs.sort(function (a, b) { return b[0].length - a[0].length; });
+    var used = {};
+    pairs.forEach(function (p) {
+      if (used[p[1]]) return;
+      var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+        acceptNode: function (n) { return n.parentNode.closest('a, button, h1, h2, h3, h4, h5, .term, script, style, svg, input, textarea, select, label, legend') ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT; }
+      });
+      var node;
+      while ((node = walker.nextNode())) {
+        var k = node.nodeValue.indexOf(p[0]);
+        if (k < 0) continue;
+        var after = node.splitText(k);
+        after.splitText(p[0].length);
+        var b = document.createElement('button');
+        b.type = 'button'; b.className = 'term'; b.setAttribute('data-term', p[1]); b.textContent = p[0];
+        after.parentNode.replaceChild(b, after);
+        used[p[1]] = true;
+        break;
+      }
+    });
+  }
+  function termPopover() {
+    var pop = document.createElement('div');
+    pop.className = 'term-pop'; pop.setAttribute('role', 'dialog'); pop.hidden = true;
+    document.body.appendChild(pop);
+    document.addEventListener('click', function (e) {
+      var b = e.target.closest && e.target.closest('.term');
+      if (!b) { if (!pop.contains(e.target)) pop.hidden = true; return; }
+      var g = GL.glossary[+b.getAttribute('data-term')];
+      pop.innerHTML = '<strong>' + esc(g.zh) + '<span>' + esc(g.t) + '</span></strong><p>' + esc(g.d) + '</p><a href="glossary.html#' + encodeURIComponent(g.t) + '">名詞小辭典 ' + icon('arrow') + '</a>';
+      pop.hidden = false;
+      var r = b.getBoundingClientRect(), w = Math.min(300, window.innerWidth - 32);
+      pop.style.width = w + 'px';
+      pop.style.left = Math.max(16, Math.min(r.left + window.pageXOffset, window.innerWidth - w - 16)) + 'px';
+      pop.style.top = (r.bottom + window.pageYOffset + 8) + 'px';
+    });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') pop.hidden = true; });
   }
 
   /* ---------- search ---------- */
@@ -290,6 +400,12 @@
       var a = GL.ruleAreas.filter(function (x) { return x.id === r.area; })[0];
       items.push({ t: r.q, s: a.zh + ' · ' + (r.pen === 0 ? '免罰' : r.pen === 'x' ? '規則說明' : '罰 ' + r.pen + ' 桿'), k: r.a + ' 規則 rules ' + a.name, type: 'Rules · ' + a.name, url: 'rules.html#' + r.area });
     });
+    (GL.glossary || []).forEach(function (g) { items.push({ t: g.zh + '（' + g.t + '）', s: g.d, k: g.t + ' ' + (g.auto || []).join(' ') + ' 名詞 辭典', type: '名詞小辭典', url: 'glossary.html#' + encodeURIComponent(g.t) }); });
+    items.push({ t: '新手入門', s: '依你的程度，給你 4 週學習路線', k: '新手 開始 入門 路線 start 第一次', type: '新手入門', url: 'start.html' });
+    items.push({ t: '第一次去練習場', s: '要帶什麼、怎麼買球、練習順序', k: '練習場 第一次 新手 driving range', type: '第一次指南', url: 'guide.html#range' });
+    items.push({ t: '第一次下場', s: '服裝、時間、要帶什麼、桿弟與球車', k: '下場 球場 第一次 服裝 預約', type: '第一次指南', url: 'guide.html#course' });
+    items.push({ t: '計分卡怎麼填', s: '每洞記桿數，最多記雙倍標準桿', k: '計分 計分卡 撿球 雙倍標準桿 scorecard', type: '第一次指南', url: 'guide.html#score' });
+    items.push({ t: '新手第一套球桿', s: '只需要 5–7 支', k: '買球桿 新手 套桿 第一套', type: '球桿選擇', url: 'clubs.html#starter' });
     items.push({ t: 'My Game', s: '上傳計分卡，分析你的成績', k: '計分卡 成績 分析 scorecard 推桿 上果嶺 球道 stats', type: 'Tool', url: 'my-game.html' });
     items.push({ t: 'Practice Plans', s: '15 / 30 分鐘練習菜單', k: '練習 計畫 菜單 up and down', type: 'Tool', url: 'practice.html' });
     return items;
@@ -322,7 +438,7 @@
   function lessonCard(l, step) {
     var c = catById(l.cat);
     return '<a class="lesson-card" href="learn.html#' + l.id + '">' +
-      '<div class="lc-art">' + (step ? '<span class="lc-step">STEP ' + step + '</span>' : '') + lessonArt(l) + '</div>' +
+      '<div class="lc-art">' + (step ? '<span class="lc-step">STEP ' + step + '</span>' : '') + (isLearned(l.id) ? '<span class="lc-done">' + icon('check') + '已學會</span>' : '') + lessonArt(l) + '</div>' +
       '<div class="lc-body"><span class="eyebrow">' + c.name + ' · ' + c.zh + '</span>' +
       '<h3>' + esc(l.title) + '</h3><p>' + esc(l.zh) + '</p>' +
       '<span class="lc-meta">' + icon('clock') + l.mins + ' min<span class="dot"></span>' + l.level + '<span class="go">' + icon('arrow') + '</span></span></div></a>';
@@ -658,6 +774,7 @@
       $('#ruleList').innerHTML = html || '<p class="empty-stats">找不到「' + esc(state.q) + '」相關的規則，試試「沙坑」、「界外」或「旗桿」。</p>';
       $('#ruleCount').textContent = n + ' 條規則';
       reveal($('#ruleList'));
+      linkTerms($('#ruleList'));
     }
     $('#areaTabs').innerHTML = '<button type="button" role="tab" data-area="all">全部<small>All</small></button>' + GL.ruleAreas.map(function (a) {
       return '<button type="button" role="tab" data-area="' + a.id + '">' + a.zh + '<small>' + a.name + '</small></button>';
@@ -680,6 +797,79 @@
     draw();
   }
 
+
+  /* ---------- START HERE ---------- */
+  function start() {
+    var level = store.get('level', null);
+    var linkDone = store.get('pathdone', {});
+    function itemHTML(it, wk, k) {
+      if (it.lesson) {
+        var l = lessonById(it.lesson), done = isLearned(l.id);
+        return '<li class="pi' + (done ? ' done' : '') + '"><span class="pi-check" aria-hidden="true">' + icon('check') + '</span><a href="learn.html#' + l.id + '"><strong>' + esc(l.zh) + '</strong><small>教學 · ' + esc(l.title) + ' · ' + l.mins + ' 分鐘</small></a></li>';
+      }
+      var key = wk + '-' + k, d = !!linkDone[key];
+      return '<li class="pi' + (d ? ' done' : '') + '"><button type="button" class="pi-check" data-done="' + key + '" aria-pressed="' + d + '" aria-label="完成：' + esc(it.t) + '">' + icon('check') + '</button><a href="' + it.href + '"><strong>' + esc(it.t) + '</strong><small>' + esc(it.s) + '</small></a></li>';
+    }
+    function draw() {
+      $$('[data-level]').forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-level') === level); });
+      var box = $('#pathBox');
+      if (!level) { box.innerHTML = '<p class="path-empty">先選一個最接近你的狀態，我們會給你一條 4 週的學習路線。</p>'; return; }
+      var weeks = GL.paths[level], total = 0, done = 0;
+      weeks.forEach(function (w, wi) { w.items.forEach(function (it, k) { total++; if (it.lesson ? isLearned(it.lesson) : linkDone[wi + '-' + k]) done++; }); });
+      box.innerHTML = '<div class="path-progress"><div><span class="eyebrow">你的進度</span><strong>' + done + ' / ' + total + '</strong></div><div class="pp-bar"><i style="width:' + (done / total * 100) + '%"></i></div><p>教學頁按下「標記為已學會」會自動打勾；其他項目完成後自己點一下勾勾。</p></div>' +
+        '<div class="weeks">' + weeks.map(function (w, wi) {
+          var wd = w.items.filter(function (it, k) { return it.lesson ? isLearned(it.lesson) : linkDone[wi + '-' + k]; }).length;
+          return '<section class="week' + (wd === w.items.length ? ' complete' : '') + '"><div class="wk-head"><span class="wk-n">' + w.w + '</span><h3>' + esc(w.t) + '</h3><span class="wk-c">' + wd + ' / ' + w.items.length + '</span></div><ul class="path-items">' + w.items.map(function (it, k) { return itemHTML(it, wi, k); }).join('') + '</ul></section>';
+        }).join('') + '</div>';
+      $$('[data-done]', box).forEach(function (b) {
+        b.addEventListener('click', function () { var key = b.getAttribute('data-done'); linkDone[key] = !linkDone[key]; store.set('pathdone', linkDone); draw(); });
+      });
+      reveal(box);
+    }
+    $('#levelPick').innerHTML = GL.levels.map(function (lv, i) {
+      return '<button type="button" class="level" data-level="' + lv.id + '"><span class="lv-n">0' + (i + 1) + '</span><strong>' + lv.t + '</strong><small>' + lv.s + '</small></button>';
+    }).join('');
+    $$('[data-level]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        level = b.getAttribute('data-level'); store.set('level', level); draw();
+        var t = $('#pathBox'); window.scrollTo({ top: t.getBoundingClientRect().top + window.pageYOffset - 90, behavior: 'smooth' });
+      });
+    });
+    draw();
+  }
+
+  /* ---------- FIRST TIME GUIDE ---------- */
+  function guide() {
+    linkTerms($('main'));
+    var go = function () { var t = location.hash && document.getElementById(location.hash.slice(1)); if (t) window.scrollTo({ top: t.getBoundingClientRect().top + window.pageYOffset - 90 }); };
+    setTimeout(go, 60);
+  }
+
+  /* ---------- GLOSSARY ---------- */
+  function glossary() {
+    var groups = [];
+    GL.glossary.forEach(function (g) { if (groups.indexOf(g.g) < 0) groups.push(g.g); });
+    var q = '';
+    function draw() {
+      var ql = q.toLowerCase(), n = 0;
+      $('#glossList').innerHTML = groups.map(function (gr) {
+        var list = GL.glossary.filter(function (g) { return g.g === gr && (!ql || (g.t + g.zh + g.d).toLowerCase().indexOf(ql) > -1); });
+        n += list.length;
+        if (!list.length) return '';
+        return '<section class="gl-group"><h2>' + gr + '</h2><dl>' + list.map(function (g) {
+          return '<div class="gl-item" id="' + esc(g.t) + '"><dt>' + esc(g.zh) + '<span>' + esc(g.t) + '</span></dt><dd>' + esc(g.d) + '</dd></div>';
+        }).join('') + '</dl></section>';
+      }).join('') || '<p class="empty-stats">找不到「' + esc(q) + '」，試試「差點」或「Loft」。</p>';
+      $('#glossCount').textContent = n + ' 個名詞';
+      reveal($('#glossList'));
+    }
+    $('#glossSearch').addEventListener('input', function () { q = this.value.trim(); draw(); });
+    draw();
+    var h = decodeURIComponent(location.hash.slice(1));
+    var t = h && document.getElementById(h);
+    if (t) { t.classList.add('hl'); setTimeout(function () { window.scrollTo({ top: t.getBoundingClientRect().top + window.pageYOffset - 110 }); }, 60); }
+  }
+
   /* ---------- LEARN ---------- */
   function learn() {
     var root = $('#learnRoot');
@@ -697,10 +887,10 @@
   function renderList(root, sec, focusCat) {
     var count = function (x) { return GL.lessons.filter(function (l) { return x.cats.indexOf(l.cat) > -1; }).length; };
     document.title = 'Learn Golf — ' + sec.name + ' | PAR/A';
-    root.innerHTML = '<header class="page-head wrap"><span class="eyebrow">Learn Golf · 技巧教學</span><h1>Learn Golf</h1>' +
+    root.innerHTML = '<header class="page-head wrap"><span class="eyebrow">Learn Golf</span><h1>技巧教學</h1>' +
       '<p class="lead">分成四個單元，建議依照順序學習。每一篇教學都用相同的六個步驟：<b>適用情境 → 選桿 → Setup → 動作步驟 → 常見錯誤 → 練習方法</b>。</p></header>' +
       '<div class="wrap"><nav class="units" aria-label="Learn Golf 單元">' + GL.sections.map(function (x, i) {
-        return '<a href="#' + x.id + '" class="unit"' + (x.id === sec.id ? ' aria-current="true"' : '') + '><span class="u-n">0' + (i + 1) + '</span><strong>' + x.zh + '</strong><small>' + x.name + ' · ' + count(x) + ' 篇</small></a>';
+        return '<a href="#' + x.id + '" class="unit"' + (x.id === sec.id ? ' aria-current="true"' : '') + '><span class="u-n">0' + (i + 1) + '</span><strong>' + x.zh + '</strong><small>' + x.name + ' · 已學會 ' + GL.lessons.filter(function (l) { return x.cats.indexOf(l.cat) > -1 && isLearned(l.id); }).length + ' / ' + count(x) + '</small></a>';
       }).join('') + '</nav>' +
       '<div class="unit-intro"><span class="eyebrow">Unit 0' + (GL.sections.indexOf(sec) + 1) + '</span><h2>' + sec.zh + ' <span class="zh">' + sec.name + '</span></h2><p>' + sec.desc + '</p></div>' +
       sec.cats.map(function (cid) {
@@ -709,6 +899,7 @@
           '<div class="lesson-grid' + (ls.length === 4 ? ' four' : '') + '">' + ls.map(function (l, i) { return lessonCard(l, sec.id === 'setup' || sec.id === 'swing' ? i + 1 : 0); }).join('') + '</div></section>';
       }).join('') + '</div>';
     reveal(root, true);
+    linkTerms($('.unit-intro', root));
     if (focusCat && sec.cats.length > 1 && sec.cats[0] !== focusCat) {
       var t = document.getElementById('cat-' + focusCat);
       if (t) setTimeout(function () { window.scrollTo({ top: t.getBoundingClientRect().top + window.pageYOffset - 100 }); }, 30);
@@ -742,6 +933,7 @@
       '<a class="crumb" href="#' + sec0.id + '">' + icon('back') + sec0.zh + ' · ' + sec0.name + '</a>' +
       '<header class="lesson-head"><div><span class="eyebrow">' + c.name + ' · ' + l.level + ' · ' + l.mins + ' min</span><h1>' + esc(l.title) + '</h1><p class="lead">' + esc(l.zh) + '</p></div>' +
       '<div class="lesson-art">' + lessonArt(l, { label: l.title, tag: l.club.pick.split('、')[0] }) + '</div></header>' +
+      (l.key ? '<div class="key-point"><span class="kp-label">這篇的重點</span><p>' + esc(l.key) + '</p></div>' : '') +
       '<div class="lesson-layout"><nav class="format-rail" aria-label="Lesson sections">' + sec.map(function (s, i) {
         return '<a href="#' + l.id + '" data-jump="sec-' + s[0] + '"><span class="n">' + (i + 1) + '</span>' + s[1] + '</a>';
       }).join('') + '</nav>' +
@@ -750,9 +942,19 @@
       }).join('') +
       (l.cat === 'setup' || l.cat === 'fullswing' ? '<a class="cta-band" href="fix.html"><div><strong>球一直打厚、往右飛？</strong><span>用 Fix My Shot 回答幾個問題，找出最可能的原因。</span></div>' + icon('arrow') + '</a>' : '') +
       (l.cat === 'chipping' || l.cat === 'pitching' ? '<a class="cta-band" href="shot.html"><div><strong>不確定該打哪一種？</strong><span>用 Shot Selector 回答 4 個問題，馬上得到建議。</span></div>' + icon('arrow') + '</a>' : '') +
+      '<div class="learned-row"><button type="button" class="btn' + (isLearned(l.id) ? ' done' : '') + '" id="learnedBtn" aria-pressed="' + isLearned(l.id) + '">' + icon('check') + '<span>' + (isLearned(l.id) ? '已學會' : '標記為已學會') + '</span></button>' +
+        '<p>學會之後，<a href="start.html">新手入門</a>的路線會自動打勾。</p></div>' +
       '<div class="pager"><a href="#' + prev.id + '"><small>上一篇</small>' + esc(prev.title) + '</a><a href="#' + next.id + '" class="next"><small>下一篇</small>' + esc(next.title) + '</a></div>' +
       '</div></div></div>';
     reveal(root, true);
+    linkTerms($('.lesson-body', root));
+    $('#learnedBtn').addEventListener('click', function () {
+      var on = !isLearned(l.id);
+      setLearned(l.id, on);
+      this.classList.toggle('done', on);
+      this.setAttribute('aria-pressed', on);
+      $('span', this).textContent = on ? '已學會' : '標記為已學會';
+    });
     $$('[data-jump]', root).forEach(function (a) {
       a.addEventListener('click', function (e) {
         e.preventDefault();
@@ -799,7 +1001,12 @@
           '<p class="tip">' + icon('flag') + esc(c.tip) + '</p></div></article>';
       }).join('');
       reveal($('main'));
+      linkTerms($('#clubCards'));
     }
+    var st = $('#starterSet');
+    if (st) st.innerHTML = GL.starterSet.map(function (c) {
+      return '<div class="starter ' + (c.need === '必備' ? 'must' : c.need === '建議' ? 'nice' : 'later') + '"><span class="need">' + c.need + '</span><strong>' + esc(c.c) + '</strong><p>' + esc(c.d) + '</p></div>';
+    }).join('');
     $$('[data-who]').forEach(function (b) { b.addEventListener('click', function () { state.who = b.getAttribute('data-who'); store.set('who', state.who); draw(); }); });
     $$('[data-unit]').forEach(function (b) { b.addEventListener('click', function () { state.unit = b.getAttribute('data-unit'); store.set('unit', state.unit); draw(); }); });
     draw();
@@ -863,6 +1070,7 @@
         }).join('') + '</div>' +
         '<p class="disclaimer">結果依照固定的規則判斷，只是方向參考。若問題持續，建議找教練錄影分析。</p></div>';
       reveal(root, true);
+      linkTerms($('.diag-main', root));
       $('#again').addEventListener('click', function () { start(p.id); });
       $('#all').addEventListener('click', function () { history.replaceState(null, '', location.pathname); pickList(); });
       window.scrollTo({ top: root.getBoundingClientRect().top + window.pageYOffset - 100, behavior: 'smooth' });
@@ -1042,6 +1250,20 @@
             '<circle cx="' + r[1] + '" cy="' + r[0] + '" r="4" fill="none" stroke="#f2c75c" stroke-width="1.4"/>' + T(r[1] + 9, r[0] + 4, r[2], 'start', 'dg-t gold');
         });
       }
+    } else if (type === 'targets') {
+      o = '<rect width="320" height="190" rx="16" fill="#3f7d3a"/><rect width="320" height="190" rx="16" fill="url(#dgs)"/>' +
+        '<rect x="128" y="160" width="64" height="22" rx="4" fill="#2a3a30"/><circle cx="160" cy="166" r="4" fill="#fff"/>' + T(160, 186, '打位', 'middle', 'dg-t');
+      [[160, 120, '50 碼'], [110, 78, '100 碼'], [214, 50, '150 碼']].forEach(function (f) {
+        o += '<ellipse cx="' + f[0] + '" cy="' + (f[1] + 4) + '" rx="22" ry="7" fill="#5fa64a"/><line x1="' + f[0] + '" y1="' + (f[1] + 4) + '" x2="' + f[0] + '" y2="' + (f[1] - 18) + '" stroke="#fbf8ef" stroke-width="1.4"/><path d="M' + f[0] + ' ' + (f[1] - 18) + ' l12 4 l-12 4z" fill="#f2c75c"/>' + T(f[0] + 28, f[1] + 2, f[2], 'start', 'dg-t gold');
+      });
+      o += path('M160 162 Q 150 120 110 82', '1 6') + path('M160 162 Q 200 100 214 54', '1 6');
+    } else if (type === 'tee') {
+      o = '<rect width="320" height="190" rx="16" fill="#0b4a32"/><line x1="30" y1="140" x2="290" y2="140" stroke="#fbf8ef" stroke-opacity=".4"/>' +
+        '<rect x="158" y="112" width="4" height="28" fill="#f2c75c"/><path d="M152 112 h16 l-4 6 h-8z" fill="#f2c75c"/>' +
+        '<circle cx="160" cy="99" r="13" fill="#fff"/>' +
+        '<path d="M60 136 Q 66 92 108 90 L 140 92 Q 146 116 140 138 Z" fill="#1f3b2f" stroke="#9aa59f"/><line x1="66" y1="96" x2="38" y2="20" stroke="#9aa59f" stroke-width="3"/>' +
+        '<line x1="132" y1="91" x2="200" y2="91" stroke="#f2c75c" stroke-dasharray="3 4"/>' + T(206, 94, '桿頭頂端', 'start', 'dg-t') +
+        '<path d="M178 86 L178 99" stroke="#f2c75c"/>' + T(206, 80, '球有一半高過桿頭', 'start', 'dg-t gold') + T(160, 166, 'Tee 架高 · 球放左腳跟內側', 'middle', 'dg-t');
     } else if (type === 'halfswing') {
       o = '<rect width="320" height="190" rx="16" fill="#0b4a32"/>' + dial(160, 98, 72) +
         '<path d="M 88 98 A 72 72 0 0 0 232 98" fill="none" stroke="#f2c75c" stroke-width="2" stroke-dasharray="4 5"/>' +
@@ -1062,7 +1284,9 @@
 
   /* ---------- PRACTICE ---------- */
   function practice() {
-    var plan = store.get('plan', '15');
+    var hp = location.hash.slice(1);
+    var plan = GL.plans[hp] ? hp : store.get('plan', '15');
+    if (!GL.plans[plan]) plan = '15';
     var timer = { i: 0, left: 0, run: false, h: null };
     var STATIONS = ['短草 5 步', '邊緣推桿', '長草切球', '下坡切球', '上坡切球', '越過沙坑', '20 碼 Pitch', '沙坑', '自選位置'];
     var scores = store.get('ud', []);
@@ -1168,7 +1392,8 @@
   document.addEventListener('DOMContentLoaded', function () {
     var page = document.body.getAttribute('data-page');
     renderChrome(page);
-    ({ home: home, learn: learn, clubs: clubs, fix: fix, shot: shot, practice: practice, rules: rules }[page] || function () {})();
+    ({ home: home, learn: learn, clubs: clubs, fix: fix, shot: shot, practice: practice, rules: rules, start: start, guide: guide, glossary: glossary }[page] || function () {})();
+    termPopover();
     reveal(document, true);
     booted = true;
     var hd = $('#site-header');
