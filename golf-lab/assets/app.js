@@ -305,30 +305,40 @@
       f.innerHTML = '<div class="wrap foot">' +
         '<div><a class="brand light" href="index.html" aria-label="PAR/A 首頁">' + wordmark() + '</a><p class="brand-tag">The Golf Lab</p>' +
         '<p class="foot-note">PAR/A 是給高爾夫新手的學習平台，從第一次握桿到打破 100 桿。內容有錯、或想看什麼教學，<a href="index.html#contact">歡迎來信告訴我們</a>。</p>' +
-        '<button type="button" class="lefty-btn" id="leftyBtn" aria-pressed="' + lefty + '">左手球員模式：' + (lefty ? '開' : '關') + '</button></div>' +
+        '<div class="hand-pick"><p class="hp-q">你是哪一手的球員？</p>' +
+        '<div class="toggle hp-toggle" role="group" aria-label="揮桿慣用手"><button type="button" data-hand="right" aria-pressed="' + !lefty + '">右手球員</button><button type="button" data-hand="left" aria-pressed="' + lefty + '">左手球員</button></div>' +
+        '<p class="hp-help">右手球員：右手在下方握桿，球往你的左手邊飛出去，大多數人都是。選「左手球員」，網站上的圖會左右翻轉。</p></div></div>' +
         '<div class="foot-cols"><div class="foot-col"><h5>開始</h5><a href="start.html">新手入門<small>Start Here</small></a><a href="index.html#contact">聯絡我們<small>Contact Us</small></a></div>' +
         NAV_GROUPS.map(function (g) { return '<div class="foot-col"><h5>' + g.zh + '</h5>' + g.items.map(function (n) { return '<a href="' + n.href + '">' + n.zh + '<small>' + n.en + '</small></a>'; }).join('') + '</div>'; }).join('') + '</div>' +
         '</div><div class="wrap foot-base"><span>&copy; ' + new Date().getFullYear() + ' PAR/A</span><span>最後更新：2026 年 10 月</span></div>';
-      $('#leftyBtn').addEventListener('click', function () {
-        var on = !store.get('lefty', false);
-        store.set('lefty', on);
-        applyLefty();
-        this.setAttribute('aria-pressed', on);
-        this.textContent = '左手球員模式：' + (on ? '開' : '關');
-      });
     }
+    // any [data-hand] button (footer switch, lesson line, banner) picks the playing hand
+    document.addEventListener('click', function (e) {
+      var b = e.target.closest && e.target.closest('[data-hand]');
+      if (!b) return;
+      store.set('lefty', b.getAttribute('data-hand') === 'left');
+      applyLefty();
+    });
     applyLefty();
+  }
+
+  function handLine() {
+    return store.get('lefty', false)
+      ? '<span>圖示：左手球員（已左右翻轉）</span> · <button type="button" class="link-btn" data-hand="right">改成右手球員</button>'
+      : '<span>圖示：右手球員</span> · <button type="button" class="link-btn" data-hand="left">我是左手球員</button>';
   }
 
   /* Left-handed mode mirrors every diagram; the text keeps right-handed wording, with a reminder. */
   function applyLefty() {
     var on = !!store.get('lefty', false);
     document.documentElement.classList.toggle('lefty', on);
+    $$('[data-hand]').forEach(function (b) { if (b.closest('.hp-toggle')) b.setAttribute('aria-pressed', (b.getAttribute('data-hand') === 'left') === on); });
+    $$('.hand-line').forEach(function (p) { p.innerHTML = handLine(); });
     var note = $('#leftyNote');
     if (on && !note) {
       note = document.createElement('div');
       note.id = 'leftyNote'; note.className = 'lefty-note';
-      note.innerHTML = '<span>左手球員模式已開啟：圖示已左右對調。文字說明仍以右手為準，請把「左、右」對調閱讀。</span>';
+      note.innerHTML = '<span>目前顯示左手球員的圖（已左右翻轉）。文字仍以右手球員撰寫，讀的時候把「左、右」對調。</span><button type="button" data-hand="right">切回右手球員</button>';
       var hd = $('#site-header');
       if (hd && hd.parentNode) hd.parentNode.insertBefore(note, hd.nextSibling);
     } else if (!on && note) note.remove();
@@ -1002,7 +1012,7 @@
     };
     root.innerHTML = '<div class="wrap lesson">' +
       '<a class="crumb" href="#' + sec0.id + '">' + icon('back') + '回到「' + sec0.zh + '」</a>' +
-      '<header class="lesson-head"><div><span class="eyebrow">' + c.zh + ' · ' + l.level + ' · 約 ' + l.mins + ' 分鐘</span><h1>' + esc(l.zh) + '</h1><p class="lead">' + esc(l.title) + '</p><p class="byline">2026 年 10 月更新</p></div>' +
+      '<header class="lesson-head"><div><span class="eyebrow">' + c.zh + ' · ' + l.level + ' · 約 ' + l.mins + ' 分鐘</span><h1>' + esc(l.zh) + '</h1><p class="lead">' + esc(l.title) + '</p><p class="byline">2026 年 10 月更新</p><p class="hand-line">' + handLine() + '</p></div>' +
       '<div class="lesson-art">' + lessonArt(l, { label: l.title, tag: l.club.pick.split('、')[0] }) + '</div></header>' +
       (l.key ? '<div class="key-point"><span class="kp-label">這篇的重點</span><p>' + esc(l.key) + '</p></div>' : '') +
       '<div class="lesson-layout"><nav class="format-rail" aria-label="Lesson sections">' + sec.map(function (s, i) {

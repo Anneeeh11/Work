@@ -1664,3 +1664,15 @@ html[lang="en"] { --zh-serif: 'Source Serif 4', 'Noto Serif TC', Georgia, serif;
 .hj-link { display: inline-block; margin-top: 4px; color: var(--green); font-weight: 600; }
 .hj-link:hover { text-decoration: underline; }
 @media (max-width: 900px) { .h-journey { padding: 24px; } }
+
+/* playing-hand switch */
+.hand-pick { margin-top: 22px; max-width: 340px; }
+.hp-q { font-size: 14px; font-weight: 600; color: var(--cream); margin-bottom: 8px; }
+.hp-toggle { background: rgba(251, 248, 239, .08); border-color: rgba(251, 248, 239, .25); }
+.hp-toggle button { color: var(--cream); }
+.hp-toggle button[aria-pressed="true"] { background: var(--gold); color: var(--green-950); }
+.hp-help { margin-top: 10px; font-size: 13px; line-height: 1.7; color: rgba(251, 248, 239, .65); }
+.hand-line { margin-top: 6px; font-size: 14px; color: var(--muted); }
+.hand-line .link-btn { padding: 0; font-size: 14px; text-decoration: underline; }
+.lefty-note { display: flex; justify-content: center; align-items: center; gap: 14px; flex-wrap: wrap; }
+.lefty-note button { border: 1px solid var(--green-950); background: transparent; border-radius: 999px; padding: 3px 12px; font-size: 13px; font-weight: 600; color: var(--green-950); }
