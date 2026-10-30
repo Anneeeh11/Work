@@ -319,14 +319,100 @@
   }
 
   /* ---------- shared fragments ---------- */
-  function lessonCard(l) {
+  function lessonCard(l, step) {
     var c = catById(l.cat);
     return '<a class="lesson-card" href="learn.html#' + l.id + '">' +
-      '<div class="lc-art">' + shotSVG(l.shot, { label: l.title }) + '</div>' +
+      '<div class="lc-art">' + (step ? '<span class="lc-step">STEP ' + step + '</span>' : '') + lessonArt(l) + '</div>' +
       '<div class="lc-body"><span class="eyebrow">' + c.name + ' · ' + c.zh + '</span>' +
       '<h3>' + esc(l.title) + '</h3><p>' + esc(l.zh) + '</p>' +
       '<span class="lc-meta">' + icon('clock') + l.mins + ' min<span class="dot"></span>' + l.level + '<span class="go">' + icon('arrow') + '</span></span></div></a>';
   }
+
+
+  /* Diagrams for the setup and swing lessons (same 360 × 170 frame as the ball-flight drawings). */
+  function fundSVG(type, phase) {
+    var id = 'fd' + (++uid);
+    var T = function (x, y, t, a, cls) { return '<text x="' + x + '" y="' + y + '" text-anchor="' + (a || 'middle') + '" class="' + (cls || 'fd-t') + '">' + t + '</text>'; };
+    var o = '<svg class="shot-svg fund-svg" viewBox="0 0 360 170" role="img" aria-label="' + esc(type) + ' 示意圖"><defs><linearGradient id="' + id + '" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0d4d33"/><stop offset="1" stop-color="#063524"/></linearGradient>' +
+      '<marker id="' + id + 'a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#f2c75c"/></marker></defs>' +
+      '<rect width="360" height="170" fill="url(#' + id + ')"/>';
+    var P = function (cx, cy, r, deg) { var a = deg * Math.PI / 180; return [cx + Math.sin(a) * r, cy - Math.cos(a) * r]; };
+    if (type === 'grip') {
+      [[68, 15, 1, '弱 Weak', '1 個指節'], [180, -25, 2, '中性 Neutral', '2–3 個指節'], [292, -50, 4, '強 Strong', '4 個指節']].forEach(function (g, k) {
+        var x = g[0];
+        if (k === 1) o += '<rect x="' + (x - 54) + '" y="8" width="108" height="154" rx="14" fill="rgba(242,199,92,.10)" stroke="#f2c75c" stroke-opacity=".5"/>' + T(x, 24, '建議', 'middle', 'fd-t gold');
+        o += '<rect x="' + (x - 8) + '" y="30" width="16" height="96" rx="7" fill="#2a2f2c"/>' +
+          '<ellipse cx="' + x + '" cy="80" rx="27" ry="33" fill="#f6f3ec" stroke="#d9d2bd"/>' +
+          '<ellipse cx="' + (x - 5) + '" cy="104" rx="7" ry="13" fill="#ece6d8" stroke="#d9d2bd"/>';
+        for (var n = 0; n < g[2]; n++) o += '<circle cx="' + (x - 13 + n * 8.5) + '" cy="58" r="3.2" fill="#c9bfa8"/>';
+        var e = P(x, 96, 52, g[1]);
+        o += '<line x1="' + x + '" y1="96" x2="' + e[0] + '" y2="' + e[1] + '" stroke="#f2c75c" stroke-width="2" marker-end="url(#' + id + 'a)"/>' +
+          T(x, 140, g[3], 'middle', k === 1 ? 'fd-t gold' : 'fd-t') + T(x, 155, g[4], 'middle', 'fd-s');
+      });
+    } else if (type === 'stance') {
+      o += '<rect y="112" width="360" height="58" fill="rgba(255,255,255,.04)"/>' +
+        '<line x1="34" y1="72" x2="330" y2="72" stroke="#fbf8ef" stroke-width="1.2" stroke-dasharray="4 5" opacity=".6" marker-end="url(#' + id + 'a)"/>' + T(330, 62, '目標', 'end', 'fd-t gold') +
+        '<ellipse cx="138" cy="126" rx="11" ry="22" fill="#f6f3ec" opacity=".92"/><ellipse cx="222" cy="126" rx="11" ry="22" fill="#f6f3ec" opacity=".92" transform="rotate(25 222 126)"/>' +
+        T(138, 160, '右腳', 'middle', 'fd-s') + T(230, 160, '左腳 · 打開 20–30°', 'middle', 'fd-s');
+      [[172, 'W', -1], [188, '7i', 1], [203, 'HY', -1], [216, 'DR', 1]].forEach(function (b) {
+        o += '<circle cx="' + b[0] + '" cy="72" r="4.5" fill="#fff"/>' + T(b[0], b[2] < 0 ? 60 : 92, b[1], 'middle', 'fd-t gold');
+      });
+      o += '<path d="M127 104 L127 98 L233 98 L233 104" fill="none" stroke="#fbf8ef" stroke-opacity=".5"/>' + T(80, 102, '7 號鐵：與肩同寬', 'middle', 'fd-s') +
+        T(340, 26, '球位：W 挖起桿在中間 → DR 一號木在左腳跟內側', 'end', 'fd-s');
+    } else if (type === 'posture') {
+      o += '<line x1="40" y1="154" x2="330" y2="154" stroke="#fbf8ef" stroke-opacity=".3"/>' +
+        '<path d="M146 152 L152 124 L140 92" fill="none" stroke="#f6f3ec" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>' +
+        '<line x1="136" y1="154" x2="166" y2="154" stroke="#f6f3ec" stroke-width="6" stroke-linecap="round"/>' +
+        '<line x1="140" y1="92" x2="176" y2="40" stroke="#f6f3ec" stroke-width="8" stroke-linecap="round"/>' +
+        '<circle cx="187" cy="27" r="10" fill="#f6f3ec"/>' +
+        '<line x1="176" y1="42" x2="178" y2="104" stroke="#e6e0d2" stroke-width="5" stroke-linecap="round"/>' +
+        '<line x1="178" y1="104" x2="232" y2="150" stroke="#9aa59f" stroke-width="2.5" stroke-linecap="round"/><circle cx="240" cy="150" r="4.5" fill="#fff"/>' +
+        '<line x1="176" y1="40" x2="176" y2="150" stroke="#f2c75c" stroke-dasharray="3 4" opacity=".8"/>' + T(184, 84, '手臂自然垂下', 'start', 'fd-s') +
+        '<line x1="140" y1="92" x2="140" y2="52" stroke="#fbf8ef" stroke-dasharray="2 4" opacity=".6"/>' +
+        '<path d="M140 68 A 24 24 0 0 1 153.8 72.3" fill="none" stroke="#f2c75c" stroke-width="1.6"/>' + T(132, 60, '前傾約 35°', 'end', 'fd-t gold') +
+        T(126, 96, '從髖部前傾', 'end', 'fd-s') + T(144, 130, '膝蓋微彎', 'end', 'fd-s') + T(206, 60, '背部平直', 'start', 'fd-s');
+    } else if (type === 'alignment') {
+      for (var x = 54; x < 300; x += 26) o += '<line x1="' + x + '" y1="64" x2="' + x + '" y2="112" stroke="#fbf8ef" stroke-opacity=".12" stroke-width="5"/>';
+      o += '<line x1="70" y1="64" x2="318" y2="64" stroke="#fbf8ef" stroke-width="1.6"/>' + '<line x1="40" y1="112" x2="300" y2="112" stroke="#f2c75c" stroke-width="1.6"/>' +
+        '<line x1="318" y1="64" x2="318" y2="24" stroke="#fbf8ef" stroke-width="1.6"/><path class="wave" d="M318 24 l18 6 l-18 6z" fill="#f2c75c"/><ellipse cx="318" cy="65" rx="5" ry="2" fill="#0b2a18"/>' +
+        '<circle cx="70" cy="64" r="4.5" fill="#fff"/><circle cx="114" cy="64" r="6" fill="none" stroke="#f2c75c" stroke-width="1.4"/>' + T(114, 50, '中間目標 · 1 公尺', 'middle', 'fd-s') +
+        '<ellipse cx="70" cy="120" rx="9" ry="5" fill="#f6f3ec" opacity=".9"/><ellipse cx="104" cy="120" rx="9" ry="5" fill="#f6f3ec" opacity=".9"/>' +
+        T(250, 56, '目標線：球 → 旗桿', 'middle', 'fd-t') + T(220, 138, '身體線：腳、髖、肩與目標線平行', 'middle', 'fd-t gold') + T(220, 155, '身體其實對準旗桿的左邊', 'middle', 'fd-s');
+    } else if (type === 'swing') {
+      var cx = 180, cy = 92, R = 64, at = function (deg, r) { return P(cx, cy, r || R, deg); };
+      var hl = { back: [180, 330, 1, [1, 2, 3]], down: [330, 180, 0, [3, 4]], finish: [180, 45, 0, [4, 5]] }[phase];
+      var a0 = at(330), a1 = at(45), h0 = at(hl[0]), h1 = at(hl[1]);
+      var hand = { back: 330, down: 180, finish: 45 }[phase];
+      var hp = at(hand, 30), ch = at(hand, R);
+      o += '<line x1="40" y1="158" x2="320" y2="158" stroke="#fbf8ef" stroke-opacity=".25"/>' +
+        '<path d="M' + a0[0] + ' ' + a0[1] + ' A ' + R + ' ' + R + ' 0 1 0 ' + a1[0] + ' ' + a1[1] + '" fill="none" stroke="#fbf8ef" stroke-opacity=".3" stroke-dasharray="3 5"/>' +
+        '<path class="flight" pathLength="1" d="M' + h0[0] + ' ' + h0[1] + ' A ' + R + ' ' + R + ' 0 0 ' + hl[2] + ' ' + h1[0] + ' ' + h1[1] + '" fill="none" stroke="#f2c75c" stroke-width="2.4" marker-end="url(#' + id + 'a)"/>' +
+        '<circle cx="' + cx + '" cy="48" r="9" fill="#f6f3ec"/><line x1="' + cx + '" y1="57" x2="' + cx + '" y2="108" stroke="#f6f3ec" stroke-width="7" stroke-linecap="round"/>' +
+        '<path d="M' + (cx - 14) + ' 152 L' + cx + ' 108 L' + (cx + 14) + ' 152" fill="none" stroke="#f6f3ec" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>' +
+        '<line x1="' + cx + '" y1="64" x2="' + hp[0] + '" y2="' + hp[1] + '" stroke="#e6e0d2" stroke-width="4.5" stroke-linecap="round"/>' +
+        '<line x1="' + hp[0] + '" y1="' + hp[1] + '" x2="' + ch[0] + '" y2="' + ch[1] + '" stroke="#9aa59f" stroke-width="2.4" stroke-linecap="round"/>' +
+        '<circle cx="' + cx + '" cy="' + (cy + R - 2) + '" r="4" fill="#fff"/>';
+      var marks = { 1: [180, '1 準備'], 2: [240, '2 腰高 8 點'], 3: [330, '3 頂點'], 4: [180, '4 擊球'], 5: [45, '5 收桿'] };
+      hl[3].forEach(function (m) {
+        var p = at(marks[m][0], R + 16), left = p[0] < cx - 4, right = p[0] > cx + 4;
+        var dot = at(marks[m][0]);
+        o += '<circle cx="' + dot[0] + '" cy="' + dot[1] + '" r="4" fill="#f2c75c"/>' + (marks[m][0] === 180
+          ? T(dot[0] + 12, dot[1] - 4, marks[m][1], 'start', 'fd-t gold')
+          : T(p[0] + (left ? -4 : right ? 4 : 0), p[1] + 4, marks[m][1], left ? 'end' : right ? 'start' : 'middle', 'fd-t gold'));
+      });
+      if (phase === 'down') o += '<line x1="' + (cx + 4) + '" y1="112" x2="' + (cx + 40) + '" y2="112" stroke="#f2c75c" stroke-width="1.6" marker-end="url(#' + id + 'a)"/>' + T(cx + 46, 115, '左髖先動', 'start', 'fd-s');
+      if (phase === 'finish') o += T(40, 30, '節奏 · 上桿 3 : 下桿 1', 'start', 'fd-t');
+      o += T(340, 150, '面對球員的視角', 'end', 'fd-s');
+    }
+    return o + '</svg>';
+  }
+  function lessonArt(l, opts) { return l.art ? fundSVG(l.art, l.phase) : shotSVG(l.shot, opts || { label: l.title }); }
+  var sectionOf = function (cat) { return GL.sections.filter(function (x) { return x.cats.indexOf(cat) > -1; })[0]; };
+  var lessonOrder = function () {
+    var out = [];
+    GL.sections.forEach(function (sec) { sec.cats.forEach(function (c) { GL.lessons.forEach(function (l) { if (l.cat === c) out.push(l); }); }); });
+    return out;
+  };
 
   /* ---------- HOME ---------- */
   function home() {
@@ -358,7 +444,7 @@
 
     var tools = $('#tools');
     if (tools) {
-      var T = [['book', 'learn.html', 'Learn Golf', '技巧教學', '5 類 · ' + GL.lessons.length + ' 篇'], ['club', 'clubs.html', 'Club Guide', '球桿選擇', '6 種球桿'],
+      var T = [['book', 'learn.html', 'Learn Golf', '技巧教學', '4 大單元 · ' + GL.lessons.length + ' 篇'], ['club', 'clubs.html', 'Club Guide', '球桿選擇', '6 種球桿'],
         ['compass', 'fix.html', 'Fix My Shot', '擊球問題診斷', GL.problems.length + ' 種問題'], ['target', 'shot.html', 'Shot Selector', '短桿打法推薦', '4 個問題'], ['clock', 'practice.html', 'Practice', '練習計畫', '15 / 30 分鐘'], ['chart', 'my-game.html', 'My Game', '我的成績分析', '計分卡 + 統計']];
       tools.innerHTML = T.map(function (t) {
         return '<a class="tool" href="' + t[1] + '"><span class="ti">' + icon(t[0]) + '</span><strong>' + t[2] + '</strong><small>' + t[3] + '</small><span class="tag">' + t[4] + '</span></a>';
@@ -523,31 +609,37 @@
       var h = decodeURIComponent(location.hash.slice(1));
       var l = lessonById(h);
       if (l) return renderLesson(root, l);
-      var cat = catById(h) ? h : 'chipping';
-      renderList(root, cat);
+      var sec = GL.sections.filter(function (x) { return x.id === h; })[0] || (catById(h) && sectionOf(h)) || GL.sections[0];
+      renderList(root, sec, catById(h) ? h : null);
     };
     window.addEventListener('hashchange', function () { render(); window.scrollTo(0, 0); });
     render();
   }
 
-  function renderList(root, cat) {
-    var c = catById(cat);
-    var ls = GL.lessons.filter(function (l) { return l.cat === cat; });
-    document.title = 'Learn Golf — ' + c.name + ' | PAR/A';
+  function renderList(root, sec, focusCat) {
+    var count = function (x) { return GL.lessons.filter(function (l) { return x.cats.indexOf(l.cat) > -1; }).length; };
+    document.title = 'Learn Golf — ' + sec.name + ' | PAR/A';
     root.innerHTML = '<header class="page-head wrap"><span class="eyebrow">Learn Golf · 技巧教學</span><h1>Learn Golf</h1>' +
-      '<p class="lead">每一篇教學都用相同的六個步驟：<b>適用情境 → 選桿 → Setup → 動作步驟 → 常見錯誤 → 練習方法</b>。</p></header>' +
-      '<div class="wrap"><div class="pill-tabs" role="tablist">' + GL.categories.map(function (x) {
-        var n = GL.lessons.filter(function (l) { return l.cat === x.id; }).length;
-        return '<a role="tab" href="#' + x.id + '" aria-selected="' + (x.id === cat) + '">' + x.name + '<small>' + x.zh + ' · ' + n + '</small></a>';
-      }).join('') + '</div>' +
-      '<div class="cat-intro"><h2>' + c.name + ' <span class="zh">' + c.zh + '</span></h2><p>' + c.desc + '</p></div>' +
-      '<div class="lesson-grid">' + ls.map(lessonCard).join('') + '</div></div>';
+      '<p class="lead">分成四個單元，建議依照順序學習。每一篇教學都用相同的六個步驟：<b>適用情境 → 選桿 → Setup → 動作步驟 → 常見錯誤 → 練習方法</b>。</p></header>' +
+      '<div class="wrap"><nav class="units" aria-label="Learn Golf 單元">' + GL.sections.map(function (x, i) {
+        return '<a href="#' + x.id + '" class="unit"' + (x.id === sec.id ? ' aria-current="true"' : '') + '><span class="u-n">0' + (i + 1) + '</span><strong>' + x.zh + '</strong><small>' + x.name + ' · ' + count(x) + ' 篇</small></a>';
+      }).join('') + '</nav>' +
+      '<div class="unit-intro"><span class="eyebrow">Unit 0' + (GL.sections.indexOf(sec) + 1) + '</span><h2>' + sec.zh + ' <span class="zh">' + sec.name + '</span></h2><p>' + sec.desc + '</p></div>' +
+      sec.cats.map(function (cid) {
+        var c = catById(cid), ls = GL.lessons.filter(function (l) { return l.cat === cid; });
+        return '<section class="cat-block" id="cat-' + cid + '">' + (sec.cats.length > 1 ? '<div class="cat-intro"><h2>' + c.name + ' <span class="zh">' + c.zh + '</span></h2><p>' + c.desc + '</p></div>' : '') +
+          '<div class="lesson-grid' + (ls.length === 4 ? ' four' : '') + '">' + ls.map(function (l, i) { return lessonCard(l, sec.id === 'setup' || sec.id === 'swing' ? i + 1 : 0); }).join('') + '</div></section>';
+      }).join('') + '</div>';
     reveal(root, true);
+    if (focusCat && sec.cats.length > 1 && sec.cats[0] !== focusCat) {
+      var t = document.getElementById('cat-' + focusCat);
+      if (t) setTimeout(function () { window.scrollTo({ top: t.getBoundingClientRect().top + window.pageYOffset - 100 }); }, 30);
+    }
   }
 
   function renderLesson(root, l) {
     var c = catById(l.cat);
-    var sib = GL.lessons;
+    var sib = lessonOrder(), sec0 = sectionOf(l.cat);
     var idx = sib.indexOf(l), prev = sib[(idx - 1 + sib.length) % sib.length], next = sib[(idx + 1) % sib.length];
     document.title = l.title + ' — ' + l.zh + ' | PAR/A';
     var sec = [
@@ -556,24 +648,25 @@
     ];
     var body = {
       situation: '<p class="big">' + esc(l.situation) + '</p>',
-      club: '<div class="club-pick"><div><span class="eyebrow">建議用桿</span><strong>' + esc(l.club.pick) + '</strong><p>' + esc(l.club.note) + '</p></div>' +
+      club: '<div class="club-pick' + (l.club.ratios ? '' : ' solo') + '"><div><span class="eyebrow">建議用桿</span><strong>' + esc(l.club.pick) + '</strong><p>' + esc(l.club.note) + '</p></div>' + (!l.club.ratios ? '</div>' :
         '<table class="scorecard mini"><thead><tr><th>Club</th>' + l.club.ratios.map(function (r) { return '<th>' + r[0] + '</th>'; }).join('') + '</tr></thead>' +
-        '<tbody><tr><th>空中 : 滾動</th>' + l.club.ratios.map(function (r) { return '<td>' + r[1] + '</td>'; }).join('') + '</tr></tbody></table></div>',
+        '<tbody><tr><th>空中 : 滾動</th>' + l.club.ratios.map(function (r) { return '<td>' + r[1] + '</td>'; }).join('') + '</tr></tbody></table></div>'),
       setup: '<ul class="ticks">' + l.setup.map(function (s) { return '<li>' + icon('check') + '<span>' + esc(s) + '</span></li>'; }).join('') + '</ul>',
       steps: '<ol class="steps">' + l.steps.map(function (s) { return '<li><span>' + esc(s) + '</span></li>'; }).join('') + '</ol>',
       mistakes: '<div class="mistakes">' + l.mistakes.map(function (m) { return '<div class="mistake"><p class="m">' + esc(m.m) + '</p><p class="f"><b>修正</b>' + esc(m.fix) + '</p></div>'; }).join('') + '</div>',
       drills: '<div class="drills">' + l.drills.map(function (d) { return '<div class="drill">' + icon('target') + '<h4>' + esc(d.name) + '</h4><p>' + esc(d.how) + '</p></div>'; }).join('') + '</div>'
     };
     root.innerHTML = '<div class="wrap lesson">' +
-      '<a class="crumb" href="#' + l.cat + '">' + icon('back') + c.name + ' · ' + c.zh + '</a>' +
+      '<a class="crumb" href="#' + sec0.id + '">' + icon('back') + sec0.zh + ' · ' + sec0.name + '</a>' +
       '<header class="lesson-head"><div><span class="eyebrow">' + c.name + ' · ' + l.level + ' · ' + l.mins + ' min</span><h1>' + esc(l.title) + '</h1><p class="lead">' + esc(l.zh) + '</p></div>' +
-      '<div class="lesson-art">' + shotSVG(l.shot, { label: l.title, tag: l.club.pick.split('、')[0] }) + '</div></header>' +
+      '<div class="lesson-art">' + lessonArt(l, { label: l.title, tag: l.club.pick.split('、')[0] }) + '</div></header>' +
       '<div class="lesson-layout"><nav class="format-rail" aria-label="Lesson sections">' + sec.map(function (s, i) {
         return '<a href="#' + l.id + '" data-jump="sec-' + s[0] + '"><span class="n">' + (i + 1) + '</span>' + s[1] + '</a>';
       }).join('') + '</nav>' +
       '<div class="lesson-body">' + sec.map(function (s, i) {
         return '<section class="lsec" id="sec-' + s[0] + '"><div class="lsec-h"><span class="n">' + (i + 1) + '</span><h2>' + s[1] + '</h2><span class="en">' + s[2] + '</span></div>' + body[s[0]] + '</section>';
       }).join('') +
+      (l.cat === 'setup' || l.cat === 'fullswing' ? '<a class="cta-band" href="fix.html"><div><strong>球一直打厚、往右飛？</strong><span>用 Fix My Shot 回答幾個問題，找出最可能的原因。</span></div>' + icon('arrow') + '</a>' : '') +
       (l.cat === 'chipping' || l.cat === 'pitching' ? '<a class="cta-band" href="shot.html"><div><strong>不確定該打哪一種？</strong><span>用 Shot Selector 回答 4 個問題，馬上得到建議。</span></div>' + icon('arrow') + '</a>' : '') +
       '<div class="pager"><a href="#' + prev.id + '"><small>上一篇</small>' + esc(prev.title) + '</a><a href="#' + next.id + '" class="next"><small>下一篇</small>' + esc(next.title) + '</a></div>' +
       '</div></div></div>';

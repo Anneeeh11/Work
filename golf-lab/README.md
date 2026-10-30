@@ -7,7 +7,7 @@ No build step. Open `index.html` in a browser.
 | Page | File | What it does |
 |---|---|---|
 | Home | `index.html` | Intro, search across all content, toolkit, Chipping Academy, short-game club chart |
-| Learn Golf | `learn.html` | Lessons by category (Chipping, Putting, Pitching, Bunker, Full Swing), each in the same six steps: 適用情境 → 選桿 → Setup → 動作步驟 → 常見錯誤 → 練習方法 |
+| Learn Golf | `learn.html` | Four units in learning order: Setup (grip, stance, posture, alignment), Full Swing, Short Game (chipping, pitching, bunker) and Putting; each lesson in the same six steps: 適用情境 → 選桿 → Setup → 動作步驟 → 常見錯誤 → 練習方法 |
 | Club Guide | `clubs.html` | Driver, Wood, Hybrid, Iron, Wedge, Putter: loft, distance (men/women, yards/meters), when to use it, how to choose one |
 | Fix My Shot | `fix.html` | Answer 3–4 questions, get the most likely cause, a fix and a drill (fixed rules, no AI) |
 | Shot Selector | `shot.html` | Four questions about the lie and the green, then a recommended short-game shot and club |
