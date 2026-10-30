@@ -21,3 +21,7 @@ No build step. Open `index.html` in a browser.
 
 Site is written for beginners (new to golf up to about 95 strokes). All content is in `assets/data.js`; beginner content (lesson key points, glossary, 4-week paths, starter set, extra diagnoses, range plans) is in `assets/beginner.js`. Edit lessons, clubs, diagnosis rules and plans there.
 My Game logic is in `assets/mygame.js`. Layout and logic are in `assets/app.js`, styles are in `assets/style.css`.
+
+## Chinese / English
+
+The 中 / EN button in the header switches the whole site. Chinese is the source; `assets/en.js` holds the English content (lessons, rules, glossary, plans, paths…) and a phrase list for interface text and diagram labels. When you add Chinese text, add its English line to `EN.ui` in `assets/en.js`, otherwise it shows in Chinese on the English site.
