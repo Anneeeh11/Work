@@ -7,7 +7,7 @@ No build step. Open `index.html` in a browser.
 | Page | File | What it does |
 |---|---|---|
 | Start Here | `start.html` | Pick your level (never held a club / been to a range / 100+ on the course) and get a 4-week path with progress ticks |
-| First Time | `guide.html` | First visit to a driving range, first round on a course, and how to fill in a scorecard (double-par max per hole) |
+| First Time | `guide.html` | First visit to a driving range, first round on a course, what to wear (do/don’t drawings, weather, checklist) and how to fill in a scorecard (double-par max per hole) |
 | Glossary | `glossary.html` | Beginner terms; the same words are tappable inside lessons and other pages |
 | Home | `index.html` | Intro, search across all content, toolkit, Chipping Academy, short-game club chart |
 | Learn Golf | `learn.html` | Four units in learning order: Setup (grip, stance, posture, alignment), Full Swing, Short Game (chipping, pitching, bunker) and Putting; each lesson in the same six steps: 適用情境 → 選桿 → Setup → 動作步驟 → 常見錯誤 → 練習方法 |

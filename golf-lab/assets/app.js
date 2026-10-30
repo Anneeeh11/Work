@@ -237,6 +237,7 @@
       { href: 'clubs.html', key: 'clubs', zh: '球桿選擇', en: 'Club Guide' },
       { href: 'rules.html', key: 'rules', zh: '高球規則', en: 'Rules' },
       { href: 'guide.html', key: 'guide', zh: '第一次指南', en: 'First Time' },
+      { href: 'guide.html#outfit', key: 'outfit', zh: '穿搭指南', en: 'What to Wear' },
       { href: 'glossary.html', key: 'glossary', zh: '名詞小辭典', en: 'Glossary' }
     ] },
     { zh: '練習', en: 'Practice', items: [
@@ -404,6 +405,7 @@
     items.push({ t: '新手入門', s: '依你的程度，給你 4 週學習路線', k: '新手 開始 入門 路線 start 第一次', type: '新手入門', url: 'start.html' });
     items.push({ t: '第一次去練習場', s: '要帶什麼、怎麼買球、練習順序', k: '練習場 第一次 新手 driving range', type: '第一次指南', url: 'guide.html#range' });
     items.push({ t: '第一次下場', s: '服裝、時間、要帶什麼、桿弟與球車', k: '下場 球場 第一次 服裝 預約', type: '第一次指南', url: 'guide.html#course' });
+    items.push({ t: '穿搭指南', s: '第一次下場穿什麼、夏天冬天雨天怎麼穿', k: '穿搭 服裝 衣服 穿什麼 polo 球鞋 帽子 dress code 服裝規定', type: '第一次指南', url: 'guide.html#outfit' });
     items.push({ t: '計分卡怎麼填', s: '每洞記桿數，最多記雙倍標準桿', k: '計分 計分卡 撿球 雙倍標準桿 scorecard', type: '第一次指南', url: 'guide.html#score' });
     items.push({ t: '新手第一套球桿', s: '只需要 5–7 支', k: '買球桿 新手 套桿 第一套', type: '球桿選擇', url: 'clubs.html#starter' });
     items.push({ t: '我的成績', s: '輸入計分卡，看看桿數掉在哪裡', k: 'My Game 計分卡 成績 分析 scorecard 推桿 上果嶺 球道 stats 破百', type: '分析', url: 'my-game.html' });
@@ -845,8 +847,57 @@
     if (GL.paths[hl]) setTimeout(function () { var t = $('#pathBox'); window.scrollTo({ top: t.getBoundingClientRect().top + window.pageYOffset - 90 }); }, 80);
   }
 
+
+  /* Flat clothing drawings for the outfit guide (120 × 120). */
+  function outfitSVG(type) {
+    var C = '#f6f3ec', E = '#d9d2bd', G = '#0b4a32', o = '';
+    var body = function (neck, sleeves, fill) {
+      var p = sleeves ? 'M34 30 L48 22 Q60 30 72 22 L86 30 L104 50 L90 60 L86 54 L86 104 L34 104 L34 54 L30 60 L16 50 Z' : 'M40 22 Q60 34 80 22 L84 40 L84 104 L36 104 L36 40 Z';
+      return '<path d="' + p + '" fill="' + fill + '" stroke="' + E + '" stroke-width="1.5" stroke-linejoin="round"/>' + neck;
+    };
+    if (type === 'polo') o = body('<path d="M48 22 L60 36 L72 22 L67 20 L60 29 L53 20 Z" fill="#fff" stroke="' + E + '"/><line x1="60" y1="36" x2="60" y2="56" stroke="' + E + '"/><circle cx="60" cy="43" r="1.6" fill="' + E + '"/><circle cx="60" cy="51" r="1.6" fill="' + E + '"/>', true, '#e7f0ea');
+    else if (type === 'tee') o = body('<path d="M48 22 Q60 34 72 22" fill="none" stroke="' + E + '" stroke-width="2"/>', true, '#efe9dc');
+    else if (type === 'tank') o = body('<path d="M44 24 Q60 40 76 24" fill="none" stroke="' + E + '" stroke-width="2"/>', false, '#efe9dc');
+    else if (type === 'pants' || type === 'jeans') {
+      var f = type === 'jeans' ? '#5b7a9d' : '#d9cfb4';
+      o = '<path d="M36 16 H84 L90 108 H66 L60 46 L54 108 H30 Z" fill="' + f + '" stroke="' + (type === 'jeans' ? '#3f5c7c' : E) + '" stroke-width="1.5" stroke-linejoin="round"/><line x1="36" y1="24" x2="84" y2="24" stroke="' + (type === 'jeans' ? '#3f5c7c' : '#bfb497') + '" stroke-width="2"/>' +
+        (type === 'jeans' ? '<path d="M42 30 Q48 38 56 32 M78 30 Q72 38 64 32" fill="none" stroke="#f2c75c" stroke-width="1" stroke-dasharray="2 2"/>' : '<circle cx="60" cy="20" r="2" fill="#bfb497"/>');
+    }
+    else if (type === 'skirt') o = '<path d="M38 26 H82 L96 92 H24 Z" fill="#f3dfe3" stroke="#e3c3ca" stroke-width="1.5" stroke-linejoin="round"/><line x1="38" y1="34" x2="82" y2="34" stroke="#e3c3ca" stroke-width="2"/><path d="M50 36 L44 92 M60 36 L60 92 M70 36 L76 92" stroke="#e3c3ca"/>';
+    else if (type === 'shorts') o = '<path d="M34 34 H86 L92 72 H66 L60 54 L54 72 H28 Z" fill="#cfd8e3" stroke="#a9b6c6" stroke-width="1.5" stroke-linejoin="round"/><path d="M34 40 H86" stroke="#a9b6c6" stroke-width="3"/><path d="M58 42 L56 52 M62 42 L64 52" stroke="#fff"/>';
+    else if (type === 'shoes') o = '<path d="M14 80 Q16 62 38 60 L62 54 Q76 52 84 62 L102 72 Q110 78 104 86 L20 88 Q12 86 14 80 Z" fill="#fff" stroke="' + E + '" stroke-width="1.5"/><path d="M14 84 L106 84" stroke="' + G + '" stroke-width="5" stroke-linecap="round"/><path d="M44 62 L52 72 M52 60 L60 70 M60 58 L68 68" stroke="' + E + '" stroke-width="1.5"/>' + [26, 44, 62, 80, 96].map(function (x) { return '<circle cx="' + x + '" cy="90" r="2.2" fill="' + G + '"/>'; }).join('');
+    else if (type === 'cap') o = '<path d="M28 70 Q30 36 60 34 Q88 36 90 70 Z" fill="' + G + '"/><path d="M84 66 Q108 66 112 76 Q94 80 82 74 Z" fill="#083826"/><circle cx="59" cy="36" r="3" fill="#0d5c3e"/><path d="M60 46 l6 3 l-6 3z" fill="#f2c75c"/>';
+    else if (type === 'glove') o = '<path d="M40 104 L40 60 Q40 50 46 50 L46 26 Q46 20 52 20 Q58 20 58 26 L58 46 L58 20 Q58 14 64 14 Q70 14 70 20 L70 46 L70 24 Q70 18 76 18 Q82 18 82 24 L82 50 L84 34 Q86 28 91 30 Q95 32 94 38 L90 72 Q88 90 80 104 Z" fill="#fff" stroke="' + E + '" stroke-width="1.5" stroke-linejoin="round"/><rect x="44" y="92" width="34" height="8" rx="3" fill="' + G + '"/>';
+    return '<svg class="outfit-svg" viewBox="0 0 120 120" aria-hidden="true">' + o + '</svg>';
+  }
+
   /* ---------- FIRST TIME GUIDE ---------- */
   function guide() {
+    var DO = [['polo', 'Polo 衫', '有領，最安全的選擇'], ['pants', '卡其長褲', '或及膝短褲，看球場規定'], ['skirt', '球裙、褲裙', '及膝或稍短一點'], ['shoes', '高爾夫球鞋', '新手買無釘的，平常也能穿'], ['cap', '帽子或遮陽帽', '擋太陽，也不會刺眼'], ['glove', '手套', '右手球員戴左手']];
+    var DONT = [['tee', '圓領 T 恤', '多數球場不接受'], ['jeans', '牛仔褲', '幾乎所有球場都不行'], ['tank', '無領背心', '有領的無袖上衣通常可以'], ['shorts', '運動短褲', '太短、太休閒']];
+    var card = function (x, ok) { return '<figure class="outfit ' + (ok ? 'ok' : 'no') + '">' + outfitSVG(x[0]) + '<span class="mark" aria-hidden="true">' + (ok ? '✓' : '✕') + '</span><figcaption><strong>' + x[1] + '</strong><small>' + x[2] + '</small></figcaption></figure>'; };
+    if ($('#outfitDo')) {
+      $('#outfitDo').innerHTML = DO.map(function (x) { return card(x, true); }).join('');
+      $('#outfitDont').innerHTML = DONT.map(function (x) { return card(x, false); }).join('');
+      var ITEMS = ['Polo 衫（多帶一件替換）', '長褲、及膝短褲或球裙', '皮帶', '高爾夫球鞋', '帽子', '手套（多帶一副）', '防曬乳、袖套', '雨具或防風外套', '回程換洗的衣服'];
+      var drawCheck = function () {
+        var done = store.get('outfitcheck', []);
+        $('#outfitCheck').innerHTML = ITEMS.map(function (t, i) {
+          var on = done.indexOf(i) > -1;
+          return '<li><label class="' + (on ? 'on' : '') + '"><input type="checkbox" data-i="' + i + '"' + (on ? ' checked' : '') + '><span class="box">' + icon('check') + '</span>' + t + '</label></li>';
+        }).join('');
+        $$('#outfitCheck input').forEach(function (c) {
+          c.addEventListener('change', function () {
+            var d = store.get('outfitcheck', []), i = +c.getAttribute('data-i');
+            d = c.checked ? d.concat([i]) : d.filter(function (x) { return x !== i; });
+            store.set('outfitcheck', d); drawCheck();
+          });
+        });
+      };
+      drawCheck();
+      $('#outfitReset').addEventListener('click', function () { store.set('outfitcheck', []); drawCheck(); });
+      reveal($('#outfit'));
+    }
     linkTerms($('main'));
     var go = function () { var t = location.hash && document.getElementById(location.hash.slice(1)); if (t) window.scrollTo({ top: t.getBoundingClientRect().top + window.pageYOffset - 90 }); };
     setTimeout(go, 60);
