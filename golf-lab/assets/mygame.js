@@ -313,7 +313,7 @@
         (prevTot != null && full ? '<p class="bg-delta ' + (tot < prevTot ? 'up' : tot > prevTot ? 'down' : '') + '">' + (tot < prevTot ? '比上一場少 ' + (prevTot - tot) + ' 桿' : tot > prevTot ? '比上一場多 ' + (tot - prevTot) + ' 桿' : '和上一場一樣') + '</p>' : '') + '</div>' +
         (goal ? '<div class="bg-goal"><span class="eyebrow">下一個目標 · ' + goal.t + '</span><p>' + goal.s + '</p><div class="goal-bar"><i style="width:' + Math.max(6, 100 - goal.n / 20 * 100) + '%"></i></div>' +
           (capped < tot ? '<p class="bg-cap">如果每洞最多記雙倍標準桿，這一場是 <b>' + capped + '</b> 桿。</p>' : '') + '</div>' : '') + '</div>' +
-      '<div class="tiles bg-tiles">' + tile('推桿', hasPutts ? putts : '–', hasPutts ? '三推 ' + three + ' 次' : '在計分卡輸入推桿數', three >= 3) + tile('罰桿', pens, '出界、進水等', pens >= 4) +
+      '<div class="tiles bg-tiles">' + tile('推桿數', hasPutts ? putts : '–', hasPutts ? '三推 ' + three + ' 次' : '在計分卡輸入推桿數', three >= 3) + tile('罰桿', pens, '出界、進水等', pens >= 4) +
         tile('雙柏忌以上', big.length + ' 洞', '每洞多 2 桿以上', big.length >= 8) + tile('標準桿或更好', good + ' 洞', good ? '保持下去' : '目標：每場至少 1 洞') + '</div>' +
       '<h3 class="bg-h">比標準桿多的 ' + over + ' 桿，掉在哪裡？</h3>' +
       '<div class="lost-bar">' + parts.map(function (x) { return x[1] ? '<i style="flex:' + x[1] + ';background:' + x[2] + '" title="' + x[0] + ' ' + x[1] + '"></i>' : ''; }).join('') + '</div>' +

@@ -270,9 +270,14 @@
             }).join('') + '</div></div>';
         }).join('') +
         '<a class="nav-contact" href="index.html#contact"><span>聯絡我們</span><small>Contact Us</small></a></nav>' +
+        '<button type="button" class="lang-btn" id="langBtn" aria-label="' + (GL.lang === 'en' ? '切換成中文' : 'Switch to English') + '">' + (GL.lang === 'en' ? '中文' : 'EN') + '</button>' +
         '<a class="contact-cta" href="index.html#contact">聯絡我們</a>' +
         '<button class="nav-toggle" id="navToggle" aria-label="開啟選單" aria-expanded="false">' + icon('menu') + '</button>' +
         '</div>';
+      $('#langBtn').addEventListener('click', function () {
+        store.set('lang', GL.lang === 'en' ? 'zh' : 'en');
+        location.reload();
+      });
       $('#navToggle').addEventListener('click', function () {
         var open = h.classList.toggle('open');
         this.setAttribute('aria-expanded', open);
@@ -353,12 +358,15 @@
       });
       var node;
       while ((node = walker.nextNode())) {
-        var k = node.nodeValue.indexOf(p[0]);
+        // Latin words match as whole words only (so "par" doesn't light up inside "apart")
+        var k, latin = /[a-z]/i.test(p[0]);
+        if (latin) { var mm = new RegExp('\\b' + p[0].replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\b', 'i').exec(node.nodeValue); k = mm ? mm.index : -1; }
+        else k = node.nodeValue.indexOf(p[0]);
         if (k < 0) continue;
         var after = node.splitText(k);
         after.splitText(p[0].length);
         var b = document.createElement('button');
-        b.type = 'button'; b.className = 'term'; b.setAttribute('data-term', p[1]); b.textContent = p[0];
+        b.type = 'button'; b.className = 'term'; b.setAttribute('data-term', p[1]); b.textContent = after.nodeValue;
         after.parentNode.replaceChild(b, after);
         used[p[1]] = true;
         break;
@@ -373,7 +381,7 @@
       var b = e.target.closest && e.target.closest('.term');
       if (!b) { if (!pop.contains(e.target)) pop.hidden = true; return; }
       var g = GL.glossary[+b.getAttribute('data-term')];
-      pop.innerHTML = '<strong>' + esc(g.zh) + '<span>' + esc(g.t) + '</span></strong><p>' + esc(g.d) + '</p><a href="glossary.html#' + encodeURIComponent(g.t) + '">名詞小辭典 ' + icon('arrow') + '</a>';
+      pop.innerHTML = '<strong>' + esc(g.zh) + (g.t !== g.zh ? '<span>' + esc(g.t) + '</span>' : '') + '</strong><p>' + esc(g.d) + '</p><a href="glossary.html#' + encodeURIComponent(g.t) + '">名詞小辭典 ' + icon('arrow') + '</a>';
       pop.hidden = false;
       var r = b.getBoundingClientRect(), w = Math.min(300, window.innerWidth - 32);
       pop.style.width = w + 'px';
@@ -402,12 +410,12 @@
       items.push({ t: r.q, s: a.zh + ' · ' + (r.pen === 0 ? '免罰' : r.pen === 'x' ? '規則說明' : '罰 ' + r.pen + ' 桿'), k: r.a + ' 規則 rules ' + a.name, type: '高球規則 · ' + a.zh, url: 'rules.html#' + r.area });
     });
     (GL.glossary || []).forEach(function (g) { items.push({ t: g.zh + '（' + g.t + '）', s: g.d, k: g.t + ' ' + (g.auto || []).join(' ') + ' 名詞 辭典', type: '名詞小辭典', url: 'glossary.html#' + encodeURIComponent(g.t) }); });
-    items.push({ t: '新手入門', s: '依你的程度，給你 4 週學習路線', k: '新手 開始 入門 路線 start 第一次', type: '新手入門', url: 'start.html' });
+    items.push({ t: '新手入門', s: '依你的程度，給你 4 週學習路線', k: '新手 開始 入門 路線 start here beginner path first', type: '新手入門', url: 'start.html' });
     items.push({ t: '第一次去練習場', s: '要帶什麼、怎麼買球、練習順序', k: '練習場 第一次 新手 driving range', type: '第一次指南', url: 'guide.html#range' });
-    items.push({ t: '第一次下場', s: '服裝、時間、要帶什麼、桿弟與球車', k: '下場 球場 第一次 服裝 預約', type: '第一次指南', url: 'guide.html#course' });
-    items.push({ t: '穿搭指南', s: '第一次下場穿什麼、夏天冬天雨天怎麼穿', k: '穿搭 服裝 衣服 穿什麼 polo 球鞋 帽子 dress code 服裝規定', type: '第一次指南', url: 'guide.html#outfit' });
-    items.push({ t: '計分卡怎麼填', s: '每洞記桿數，最多記雙倍標準桿', k: '計分 計分卡 撿球 雙倍標準桿 scorecard', type: '第一次指南', url: 'guide.html#score' });
-    items.push({ t: '新手第一套球桿', s: '只需要 5–7 支', k: '買球桿 新手 套桿 第一套', type: '球桿選擇', url: 'clubs.html#starter' });
+    items.push({ t: '第一次下場', s: '服裝、時間、要帶什麼、桿弟與球車', k: '下場 球場 第一次 服裝 預約 first round course booking', type: '第一次指南', url: 'guide.html#course' });
+    items.push({ t: '穿搭指南', s: '第一次下場穿什麼、夏天冬天雨天怎麼穿', k: '穿搭 服裝 衣服 穿什麼 polo 球鞋 帽子 dress code 服裝規定 what to wear clothes shoes', type: '第一次指南', url: 'guide.html#outfit' });
+    items.push({ t: '計分卡怎麼填', s: '每洞記桿數，最多記雙倍標準桿', k: '計分 計分卡 撿球 雙倍標準桿 scorecard score double par', type: '第一次指南', url: 'guide.html#score' });
+    items.push({ t: '新手第一套球桿', s: '只需要 5–7 支', k: '買球桿 新手 套桿 第一套 buy clubs starter set beginner', type: '球桿選擇', url: 'clubs.html#starter' });
     items.push({ t: '我的成績', s: '輸入計分卡，看看桿數掉在哪裡', k: 'My Game 計分卡 成績 分析 scorecard 推桿 上果嶺 球道 stats 破百', type: '分析', url: 'my-game.html' });
     items.push({ t: '練習計畫', s: '練習場 30 / 60 分鐘、短桿 15 / 30 分鐘菜單', k: 'Practice 練習 計畫 菜單 練習場 up and down', type: '練習', url: 'practice.html' });
     return items;
@@ -432,7 +440,7 @@
     document.addEventListener('click', function (e) { if (!list.contains(e.target) && e.target !== input) list.hidden = true; });
     input.addEventListener('focus', run);
     $$('[data-q]').forEach(function (b) {
-      b.addEventListener('click', function () { input.value = b.getAttribute('data-q'); input.focus(); run(); });
+      b.addEventListener('click', function () { var q = b.getAttribute('data-q'); input.value = (GL.lang === 'en' && GL.EN.q[q]) || q; input.focus(); run(); });
     });
   }
 
@@ -753,7 +761,7 @@
     $('#holeMap').innerHTML = holeMapSVG();
     $('#reliefArt').innerHTML = reliefSVG();
     $('#penaltyRef').innerHTML = GL.penaltyTable.map(function (r) {
-      var cls = r[1] === '免罰' ? 'free' : /2 桿/.test(r[1]) ? 'p2' : 'p1';
+      var cls = r[2] || (r[1] === '免罰' ? 'free' : /2 桿/.test(r[1]) ? 'p2' : 'p1');
       return '<li><span>' + esc(r[0]) + '</span><b class="pen ' + cls + '">' + esc(r[1]) + '</b></li>';
     }).join('');
     $('#scoreTerms').innerHTML = '<table class="scorecard terms"><thead><tr><th>Score</th>' + GL.scoreTerms.map(function (t) { return '<th>' + t.t + '</th>'; }).join('') + '</tr></thead><tbody>' +
@@ -915,7 +923,7 @@
         n += list.length;
         if (!list.length) return '';
         return '<section class="gl-group"><h2>' + gr + '</h2><dl>' + list.map(function (g) {
-          return '<div class="gl-item" id="' + esc(g.t) + '"><dt>' + esc(g.zh) + '<span>' + esc(g.t) + '</span></dt><dd>' + esc(g.d) + '</dd></div>';
+          return '<div class="gl-item" id="' + esc(g.t) + '"><dt>' + esc(g.zh) + (g.t !== g.zh ? '<span>' + esc(g.t) + '</span>' : '') + '</dt><dd>' + esc(g.d) + '</dd></div>';
         }).join('') + '</dl></section>';
       }).join('') || '<p class="empty-stats">找不到「' + esc(q) + '」，試試「差點」或「Loft」。</p>';
       $('#glossCount').textContent = n + ' 個名詞';
@@ -1063,7 +1071,7 @@
     }
     var st = $('#starterSet');
     if (st) st.innerHTML = GL.starterSet.map(function (c) {
-      return '<div class="starter ' + (c.need === '必備' ? 'must' : c.need === '建議' ? 'nice' : 'later') + '"><span class="need">' + c.need + '</span><strong>' + esc(c.c) + '</strong><p>' + esc(c.d) + '</p></div>';
+      return '<div class="starter ' + (c.k || (c.need === '必備' ? 'must' : c.need === '建議' ? 'nice' : 'later')) + '"><span class="need">' + c.need + '</span><strong>' + esc(c.c) + '</strong><p>' + esc(c.d) + '</p></div>';
     }).join('');
     $$('[data-who]').forEach(function (b) { b.addEventListener('click', function () { state.who = b.getAttribute('data-who'); store.set('who', state.who); draw(); }); });
     $$('[data-unit]').forEach(function (b) { b.addEventListener('click', function () { state.unit = b.getAttribute('data-unit'); store.set('unit', state.unit); draw(); }); });
@@ -1391,7 +1399,7 @@
         return '<li class="block' + (done.indexOf(i) > -1 ? ' done' : '') + ((timer.run || timer.left) && i === timer.i ? ' now' : '') + '">' +
           '<label class="chk"><input type="checkbox" data-i="' + i + '"' + (done.indexOf(i) > -1 ? ' checked' : '') + '><span>' + icon('check') + '</span></label>' +
           '<div class="bl-time">' + b.mins + '<small>min</small></div>' +
-          '<div class="bl-body"><span class="eyebrow">' + esc(CAT_ZH[b.cat] || b.cat) + '</span><h3>' + esc(b.name) + '</h3><p>' + esc(b.how) + '</p>' +
+          '<div class="bl-body"><span class="eyebrow">' + esc(GL.lang === 'en' ? b.cat : (CAT_ZH[b.cat] || b.cat)) + '</span><h3>' + esc(b.name) + '</h3><p>' + esc(b.how) + '</p>' +
           (l ? '<a href="learn.html#' + l.id + '">教學：' + esc(l.title) + ' ' + icon('arrow') + '</a>' : '') + '</div>' +
           (b.fig ? '<figure class="bl-fig">' + drillSVG(b.fig) + '<figcaption>' + esc(b.cap) + '</figcaption></figure>' : '') + '</li>';
       }).join('');
