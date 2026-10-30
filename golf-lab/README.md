@@ -12,7 +12,7 @@ No build step. Open `index.html` in a browser.
 | Fix My Shot | `fix.html` | Answer 3–4 questions, get the most likely cause, a fix and a drill (fixed rules, no AI) |
 | Shot Selector | `shot.html` | Four questions about the lie and the green, then a recommended short-game shot and club |
 | Practice | `practice.html` | 15 / 30 minute plans with a timer, and a 9-station Up & Down scorecard |
-| My Game | `my-game.html` | Upload a scorecard (CSV/TXT, pasted text or a photo to type from) or enter it hole by hole; Masters-style Scoring Summary, Greens / Fairways / Putting stats, hole-by-hole averages and practice suggestions. Rounds are saved in the browser |
+| My Game | `my-game.html` | Upload a scorecard (CSV/TXT, pasted text or a photo to type from) or enter it hole by hole; Masters-style Statistics (Scoring Summary, Greens Hit, Fairways Hit, Driving Distance, Sand Saves, Putting, Longest Drive) compared with a chosen field, plus practice suggestions. Rounds are saved in the browser |
 | Golf Rules | `rules.html` | Rules by area of the course (clickable hole map), penalty quick reference, penalty-area relief diagram, scoring terms and etiquette; based on the 2023 Rules of Golf |
 | Contact Us | `index.html#contact` | Contact form (sent through FormSubmit, same as the personal site; falls back to Gmail) plus email and Instagram |
 

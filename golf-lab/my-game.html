@@ -51,13 +51,15 @@
           <summary>貼上成績文字 · 查看檔案格式範本</summary>
           <div class="paste-body">
             <div>
-              <p>每一列以名稱開頭，接著 18 洞的數字。Putts 與 Fairway（1 = 上球道、0 = 沒上）可以省略。</p>
+              <p>每一列以名稱開頭，接著 18 洞的數字。Putts、Fairway（1 = 上球道）、Drive（開球碼數）與 Bunker（1 = 進了果嶺邊沙坑）都可以省略。</p>
               <pre id="tpl">Course,Pacific Links
 Date,2026-10-25
 Par,4,5,4,3,4,3,4,5,4,4,4,3,5,4,5,3,4,4
 Score,5,5,4,4,5,3,5,6,4,5,4,3,6,4,6,4,4,5
 Putts,2,2,1,2,2,2,2,2,2,2,2,1,2,2,2,2,2,2
-Fairway,1,1,0,,1,,1,0,1,0,1,,1,1,0,,1,1</pre>
+Fairway,1,1,0,,1,,1,0,1,0,1,,1,1,0,,1,1
+Drive,215,230,205,,220,,210,225,218,200,212,,236,214,222,,219,208
+Bunker,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0</pre>
               <button type="button" class="btn ghost" id="copyTpl">複製範本</button>
             </div>
             <div>
@@ -93,17 +95,17 @@ Fairway,1,1,0,,1,,1,0,1,0,1,,1,1,0,,1,1</pre>
         <div class="stat-body" id="statBody"></div>
       </section>
 
+      <section class="official-sec">
+        <div class="official-head"><h2 class="sec-title">Official Score Card</h2>
+        <div class="legend"><span><i class="cc"></i>Eagle</span><span><i class="c"></i>Birdie</span><span><i></i>Bogey</span><span><i class="dd"></i>D Bogey +</span></div></div>
+        <div class="score-wrap" id="officialCard"></div>
+      </section>
       <section class="insight-sec">
         <span class="eyebrow">Next Steps · 下一步練習</span>
         <h2 class="sec-title">根據這一回合</h2>
         <div class="insights" id="insights"></div>
       </section>
 
-      <section class="official-sec">
-        <h2 class="sec-title">Official Score Card</h2>
-        <p class="sec-sub">你所有的回合。點擊 R1、R2… 切換回合。</p>
-        <div class="score-wrap" id="officialCard"></div>
-      </section>
     </div>
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
   </main>

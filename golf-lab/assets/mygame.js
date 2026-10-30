@@ -17,16 +17,28 @@
       { id: 's1', sample: true, course: '範例球場 Example Golf Club', date: '2026-10-04', par: DEFAULT_PAR.slice(),
         score: [5, 6, 4, 4, 6, 3, 5, 5, 5, 4, 5, 4, 6, 5, 7, 4, 5, 5],
         putts: [2, 2, 1, 2, 3, 2, 2, 2, 2, 2, 2, 2, 2, 3, 2, 2, 2, 2],
-        fir: [N, Y, Y, _, N, _, Y, Y, N, Y, N, _, Y, N, N, _, Y, N] },
+        fir: [N, Y, Y, _, N, _, Y, Y, N, Y, N, _, Y, N, N, _, Y, N],
+        drive: [205, 228, 214, _, 198, _, 220, 236, 202, 218, 196, _, 231, 210, 224, _, 215, 207],
+        sand: [_, _, _, Y, Y, _, _, _, _, _, _, _, _, Y, _, _, _, _] },
       { id: 's2', sample: true, course: '範例球場 Example Golf Club', date: '2026-10-18', par: DEFAULT_PAR.slice(),
         score: [6, 5, 5, 3, 5, 4, 5, 6, 4, 5, 4, 3, 6, 5, 6, 4, 4, 5],
         putts: [2, 2, 2, 2, 2, 2, 2, 2, 1, 3, 2, 1, 2, 2, 2, 2, 2, 2],
-        fir: [N, Y, Y, _, Y, _, Y, N, Y, N, Y, _, Y, Y, N, _, Y, Y] }
+        fir: [N, Y, Y, _, Y, _, Y, N, Y, N, Y, _, Y, Y, N, _, Y, Y],
+        drive: [212, 240, 219, _, 225, _, 221, 233, 216, 209, 222, _, 244, 218, 229, _, 220, 214],
+        sand: [_, _, _, _, _, Y, _, _, Y, _, _, Y, _, _, _, _, _, _] }
     ];
   }
 
   var rounds = store.get('rounds', null);
-  if (!rounds || !rounds.length) rounds = sampleRounds();
+  if (!rounds || !rounds.length || rounds.every(function (r) { return r.sample; })) rounds = sampleRounds();
+  rounds.forEach(function (r) { r.drive = r.drive || blank(); r.sand = r.sand || blank(); });
+  var FIELDS = {
+    amateur: { name: '業餘 · 約 18 差點', cat: [0, .02, .28, .42, .28], gir: .22, fir: .45, sand: .10, putts: 34, drive: 215, longest: 240 },
+    single: { name: '單差點 · 約 5 差點', cat: [.002, .08, .50, .32, .098], gir: .45, fir: .55, sand: .25, putts: 31, drive: 245, longest: 270 },
+    tour: { name: '職業巡迴賽', cat: [.01, .20, .60, .16, .03], gir: .66, fir: .60, sand: .50, putts: 29, drive: 300, longest: 330 }
+  };
+  var fieldKey = store.get('field', 'amateur');
+  if (!FIELDS[fieldKey]) fieldKey = 'amateur';
   var cur = Math.min(store.get('round', rounds.length - 1), rounds.length - 1);
   var tab = store.get('mgtab', 'summary');
   var save = function () {
@@ -38,7 +50,7 @@
   function newRound(data) {
     var last = rounds[rounds.length - 1];
     var r = { id: 'r' + Date.now(), course: last && !last.sample ? last.course : '', date: today(),
-      par: last ? last.par.slice() : DEFAULT_PAR.slice(), score: blank(), putts: blank(), fir: blank(), photo: null };
+      par: last ? last.par.slice() : DEFAULT_PAR.slice(), score: blank(), putts: blank(), fir: blank(), drive: blank(), sand: blank(), photo: null };
     if (data) Object.keys(data).forEach(function (k) { if (data[k] != null) r[k] = data[k]; });
     rounds = rounds.filter(function (x) { return !x.sample; });
     rounds.push(r);
@@ -57,7 +69,7 @@
   function stats(list) {
     var s = { holes: 0, strokes: 0, par: 0, cat: [0, 0, 0, 0, 0], byPar: { 3: [0, 0], 4: [0, 0], 5: [0, 0] },
       front: [0, 0, 0], back: [0, 0, 0], putts: 0, puttHoles: 0, one: 0, three: 0,
-      fir: [0, 0], gir: [0, 0], scr: [0, 0], hole: [] };
+      fir: [0, 0], gir: [0, 0], scr: [0, 0], hole: [], drv: [0, 0], longest: 0, sand: [0, 0] };
     for (var h = 0; h < H; h++) s.hole.push([0, 0]);
     list.forEach(function (r) {
       played(r).forEach(function (i) {
@@ -76,6 +88,9 @@
           else { s.scr[1]++; if (d <= 0) s.scr[0]++; }
         }
         if (p > 3 && r.fir[i] != null) { s.fir[1]++; if (r.fir[i]) s.fir[0]++; }
+        if (p > 3 && r.drive[i] != null) { s.drv[0] += r.drive[i]; s.drv[1]++; s.longest = Math.max(s.longest, r.drive[i]); }
+        // sand save: up and down from a greenside bunker = at most one putt after the bunker shot
+        if (r.sand[i]) { s.sand[1]++; if (r.putts[i] != null ? r.putts[i] <= 1 : d <= 0) s.sand[0]++; }
       });
     });
     s.rounds = list.filter(function (r) { return played(r).length; }).length || 1;
@@ -84,15 +99,18 @@
   var pct = function (a) { return a[1] ? a[0] / a[1] : 0; };
 
   /* ---------- svg ---------- */
-  function dualRing(outer, inner) {
-    var ro = 50, ri = 34, co = 2 * Math.PI * ro, ci = 2 * Math.PI * ri;
-    return '<svg class="ring" viewBox="0 0 124 124" aria-hidden="true">' +
-      '<circle cx="62" cy="62" r="' + ro + '" fill="none" stroke="#efece3" stroke-width="22"/>' +
-      '<circle cx="62" cy="62" r="' + ro + '" class="arc" fill="none" stroke="#006747" stroke-width="22" stroke-dasharray="' + (co * outer) + ' ' + co + '" transform="rotate(-90 62 62)"/>' +
-      (inner == null ? '' : '<circle class="arc" cx="62" cy="62" r="' + ri + '" fill="none" stroke="#8d918e" stroke-width="3" stroke-linecap="round" stroke-dasharray="' + (ci * inner) + ' ' + ci + '" transform="rotate(-90 62 62)"/>') +
-      '</svg>';
+  /* Masters ring: grey disc, thick green band for you, thin grey arc for the field, white centre. */
+  function mRing(p, f) {
+    var rb = 73, rf = 45, cb = 2 * Math.PI * rb, cf = 2 * Math.PI * rf;
+    return '<svg class="mring" viewBox="0 0 200 200" aria-hidden="true"><circle cx="100" cy="100" r="98" fill="#f1f0ec"/>' +
+      '<circle class="arc" cx="100" cy="100" r="' + rb + '" fill="none" stroke="#3b7a59" stroke-width="46" stroke-dasharray="' + (cb * Math.min(1, p)) + ' ' + cb + '" transform="rotate(-90 100 100)"/>' +
+      (f == null ? '' : '<circle class="arc" cx="100" cy="100" r="' + rf + '" fill="none" stroke="#86898a" stroke-width="6" stroke-dasharray="' + (cf * Math.min(1, f)) + ' ' + cf + '" transform="rotate(-90 100 100)"/>') +
+      '<circle cx="100" cy="100" r="37" fill="#fff"/></svg>';
   }
-  var CAT = [['Eagles', '老鷹以上', '#c8a24a'], ['Birdies', '博蒂', '#127a56'], ['Par', '標準桿', '#d9d8d2'], ['Bogey', '柏忌', '#a7aaa6'], ['Double +', '雙柏忌以上', '#17251e']];
+  function ringBlock(p, f, big) {
+    return '<div class="mr' + (big ? ' big' : '') + '">' + mRing(p, f) + '<div class="mr-v"><strong>' + Math.round(p * 100) + '<sup>%</sup></strong>' + (f == null ? '' : '<small>' + Math.round(f * 100) + '%</small>') + '</div></div>';
+  }
+  var CAT = [['Eagles', '老鷹以上', '#b9dc8f'], ['Birdies', '博蒂', '#127a56'], ['Par', '標準桿', '#d9d9d6'], ['Bogey', '柏忌', '#a9abaa'], ['Double Bogeys', '雙柏忌以上', '#17251e']];
   function donut(cat) {
     var total = sum(cat) || 1, r = 80, c = 2 * Math.PI * r, off = 0, out = '';
     cat.forEach(function (n, k) {
@@ -101,7 +119,7 @@
       out += '<circle class="arc" cx="110" cy="110" r="' + r + '" fill="none" stroke="' + CAT[k][2] + '" stroke-width="42" stroke-dasharray="' + len + ' ' + c + '" stroke-dashoffset="' + (-off) + '" transform="rotate(-90 110 110)"/>';
       off += len;
     });
-    return '<svg class="donut" viewBox="0 0 220 220" role="img" aria-label="Scoring breakdown"><circle cx="110" cy="110" r="' + r + '" fill="none" stroke="#efece3" stroke-width="42"/>' + out + '</svg>';
+    return '<svg class="donut" viewBox="0 0 220 220" role="img" aria-label="Scoring breakdown"><circle cx="110" cy="110" r="' + r + '" fill="none" stroke="#f1f0ec" stroke-width="42"/>' + out + '</svg>';
   }
 
   /* ---------- rendering ---------- */
@@ -160,6 +178,13 @@
         var f = r.fir[i];
         return '<button type="button" class="fir-btn ' + (f === true ? 'yes' : f === false ? 'no' : '') + '" data-fir="' + i + '" aria-label="第 ' + (i + 1) + ' 洞是否上球道">' + (f === true ? '✓' : f === false ? '✕' : '–') + '</button>';
       }, function (a, b) { return tot(a, b, firArr); }) +
+      row('Drive <small>開球距離（碼）</small>', 'drive-row', function (i) {
+        if (r.par[i] === 3) return '<span class="na">·</span>';
+        return '<input class="in-drive" data-h="' + i + '" inputmode="numeric" maxlength="3" aria-label="第 ' + (i + 1) + ' 洞開球距離（碼）" value="' + (r.drive[i] == null ? '' : r.drive[i]) + '">';
+      }, function (a, b) { var n = 0, t = 0; for (var k = a; k < b; k++) if (r.drive[k] != null && r.par[k] > 3) { n++; t += r.drive[k]; } return n ? Math.round(t / n) : '–'; }) +
+      row('Bunker <small>果嶺邊沙坑</small>', 'sand-row', function (i) {
+        return '<button type="button" class="sand-btn' + (r.sand[i] ? ' on' : '') + '" data-sand="' + i + '" aria-pressed="' + !!r.sand[i] + '" aria-label="第 ' + (i + 1) + ' 洞是否從果嶺邊沙坑擊球"></button>';
+      }, function (a, b) { var n = 0; for (var k = a; k < b; k++) if (r.sand[k]) n++; return n || '–'; }) +
       row('GIR <small>自動計算</small>', 'gir-row', function (i) { var g = gir(r, i); return g == null ? '<span class="na">·</span>' : '<span class="gir ' + (g ? 'yes' : '') + '"></span>'; }, function (a, b) { return tot(a, b, girArr); }) +
       '</tbody></table>';
   }
@@ -174,16 +199,27 @@
   function bindCard() {
     var wrap = $('#editCard');
     wrap.addEventListener('click', function (e) {
-      var p = e.target.closest('[data-par]'), f = e.target.closest('[data-fir]');
-      if (p) { var i = +p.getAttribute('data-par'); R().par[i] = R().par[i] === 5 ? 3 : R().par[i] + 1; if (R().par[i] === 3) R().fir[i] = null; changed(); }
+      var p = e.target.closest('[data-par]'), f = e.target.closest('[data-fir]'), sd = e.target.closest('[data-sand]');
+      if (sd) { var q = +sd.getAttribute('data-sand'); R().sand[q] = R().sand[q] ? null : true; changed(); }
+      if (p) { var i = +p.getAttribute('data-par'); R().par[i] = R().par[i] === 5 ? 3 : R().par[i] + 1; if (R().par[i] === 3) { R().fir[i] = null; R().drive[i] = null; } changed(); }
       if (f) { var j = +f.getAttribute('data-fir'), v = R().fir[j]; R().fir[j] = v == null ? true : v === true ? false : null; changed(); }
     });
     wrap.addEventListener('input', function (e) {
       var t = e.target;
       if (!t.matches('input')) return;
-      var h = +t.getAttribute('data-h'), raw = t.value.replace(/\D/g, ''), isScore = t.classList.contains('in-score');
+      var h = +t.getAttribute('data-h'), raw = t.value.replace(/\D/g, ''), isScore = t.classList.contains('in-score'), isDrive = t.classList.contains('in-drive');
       t.value = raw;
       var v = raw === '' ? null : +raw;
+      if (isDrive) {
+        R().drive[h] = v || null;
+        if (R().sample) R().sample = false;
+        save(); refreshSoft();
+        var nd = null;
+        if (raw.length === 3) for (var k = h + 1; k < H && !nd; k++) nd = $('.in-drive[data-h="' + k + '"]', wrap);
+        var tgt = nd || $('.in-drive[data-h="' + h + '"]', wrap);
+        if (tgt) { tgt.focus(); if (nd) tgt.select(); else tgt.setSelectionRange(tgt.value.length, tgt.value.length); }
+        return;
+      }
       if (isScore) { if (v === 0) v = null; R().score[h] = v; } else R().putts[h] = v;
       if (R().sample) { R().sample = false; }
       save();
@@ -217,64 +253,63 @@
     $$('[data-pick]').forEach(function (b) { b.addEventListener('click', function () { cur = +b.getAttribute('data-pick'); save(); drawAll(); }); });
   }
 
-  var TABS = [['summary', 'Scoring Summary'], ['par', 'Par 3 / 4 / 5'], ['greens', 'Greens Hit'], ['fairways', 'Fairways Hit'], ['putting', 'Putting'], ['holes', 'Hole by Hole']];
-  function drawStats() {
-    var me = stats([R()]), all = stats(rounds);
-    var multi = rounds.length > 1;
+  var TABS = [['summary', 'Scoring Summary'], ['greens', 'Greens Hit'], ['fairways', 'Fairways Hit'], ['driving', 'Driving Distance'], ['sand', 'Sand Saves'], ['putting', 'Putting'], ['longest', 'Longest Drive']];
+  var CAPS = {
+    summary: 'Cumulative breakdown of scores per hole · 所有回合每洞成績分布',
+    greens: 'The percentage of times you reached the green in two or more strokes less than par · 標準桿上果嶺（桿數 − 推桿 ≤ 標準桿 − 2）',
+    fairways: 'Fairways hit are calculated for par 4s and par 5s · 只計算 Par 4 與 Par 5 的開球',
+    driving: 'Average of the drives you entered on par 4s and par 5s · 在計分卡 Drive 列輸入開球距離（碼）',
+    sand: 'The percentage of times you got up and down from a greenside bunker · 在 Bunker 列標記沙坑；出沙後一推內進洞算成功',
+    putting: 'Total putts in each round · 每回合推桿總數（越少越好）',
+    longest: 'Your longest drive in each round · 每回合最遠的一次開球'
+  };
+  function drawStats(replay) {
+    var F = FIELDS[fieldKey];
+    var list = rounds.filter(function (r) { return played(r).length; });
+    var all = stats(list), per = list.map(function (r) { return { r: r, n: rounds.indexOf(r) + 1, s: stats([r]) }; });
     $('#statTabs').innerHTML = TABS.map(function (t) { return '<button type="button" role="tab" aria-selected="' + (t[0] === tab) + '" data-tab="' + t[0] + '">' + t[1] + '</button>'; }).join('');
-    $$('[data-tab]').forEach(function (b) { b.addEventListener('click', function () { tab = b.getAttribute('data-tab'); store.set('mgtab', tab); drawStats(); }); });
+    $$('[data-tab]').forEach(function (b) { b.addEventListener('click', function () { tab = b.getAttribute('data-tab'); store.set('mgtab', tab); drawStats(true); }); });
     var el = $('#statBody');
-    var legend = multi ? '<p class="ring-legend"><span class="lg-me"></span>R' + (cur + 1) + ' 本回合<span class="lg-all"></span>所有 ' + rounds.length + ' 回合平均</p>' : '';
-    var ringStat = function (title, sub, a, b, extra) {
-      return '<div class="stat">' + dualRing(a, multi ? b : null) + '<div class="stat-v"><strong>' + Math.round(a * 100) + '<sup>%</sup></strong>' + (multi ? '<small>' + Math.round(b * 100) + '%</small>' : '') + '</div><h4>' + title + '</h4><p>' + sub + '</p>' + (extra || '') + '</div>';
-    };
-    if (!me.holes) { el.innerHTML = '<p class="empty-stats">輸入至少一洞的桿數，統計就會出現在這裡。</p>'; return; }
+    var foot = '<div class="m-foot"><div class="m-legend"><span><i class="me"></i>你 You</span><span><i class="fd"></i>Field</span></div>' +
+      '<label class="field-pick">FIELD<select id="fieldSel" aria-label="比較對象">' + Object.keys(FIELDS).map(function (k) { return '<option value="' + k + '"' + (k === fieldKey ? ' selected' : '') + '>' + FIELDS[k].name + '</option>'; }).join('') + '</select></label></div>';
+    var cap = '<p class="stat-cap">' + CAPS[tab] + '</p>';
+    if (!all.holes) { el.innerHTML = cap + '<p class="empty-stats">輸入至少一洞的桿數，統計就會出現在這裡。</p>'; return; }
 
-    if (tab === 'summary') {
-      el.innerHTML = '<p class="stat-cap">Cumulative breakdown of scores per hole · 每洞成績分布</p><div class="summary-grid"><div class="overall"><h3>' + esc(R().course || 'My Round') + ' · R' + (cur + 1) + '</h3>' + donut(me.cat) +
-        '<ul class="donut-key">' + CAT.map(function (c, k) { return '<li><i style="background:' + c[2] + '"></i>' + c[0] + '<b>' + me.cat[k] + '</b></li>'; }).join('') + '</ul></div>' +
-        '<div><div class="stat-grid">' + CAT.map(function (c, k) { return ringStat(c[0], c[1], me.cat[k] / me.holes, all.cat[k] / all.holes); }).join('') + '</div>' + legend + '</div></div>';
-    } else if (tab === 'par') {
-      el.innerHTML = '<p class="stat-cap">Scoring average by par · 各標準桿平均桿數</p><div class="par-grid">' + [3, 4, 5].map(function (p) {
-        var m = me.byPar[p], a = all.byPar[p];
-        if (!m[1]) return '<div class="par-card"><span class="eyebrow">Par ' + p + '</span><strong>–</strong><p>本回合沒有紀錄</p></div>';
-        var avg = m[0] / m[1], over = avg - p, aAvg = a[1] ? a[0] / a[1] : avg;
-        return '<div class="par-card"><span class="eyebrow">Par ' + p + ' · ' + m[1] + ' 洞</span><strong>' + avg.toFixed(2) + '</strong>' +
-          '<p class="' + (over < 0 ? 'under' : '') + '">' + (over >= 0 ? '+' : '') + over.toFixed(2) + ' / 洞</p>' +
-          '<div class="par-bar"><i style="width:' + Math.min(100, Math.max(4, over / 2 * 100)) + '%"></i></div>' +
-          (multi ? '<small>所有回合平均 ' + aAvg.toFixed(2) + '</small>' : '') + '</div>';
-      }).join('') + '</div>' +
-        '<div class="half-grid">' + [['Front 9', '前九洞', me.front, all.front], ['Back 9', '後九洞', me.back, all.back]].map(function (x) {
-          var tp = x[2][0] - x[2][1];
-          return '<div class="half"><span class="eyebrow">' + x[0] + ' · ' + x[1] + '</span><strong>' + (x[2][2] ? x[2][0] : '–') + '</strong><p class="' + (tp < 0 ? 'under' : '') + '">' + (x[2][2] ? toParStr(tp) : '') + '</p>' +
-            (multi && x[3][2] ? '<small>平均 ' + (x[3][0] / all.rounds).toFixed(1) + '</small>' : '') + '</div>';
-        }).join('') + '</div>';
-    } else if (tab === 'greens') {
-      el.innerHTML = '<p class="stat-cap">Greens in regulation · 標準桿上果嶺（桿數 − 推桿 ≤ 標準桿 − 2）</p><div class="stat-grid three">' +
-        ringStat('Greens Hit', me.gir[0] + ' / ' + me.gir[1] + ' 洞', pct(me.gir), pct(all.gir)) +
-        ringStat('Scrambling', '沒上果嶺仍保住 Par', pct(me.scr), pct(all.scr)) +
-        ringStat('Par or Better', '標準桿或更好', (me.cat[0] + me.cat[1] + me.cat[2]) / me.holes, (all.cat[0] + all.cat[1] + all.cat[2]) / all.holes) +
-        '</div>' + legend + (me.gir[1] ? '' : '<p class="empty-stats">輸入推桿數後才能計算上果嶺率。</p>');
-    } else if (tab === 'fairways') {
-      el.innerHTML = '<p class="stat-cap">Fairways hit on par 4 and par 5 · Par 4 / Par 5 開球上球道</p><div class="stat-grid three">' +
-        ringStat('Fairways Hit', me.fir[0] + ' / ' + me.fir[1] + ' 洞', pct(me.fir), pct(all.fir)) +
-        '</div>' + legend + (me.fir[1] ? '' : '<p class="empty-stats">在計分卡的 Fairway 列點擊 ✓ 或 ✕ 紀錄開球。</p>');
-    } else if (tab === 'putting') {
-      var per = me.puttHoles ? me.putts / me.puttHoles : 0;
-      var r = R();
-      el.innerHTML = '<p class="stat-cap">Putting · 推桿</p><div class="tiles">' +
-        tile('Total Putts', me.puttHoles ? me.putts : '–', multi && all.puttHoles ? '平均 ' + (all.putts / all.rounds).toFixed(1) : '') +
-        tile('Per Hole', me.puttHoles ? per.toFixed(2) : '–', '每洞推桿') +
-        tile('1-Putts', me.one, '一推進洞') + tile('3-Putts', me.three, '三推以上', me.three >= 2) + '</div>' +
-        '<div class="putt-strip">' + r.putts.map(function (p, i) { return '<div class="ps"><i class="p' + (p == null ? 'x' : Math.min(p, 3)) + '" style="height:' + (p == null ? 4 : Math.min(p, 4) * 22) + 'px"></i><span>' + (i + 1) + '</span></div>'; }).join('') + '</div>';
-    } else {
-      var maxAbs = 0.5;
-      all.hole.forEach(function (h) { if (h[1]) maxAbs = Math.max(maxAbs, Math.abs(h[0] / h[1])); });
-      el.innerHTML = '<p class="stat-cap">Average score to par on each hole, all rounds · 每洞平均（所有回合）</p><div class="hole-chart">' + all.hole.map(function (h, i) {
-        var v = h[1] ? h[0] / h[1] : 0, w = Math.abs(v) / maxAbs * 50;
-        return '<div class="hc-row"><span class="hc-n">' + (i + 1) + '<small>P' + R().par[i] + '</small></span><span class="hc-bar"><i class="' + (v < 0 ? 'neg' : v >= 1 ? 'bad' : '') + '" style="' + (v < 0 ? 'right:50%' : 'left:50%') + ';width:' + w + '%"></i></span><span class="hc-v">' + (h[1] ? (v > 0 ? '+' : '') + v.toFixed(1) : '–') + '</span></div>';
+    var ringTab = function (key, field) {
+      var tot = all[key];
+      return '<div class="m-split"><div class="m-total"><h4>TOTAL · 所有回合 <span>' + tot[0] + '/' + tot[1] + '</span></h4>' + ringBlock(pct(tot), field, true) + '</div>' +
+        '<div class="m-rounds">' + per.map(function (x) {
+          var v = x.s[key];
+          return '<div class="m-round"><h4>ROUND ' + x.n + ' <span>' + v[0] + '/' + v[1] + '</span></h4>' + ringBlock(pct(v), field) + '</div>';
+        }).join('') + '</div></div>';
+    };
+    var barTab = function (unit, value, field, empty) {
+      var vals = per.map(function (x) { return value(x); });
+      var max = Math.max.apply(null, vals.concat([field(per[0])]).filter(function (v) { return v != null; })) * 1.45 || 1;
+      return '<div class="dist-grid">' + per.map(function (x, k) {
+        var v = vals[k], f = field(x);
+        return '<div class="dcard"><div class="dc-h"><span>ROUND ' + x.n + '</span><span>' + unit + '</span></div>' +
+          '<div class="dc-box"><i class="dc-me" style="width:' + (v == null ? 0 : v / max * 100) + '%"></i><i class="dc-fd" style="width:' + (f / max * 100) + '%"></i>' +
+          '<strong>' + (v == null ? '–' : v) + '</strong><small>' + f + '</small></div>' + (v == null ? '<p class="dc-empty">' + empty + '</p>' : '') + '</div>';
       }).join('') + '</div>';
-    }
+    };
+
+    var html;
+    if (tab === 'summary') {
+      html = '<div class="summary-grid"><div class="overall"><h3>My Game Overall</h3>' + donut(all.cat) +
+        '<ul class="donut-key">' + CAT.map(function (c, k) { return '<li><i style="background:' + c[2] + '"></i>' + c[0] + ' <em>(' + all.cat[k] + ')</em></li>'; }).join('') + '</ul></div>' +
+        '<div class="sum-rings">' + CAT.map(function (c, k) { return '<div class="sum-ring"><h4>' + c[0].toUpperCase() + '</h4>' + ringBlock(all.cat[k] / all.holes, F.cat[k]) + '<p>' + c[1] + '</p></div>'; }).join('') + '</div></div>';
+    } else if (tab === 'greens') html = ringTab('gir', F.gir) + (all.gir[1] ? '' : '<p class="empty-stats">輸入推桿數後才能計算上果嶺率。</p>');
+    else if (tab === 'fairways') html = ringTab('fir', F.fir) + (all.fir[1] ? '' : '<p class="empty-stats">在計分卡的 Fairway 列點擊 ✓ 或 ✕ 紀錄開球。</p>');
+    else if (tab === 'sand') html = ringTab('sand', F.sand) + (all.sand[1] ? '' : '<p class="empty-stats">在計分卡的 Bunker 列點擊有進果嶺邊沙坑的洞。</p>');
+    else if (tab === 'driving') html = barTab('YARDS', function (x) { return x.s.drv[1] ? Math.round(x.s.drv[0] / x.s.drv[1]) : null; }, function () { return F.drive; }, '這一回合沒有輸入開球距離。');
+    else if (tab === 'longest') html = barTab('YARDS', function (x) { return x.s.longest || null; }, function () { return F.longest; }, '這一回合沒有輸入開球距離。');
+    else html = barTab('PUTTS', function (x) { return x.s.puttHoles ? x.s.putts : null; }, function (x) { return Math.round(F.putts * (x.s.holes || 18) / 18); }, '這一回合沒有輸入推桿數。') +
+      '<div class="tiles putt-tiles">' + tile('Per Round', all.puttHoles ? (all.putts / all.puttHoles * 18).toFixed(1) : '–', '每 18 洞') + tile('Per Hole', all.puttHoles ? (all.putts / all.puttHoles).toFixed(2) : '–', '每洞推桿') +
+      tile('1-Putts', all.one, '一推進洞') + tile('3-Putts', all.three, '三推以上', all.three >= 2 * all.rounds) + '</div>';
+    el.innerHTML = cap + html + foot;
+    $('#fieldSel').addEventListener('change', function () { fieldKey = this.value; store.set('field', fieldKey); drawStats(true); });
+    if (replay) { el.classList.remove('replay'); void el.offsetWidth; el.classList.add('replay'); }
   }
   function tile(t, v, sub, warn) { return '<div class="tile' + (warn ? ' warn' : '') + '"><span>' + t + '</span><strong>' + v + '</strong><small>' + sub + '</small></div>'; }
 
@@ -314,8 +349,8 @@
 
   /* ---------- import ---------- */
   function parseText(text) {
-    var lines = text.split(/\r?\n/).map(function (l) { return l.split(/[,\t;]+/).map(function (c) { return c.trim(); }); }).filter(function (l) { return l.join('') !== ''; });
-    var out = {}, keys = { par: /^(par|標準桿)$/i, score: /^(score|strokes|桿數|成績|scores)$/i, putts: /^(putts?|推桿|推桿數)$/i, fir: /^(fir|fairways?|球道|上球道)$/i };
+    var lines = text.split(/\r?\n/).map(function (l) { return l.split(/[,\t;]/).map(function (c) { return c.trim(); }); }).filter(function (l) { return l.join('') !== ''; });
+    var out = {}, keys = { par: /^(par|標準桿)$/i, score: /^(score|strokes|桿數|成績|scores)$/i, putts: /^(putts?|推桿|推桿數)$/i, fir: /^(fir|fairways?|球道|上球道)$/i, drive: /^(drive|drives|driving|開球|開球距離)$/i, sand: /^(sand|bunker|沙坑)$/i };
     var num = function (c) { var n = parseInt(c, 10); return isNaN(n) ? null : n; };
     var bool = function (c) { c = String(c).toLowerCase(); return /^(1|y|yes|t|true|✓|v|o)$/.test(c) ? true : /^(0|n|no|f|false|✕|x)$/.test(c) ? false : null; };
     var keyOf = function (c) { for (var k in keys) if (keys[k].test(c)) return k; if (/^(course|球場)$/i.test(c)) return 'course'; if (/^(date|日期)$/i.test(c)) return 'date'; return null; };
@@ -326,9 +361,9 @@
         var k = keyOf(l[0]); if (!k) return;
         if (k === 'course' || k === 'date') { out[k] = l.slice(1).join(' '); return; }
         var vals = l.slice(1).filter(function (c) { return !/^(out|in|total|tot|前九|後九|總計)$/i.test(c); });
-        var arr = vals.map(k === 'fir' ? bool : num);
+        var arr = vals.map(k === 'fir' || k === 'sand' ? bool : num);
         // drop subtotal columns if a 21-column (with Out/In/Total) row was given
-        if (arr.length >= 21 && k !== 'fir') arr = arr.slice(0, 9).concat(arr.slice(10, 19));
+        if (arr.length >= 21 && k !== 'fir' && k !== 'sand') arr = arr.slice(0, 9).concat(arr.slice(10, 19));
         out[k] = arr.slice(0, H);
       });
     } else {
@@ -341,7 +376,7 @@
         body.forEach(function (l) {
           cols.forEach(function (k, ci) {
             if (!k || k === 'hole' || k === 'course' || k === 'date') return;
-            (out[k] = out[k] || []).push(k === 'fir' ? bool(l[ci]) : num(l[ci]));
+            (out[k] = out[k] || []).push(k === 'fir' || k === 'sand' ? bool(l[ci]) : num(l[ci]));
           });
         });
       }
@@ -349,7 +384,7 @@
     if (!out.score || !out.score.some(function (v) { return v != null; })) return null;
     var fill = function (a, d) { a = (a || []).slice(0, H); while (a.length < H) a.push(d === undefined ? null : d); return a; };
     var par = out.par && out.par.filter(Boolean).length >= 9 ? fill(out.par).map(function (p, i) { return p || DEFAULT_PAR[i]; }) : null;
-    return { score: fill(out.score), putts: fill(out.putts), fir: fill(out.fir), par: par, course: out.course || null, date: /^\d{4}-\d{2}-\d{2}$/.test(out.date || '') ? out.date : null };
+    return { score: fill(out.score), putts: fill(out.putts), fir: fill(out.fir), drive: fill(out.drive), sand: fill(out.sand).map(function (v) { return v ? true : null; }), par: par, course: out.course || null, date: /^\d{4}-\d{2}-\d{2}$/.test(out.date || '') ? out.date : null };
   }
 
   function readFile(file) {

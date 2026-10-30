@@ -193,7 +193,7 @@
   function revealEl(el) {
     el.classList.add('in');
     $$('svg', el).concat(el.tagName === 'svg' ? [el] : []).forEach(function (svg) { if (svg.setCurrentTime) svg.setCurrentTime(0); });
-    if (!REDUCED) $$('.stat-v strong, .tile strong, .par-card strong, .half strong, .cc-stats dd, .topar', el).forEach(countUp);
+    if (!REDUCED) $$('.stat-v strong, .tile strong, .par-card strong, .half strong, .cc-stats dd, .topar, .mr-v strong, .dc-box strong', el).forEach(countUp);
   }
   function countUp(el) {
     var node = el.firstChild;
