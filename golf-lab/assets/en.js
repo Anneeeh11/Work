@@ -871,6 +871,7 @@
     "越過沙坑": "Over a bunker",
     "距離間隔 Gapping": "Gapping",
     "身體其實對準旗桿的左邊": "Your body actually points left of the flag",
+    "目標方向": "Target",
     "身體線：腳、髖、肩與目標線平行": "Body line: parallel to the target line",
     "輸入桿數後自動跳到下一洞": "Jumps to the next hole as you type",
     "輸入球場名稱": "Course name",

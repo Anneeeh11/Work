@@ -1217,11 +1217,11 @@ body.leaving { opacity: 0; transition: opacity .25s ease; }
 .a-draw { stroke-dasharray: 1; animation: a-draw 7s ease-in-out infinite; }
 @keyframes a-draw { 0%, 36% { stroke-dashoffset: 1; } 52%, 100% { stroke-dashoffset: 0; } }
 .a-rfoot { animation: a-rfoot 7s cubic-bezier(.3, .8, .3, 1) infinite; }
-@keyframes a-rfoot { 0%, 10% { transform: translateX(42px); } 38%, 100% { transform: none; } }
+@keyframes a-rfoot { 0%, 10% { transform: translateX(-42px); } 38%, 100% { transform: none; } }
 .a-lfoot { animation: a-lfoot 7s cubic-bezier(.3, .8, .3, 1) infinite; }
-@keyframes a-lfoot { 0%, 4% { transform: translateX(-30px); } 22%, 100% { transform: none; } }
+@keyframes a-lfoot { 0%, 4% { transform: translateX(30px); } 22%, 100% { transform: none; } }
 .a-ballpick { animation: a-ball 7s steps(1, end) infinite; }
-@keyframes a-ball { 0%, 44% { opacity: 0; transform: none; } 45% { opacity: 1; transform: none; } 58% { transform: translateX(16px); } 71% { transform: translateX(31px); } 84%, 100% { opacity: 1; transform: translateX(44px); } }
+@keyframes a-ball { 0%, 44% { opacity: 0; transform: none; } 45% { opacity: 1; transform: none; } 58% { transform: translateX(-16px); } 71% { transform: translateX(-31px); } 84%, 100% { opacity: 1; transform: translateX(-44px); } }
 .a-late { animation: a-late 7s ease infinite; }
 @keyframes a-late { 0%, 50% { opacity: 0; } 62%, 100% { opacity: 1; } }
 .a-hinge { transform-box: view-box; transform-origin: 140px 92px; animation: a-hinge 7s cubic-bezier(.4, 0, .2, 1) infinite; }
@@ -1292,6 +1292,11 @@ body.leaving { opacity: 0; transition: opacity .25s ease; }
 .lefty-btn[aria-pressed="true"] { background: var(--gold); color: var(--green-950); border-color: var(--gold); }
 .lefty .shot-svg, .lefty .fund-svg, .lefty .drill-svg, .lefty .step-svg, .lefty .relief-svg, .lefty .loft-svg { transform: scaleX(-1); }
 .lefty .shot-svg text, .lefty .fund-svg text, .lefty .drill-svg text, .lefty .step-svg text, .lefty .relief-svg text, .lefty .loft-svg text { transform: scaleX(-1); transform-box: fill-box; transform-origin: center; }
+/* Right-handed target is on the left in top and side views. Drawings made target-right carry
+   .tleft and are mirrored (text kept readable); left-handed mode puts them back. */
+svg.tleft { transform: scaleX(-1); }
+svg.tleft text { transform: scaleX(-1); transform-box: fill-box; transform-origin: center; }
+.lefty svg.tleft, .lefty svg.tleft text { transform: none; }
 .lefty-note { background: var(--gold); color: var(--green-950); font-size: 13.5px; text-align: center; padding: 8px 16px; }
 .foot-cols { display: grid; grid-template-columns: repeat(4, auto); gap: 18px 46px; }
 .foot-col { display: flex; flex-direction: column; gap: 12px; }

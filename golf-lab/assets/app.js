@@ -59,7 +59,7 @@
     var greenStart = { green: 0, fringe: 64, fairway: 110, rough: 150, bunker: 150 }[s.lie || 'fairway'];
     var land = bx + (s.air || 0) * (hx - bx);
     var peak = (s.h || 0) * 92;
-    var out = '<svg class="shot-svg" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + esc(opts.label || '擊球路線示意') + '">';
+    var out = '<svg class="shot-svg tleft" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + esc(opts.label || '擊球路線示意') + '">';
     out += '<defs><linearGradient id="' + id + 's" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0d4d33"/><stop offset="1" stop-color="#063524"/></linearGradient>' +
       '<pattern id="' + id + 'p" width="22" height="22" patternUnits="userSpaceOnUse"><rect width="11" height="22" fill="rgba(255,255,255,.05)"/></pattern></defs>';
     out += '<rect width="' + W + '" height="' + H + '" fill="url(#' + id + 's)"/>';
@@ -488,19 +488,19 @@
           T(x, 140, g[3], 'middle', live ? 'fd-t gold' : 'fd-t') + T(x, 155, g[4], 'middle', 'fd-s');
       });
     } else if (type === 'stance') {
-      // Seen from above with the golfer standing above the ball line, facing down the page:
-      // a right-hander's target (and left foot) is then on the right.
-      o += '<rect y="0" width="360" height="92" fill="rgba(255,255,255,.04)"/>' +
-        '<line x1="34" y1="118" x2="330" y2="118" stroke="#fbf8ef" stroke-width="1.2" stroke-dasharray="4 5" opacity=".6" marker-end="url(#' + id + 'a)"/>' + T(330, 108, '目標', 'end', 'fd-t gold') +
-        '<g class="a-rfoot"><ellipse cx="138" cy="54" rx="11" ry="22" fill="#f6f3ec" opacity=".92"/></g>' +
-        '<g class="a-lfoot"><ellipse cx="222" cy="54" rx="11" ry="22" fill="#f6f3ec" opacity=".92" transform="rotate(-25 222 54)"/></g>' +
-        T(138, 22, '右腳', 'middle', 'fd-s') + T(230, 22, '左腳 · 打開 20–30°', 'middle', 'fd-s');
-      [[172, 'W', -1], [188, '7i', 1], [203, 'HY', -1], [216, 'DR', 1]].forEach(function (b) {
-        o += '<circle cx="' + b[0] + '" cy="118" r="4.5" fill="#fff"/>' + T(b[0], b[2] < 0 ? 106 : 138, b[1], 'middle', 'fd-t gold');
+      // Seen from above, standing behind the golfer: feet at the bottom, facing up the page toward
+      // the ball, so a right-hander's target (and left foot) is on the left.
+      o += '<rect y="84" width="360" height="86" fill="rgba(255,255,255,.04)"/>' +
+        '<line x1="330" y1="56" x2="34" y2="56" stroke="#fbf8ef" stroke-width="1.2" stroke-dasharray="4 5" opacity=".6" marker-end="url(#' + id + 'a)"/>' + T(30, 40, '目標', 'start', 'fd-t gold') +
+        '<g class="a-lfoot"><ellipse cx="138" cy="118" rx="11" ry="22" fill="#f6f3ec" opacity=".92" transform="rotate(-25 138 118)"/></g>' +
+        '<g class="a-rfoot"><ellipse cx="222" cy="118" rx="11" ry="22" fill="#f6f3ec" opacity=".92"/></g>' +
+        T(130, 160, '左腳 · 打開 20–30°', 'middle', 'fd-s') + T(222, 160, '右腳', 'middle', 'fd-s');
+      [[188, 'W', -1], [172, '7i', 1], [157, 'HY', -1], [144, 'DR', 1]].forEach(function (b) {
+        o += '<circle cx="' + b[0] + '" cy="56" r="4.5" fill="#fff"/>' + T(b[0], b[2] < 0 ? 44 : 76, b[1], 'middle', 'fd-t gold');
       });
-      o += '<circle class="a-ballpick" cx="172" cy="118" r="9" fill="none" stroke="#f2c75c" stroke-width="1.6"/>' +
-        '<path class="a-late" d="M127 84 L127 90 L233 90 L233 84" fill="none" stroke="#fbf8ef" stroke-opacity=".5"/>' + '<g class="a-late">' + T(80, 92, '7 號鐵：與肩同寬', 'middle', 'fd-s') + '</g>' +
-        T(340, 162, '球位：W 挖起桿在中間 → DR 一號木在左腳跟內側', 'end', 'fd-s');
+      o += '<circle class="a-ballpick" cx="188" cy="56" r="9" fill="none" stroke="#f2c75c" stroke-width="1.6"/>' +
+        '<path class="a-late" d="M127 94 L127 88 L233 88 L233 94" fill="none" stroke="#fbf8ef" stroke-opacity=".5"/>' + '<g class="a-late">' + T(292, 92, '7 號鐵：與肩同寬', 'middle', 'fd-s') + '</g>' +
+        T(340, 20, '球位：W 挖起桿在中間 → DR 一號木在左腳跟內側', 'end', 'fd-s');
     } else if (type === 'posture') {
       o += '<line x1="40" y1="154" x2="330" y2="154" stroke="#fbf8ef" stroke-opacity=".3"/>' +
         '<path class="a-legs-straight" d="M146 152 L143 122 L140 92" fill="none" stroke="#f6f3ec" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>' +
@@ -514,14 +514,15 @@
         '<path d="M140 68 A 24 24 0 0 1 153.8 72.3" fill="none" stroke="#f2c75c" stroke-width="1.6"/>' + T(132, 60, '前傾約 35°', 'end', 'fd-t gold') + '</g>' +
         T(126, 96, '從髖部前傾', 'end', 'fd-s') + T(144, 130, '膝蓋微彎', 'end', 'fd-s') + T(206, 60, '背部平直', 'start', 'fd-s');
     } else if (type === 'alignment') {
-      // Golfer above, target line below: the body line points just left of the flag (up the page).
-      for (var x = 54; x < 300; x += 26) o += '<line x1="' + x + '" y1="64" x2="' + x + '" y2="112" stroke="#fbf8ef" stroke-opacity=".12" stroke-width="5"/>';
-      o += '<line class="a-draw1" pathLength="1" x1="70" y1="112" x2="318" y2="112" stroke="#fbf8ef" stroke-width="1.6"/>' +
-        '<line class="a-draw2" pathLength="1" x1="40" y1="64" x2="300" y2="64" stroke="#f2c75c" stroke-width="1.6"/>' +
-        '<line x1="318" y1="112" x2="318" y2="72" stroke="#fbf8ef" stroke-width="1.6"/><path class="wave" d="M318 72 l18 6 l-18 6z" fill="#f2c75c"/><ellipse cx="318" cy="113" rx="5" ry="2" fill="#0b2a18"/>' +
-        '<circle cx="70" cy="112" r="4.5" fill="#fff"/><circle class="a-pulse" cx="114" cy="112" r="6" fill="none" stroke="#f2c75c" stroke-width="1.4"/>' + T(114, 134, '中間目標 · 1 公尺', 'middle', 'fd-s') +
-        '<g class="a-feet"><ellipse cx="70" cy="56" rx="9" ry="5" fill="#f6f3ec" opacity=".9"/><ellipse cx="104" cy="56" rx="9" ry="5" fill="#f6f3ec" opacity=".9"/></g>' +
-        T(250, 134, '目標線：球 → 旗桿', 'middle', 'fd-t') + '<g class="a-late">' + T(220, 30, '身體線：腳、髖、肩與目標線平行', 'middle', 'fd-t gold') + T(220, 46, '身體其實對準旗桿的左邊', 'middle', 'fd-s') + '</g>';
+      // Behind the golfer, feet at the bottom: target line on top runs left to the flag, the body
+      // line below it is parallel, so it points just left of the flag.
+      for (var x = 60; x < 310; x += 26) o += '<line x1="' + x + '" y1="64" x2="' + x + '" y2="108" stroke="#fbf8ef" stroke-opacity=".12" stroke-width="5"/>';
+      o += '<line class="a-draw1" pathLength="1" x1="290" y1="64" x2="42" y2="64" stroke="#fbf8ef" stroke-width="1.6"/>' +
+        '<line class="a-draw2" pathLength="1" x1="320" y1="108" x2="60" y2="108" stroke="#f2c75c" stroke-width="1.6"/>' +
+        '<line x1="42" y1="64" x2="42" y2="24" stroke="#fbf8ef" stroke-width="1.6"/><path class="wave" d="M42 24 l18 6 l-18 6z" fill="#f2c75c"/><ellipse cx="42" cy="65" rx="5" ry="2" fill="#0b2a18"/>' +
+        '<circle cx="290" cy="64" r="4.5" fill="#fff"/><circle class="a-pulse" cx="246" cy="64" r="6" fill="none" stroke="#f2c75c" stroke-width="1.4"/>' + T(246, 48, '中間目標 · 1 公尺', 'middle', 'fd-s') +
+        '<g class="a-feet"><ellipse cx="272" cy="124" rx="6" ry="10" fill="#f6f3ec" opacity=".9"/><ellipse cx="308" cy="124" rx="6" ry="10" fill="#f6f3ec" opacity=".9"/></g>' +
+        T(124, 48, '目標線：球 → 旗桿', 'middle', 'fd-t') + '<g class="a-late">' + T(150, 134, '身體線：腳、髖、肩與目標線平行', 'middle', 'fd-t gold') + T(150, 152, '身體其實對準旗桿的左邊', 'middle', 'fd-s') + '</g>';
     } else if (type === 'swing') {
       var cx = 180, cy = 92, R = 64, at = function (deg, r) { return P(cx, cy, r || R, deg); };
       var hl = { back: [180, 330, 1, [1, 2, 3]], down: [330, 180, 0, [3, 4]], finish: [180, 45, 0, [4, 5]] }[phase];
@@ -546,7 +547,8 @@
       });
       if (phase === 'down') o += '<line x1="' + (cx + 4) + '" y1="112" x2="' + (cx + 40) + '" y2="112" stroke="#f2c75c" stroke-width="1.6" marker-end="url(#' + id + 'a)"/>' + T(cx + 46, 115, '左髖先動', 'start', 'fd-s');
       if (phase === 'finish') o += T(40, 30, '節奏 · 上桿 3 : 下桿 1', 'start', 'fd-t');
-      o += T(340, 150, '面對球員的視角', 'end', 'fd-s');
+      o += '<line x1="290" y1="24" x2="334" y2="24" stroke="#f2c75c" stroke-width="1.6" marker-end="url(#' + id + 'a)"/>' + T(312, 40, '目標方向', 'middle', 'fd-s') +
+        T(340, 150, '面對球員的視角', 'end', 'fd-s');
     }
     return o + '</svg>';
   }
@@ -576,17 +578,17 @@
       ];
     }
     if (id === 'stance') {
-      // golfer above the ball line facing down, so the target and left foot are on the right
+      // same view as the main drawing: feet at the bottom, target and left foot on the left
       var feet = function (r, l, flare, hlR, hlL) {
-        return '<ellipse cx="' + r + '" cy="40" rx="7" ry="14" fill="' + C + '" stroke="' + (hlR ? G : 'none') + '" stroke-width="2"/>' +
-          '<ellipse cx="' + l + '" cy="40" rx="7" ry="14" fill="' + C + '" stroke="' + (hlL ? G : 'none') + '" stroke-width="2" transform="rotate(' + (flare ? -25 : 0) + ' ' + l + ' 40)"/>';
+        return '<ellipse cx="' + r + '" cy="86" rx="7" ry="14" fill="' + C + '" stroke="' + (hlR ? G : 'none') + '" stroke-width="2"/>' +
+          '<ellipse cx="' + l + '" cy="86" rx="7" ry="14" fill="' + C + '" stroke="' + (hlL ? G : 'none') + '" stroke-width="2" transform="rotate(' + (flare ? -25 : 0) + ' ' + l + ' 86)"/>';
       };
-      var base = '<line x1="18" y1="96" x2="178" y2="96" stroke="#fbf8ef" stroke-dasharray="3 4" opacity=".5"/>' + t(196, 88, '目標', 'end') + '<circle cx="100" cy="96" r="5" fill="#fff"/>';
+      var base = '<line x1="182" y1="46" x2="44" y2="46" stroke="#fbf8ef" stroke-dasharray="3 4" opacity=".5"/>' + t(30, 50, '目標') + '<circle cx="100" cy="46" r="5" fill="#fff"/>';
       return [
-        svg(base + feet(92, 108, false, true, true) + '<line x1="100" y1="58" x2="100" y2="90" stroke="' + G + '" stroke-dasharray="2 3"/>' + t(100, 120, '雙腳併攏，球在正中間')),
-        svg(base + feet(92, 120, true, false, true) + arrow(108, 66, 122, 66) + t(100, 124, '左腳往目標一小步')),
-        svg(base + feet(66, 120, true, true, false) + arrow(92, 64, 68, 64) + '<path d="M59 70 L59 74 L127 74 L127 70" fill="none" stroke="#fbf8ef" stroke-opacity=".5"/>' + t(93, 124, '右腳一大步：與肩同寬')),
-        svg(base + feet(66, 120, true, false, false) + '<circle cx="66" cy="40" r="3" fill="' + G + '"/><circle cx="120" cy="40" r="3" fill="' + G + '"/>' + t(100, 114, '膝蓋微彎') + t(100, 126, '重心在腳掌中間'))
+        svg(base + feet(108, 92, false, true, true) + '<line x1="100" y1="52" x2="100" y2="70" stroke="' + G + '" stroke-dasharray="2 3"/>' + t(100, 120, '雙腳併攏，球在正中間')),
+        svg(base + feet(108, 80, true, false, true) + arrow(92, 62, 78, 62) + t(100, 124, '左腳往目標一小步')),
+        svg(base + feet(134, 80, true, true, false) + arrow(108, 62, 132, 62) + '<path d="M73 108 L73 112 L141 112 L141 108" fill="none" stroke="#fbf8ef" stroke-opacity=".5"/>' + t(107, 125, '右腳一大步：與肩同寬')),
+        svg(base + feet(134, 80, true, false, false) + '<circle cx="134" cy="86" r="3" fill="' + G + '"/><circle cx="80" cy="86" r="3" fill="' + G + '"/>' + t(100, 112, '膝蓋微彎') + t(100, 125, '重心在腳掌中間'))
       ];
     }
     if (id === 'posture') {
@@ -608,18 +610,18 @@
       ];
     }
     if (id === 'alignment') {
-      // golfer above, target line below (same orientation as the main drawing)
-      var flag = '<line x1="178" y1="80" x2="178" y2="48" stroke="#fbf8ef" stroke-width="1.4"/><path d="M178 48 l14 5 l-14 5z" fill="' + G + '"/><circle cx="54" cy="80" r="4.5" fill="#fff"/>';
-      var tline = function (hl) { return '<line x1="54" y1="80" x2="178" y2="80" stroke="' + (hl ? G : '#fbf8ef') + '" stroke-width="1.3" stroke-dasharray="' + (hl ? '3 4' : '0') + '" opacity="' + (hl ? 1 : .55) + '"/>'; };
-      var mid = function (hl) { return '<circle cx="82" cy="80" r="5" fill="none" stroke="' + (hl ? G : '#fbf8ef') + '" stroke-width="1.4" opacity="' + (hl ? 1 : .7) + '"/>'; };
-      var face = function (hl) { return '<line x1="47" y1="70" x2="47" y2="90" stroke="' + (hl ? G : '#9aa59f') + '" stroke-width="3" stroke-linecap="round"/>'; };
-      var body = function (hl) { return '<line x1="24" y1="44" x2="150" y2="44" stroke="' + (hl ? G : '#fbf8ef') + '" stroke-width="1.6" opacity="' + (hl ? 1 : .6) + '"/><ellipse cx="40" cy="36" rx="7" ry="4" fill="' + C + '"/><ellipse cx="66" cy="36" rx="7" ry="4" fill="' + C + '"/>'; };
+      // feet at the bottom, target line on top running left to the flag (same view as the main drawing)
+      var flag = '<line x1="46" y1="56" x2="46" y2="26" stroke="#fbf8ef" stroke-width="1.4"/><path d="M46 26 l14 5 l-14 5z" fill="' + G + '"/><circle cx="146" cy="56" r="4.5" fill="#fff"/>';
+      var tline = function (hl) { return '<line x1="146" y1="56" x2="46" y2="56" stroke="' + (hl ? G : '#fbf8ef') + '" stroke-width="1.3" stroke-dasharray="' + (hl ? '3 4' : '0') + '" opacity="' + (hl ? 1 : .55) + '"/>'; };
+      var mid = function (hl) { return '<circle cx="118" cy="56" r="5" fill="none" stroke="' + (hl ? G : '#fbf8ef') + '" stroke-width="1.4" opacity="' + (hl ? 1 : .7) + '"/>'; };
+      var face = function (hl) { return '<line x1="153" y1="46" x2="153" y2="66" stroke="' + (hl ? G : '#9aa59f') + '" stroke-width="3" stroke-linecap="round"/>'; };
+      var body = function (hl) { return '<line x1="176" y1="86" x2="54" y2="86" stroke="' + (hl ? G : '#fbf8ef') + '" stroke-width="1.6" opacity="' + (hl ? 1 : .6) + '"/><ellipse cx="134" cy="96" rx="4" ry="7" fill="' + C + '"/><ellipse cx="160" cy="96" rx="4" ry="7" fill="' + C + '"/>'; };
       return [
-        svg(flag + eye(20, 80) + tline(true) + t(100, 112, '站在球的正後方看線')),
-        svg(flag + tline() + mid(true) + t(82, 100, '1 公尺') + t(100, 120, '選一個中間目標')),
-        svg(flag + tline() + mid() + face(true) + t(100, 112, '桿面先對準中間目標')),
-        svg(flag + tline() + mid() + face() + body(true) + t(100, 112, '腳、髖、肩與目標線平行')),
-        svg(flag + tline() + mid() + face() + body() + '<line x1="60" y1="20" x2="176" y2="50" stroke="' + G + '" stroke-dasharray="2 4"/>' + eye(52, 18) + t(118, 112, '最後看一次目標'))
+        svg(flag + eye(180, 56) + tline(true) + t(100, 118, '站在球的正後方看線')),
+        svg(flag + tline() + mid(true) + t(118, 76, '1 公尺') + t(100, 118, '選一個中間目標')),
+        svg(flag + tline() + mid() + face(true) + t(100, 118, '桿面先對準中間目標')),
+        svg(flag + tline() + mid() + face() + body(true) + t(100, 118, '腳、髖、肩與目標線平行')),
+        svg(flag + tline() + mid() + face() + body() + '<line x1="176" y1="98" x2="52" y2="32" stroke="' + G + '" stroke-dasharray="2 4"/>' + eye(186, 102) + t(100, 118, '最後看一次目標'))
       ];
     }
     return null;
@@ -748,7 +750,7 @@
 
   function reliefSVG() {
     // Penalty area relief: entry point X on the margin, back-on-the-line, lateral (red only), stroke & distance.
-    return '<svg class="relief-svg" viewBox="0 0 520 360" role="img" aria-label="罰桿區救濟選項示意圖">' +
+    return '<svg class="relief-svg tleft" viewBox="0 0 520 360" role="img" aria-label="罰桿區救濟選項示意圖">' +
       '<rect width="520" height="360" rx="20" fill="#2f6b34"/>' +
       '<ellipse cx="430" cy="70" rx="70" ry="44" fill="#86c062"/><line x1="440" y1="72" x2="440" y2="34" stroke="#fbf8ef" stroke-width="2"/><path d="M440 34 l16 6 l-16 6z" fill="#f2c75c"/>' +
       '<path d="M210 120 C 290 100 360 130 350 180 C 340 226 260 236 214 214 C 170 192 160 136 210 120 Z" fill="#3d7fa8"/>' +
@@ -1388,7 +1390,9 @@
           '<circle cx="' + (p[0] + (i === 2 ? -16 : 14)) + '" cy="' + (p[1] - 12) + '" r="8" fill="#f2c75c"/>' + T(p[0] + (i === 2 ? -16 : 14), p[1] - 8.5, i + 1, 'middle', 'dg-n dark') + T(p[0], p[1] + 18, p[2], 'middle', 'dg-t');
       });
     }
-    return '<svg class="drill-svg" viewBox="0 0 320 190" role="img" aria-label="練習示意圖">' + defs + o + '</svg>';
+    // drawn with the target on the right; the face-on views stay as they are, the rest are mirrored (class tleft)
+    var faceOn = type === 'tee' || type === 'halfswing' || type === 'clock';
+    return '<svg class="drill-svg' + (faceOn ? '' : ' tleft') + '" viewBox="0 0 320 190" role="img" aria-label="練習示意圖">' + defs + o + '</svg>';
   }
 
   var CAT_ZH = { 'Putting': '推桿', 'Chipping': '切球', 'Pitching': '劈起球', 'Warm-up': '暖身', 'Pressure': '小挑戰', 'Half Swing': '半揮桿', 'Full Swing': '全揮桿', 'Woods': '木桿', 'Short Game': '短桿', 'Driver': '開球' };
