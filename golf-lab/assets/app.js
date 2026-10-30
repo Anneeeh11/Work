@@ -337,47 +337,52 @@
       '<marker id="' + id + 'a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#f2c75c"/></marker></defs>' +
       '<rect width="360" height="170" fill="url(#' + id + ')"/>';
     var P = function (cx, cy, r, deg) { var a = deg * Math.PI / 180; return [cx + Math.sin(a) * r, cy - Math.cos(a) * r]; };
+    // Setup diagrams loop a short animation (CSS classes a-*, keyframes in style.css). Their resting
+    // state is the finished pose, so the drawing is complete without motion.
     if (type === 'grip') {
       [[68, 15, 1, '弱 Weak', '1 個指節'], [180, -25, 2, '中性 Neutral', '2–3 個指節'], [292, -50, 4, '強 Strong', '4 個指節']].forEach(function (g, k) {
-        var x = g[0];
-        if (k === 1) o += '<rect x="' + (x - 54) + '" y="8" width="108" height="154" rx="14" fill="rgba(242,199,92,.10)" stroke="#f2c75c" stroke-opacity=".5"/>' + T(x, 24, '建議', 'middle', 'fd-t gold');
+        var x = g[0], live = k === 1;
+        if (live) o += '<rect x="' + (x - 54) + '" y="8" width="108" height="154" rx="14" fill="rgba(242,199,92,.10)" stroke="#f2c75c" stroke-opacity=".5"/>' + T(x, 24, '建議', 'middle', 'fd-t gold');
         o += '<rect x="' + (x - 8) + '" y="30" width="16" height="96" rx="7" fill="#2a2f2c"/>' +
-          '<ellipse cx="' + x + '" cy="80" rx="27" ry="33" fill="#f6f3ec" stroke="#d9d2bd"/>' +
-          '<ellipse cx="' + (x - 5) + '" cy="104" rx="7" ry="13" fill="#ece6d8" stroke="#d9d2bd"/>';
-        for (var n = 0; n < g[2]; n++) o += '<circle cx="' + (x - 13 + n * 8.5) + '" cy="58" r="3.2" fill="#c9bfa8"/>';
+          '<g class="' + (live ? 'a-hand' : '') + '"><ellipse cx="' + x + '" cy="80" rx="27" ry="33" fill="#f6f3ec" stroke="#d9d2bd"/>' +
+          '<ellipse cx="' + (x - 5) + '" cy="104" rx="7" ry="13" fill="#ece6d8" stroke="#d9d2bd"/></g>';
+        for (var n = 0; n < g[2]; n++) o += '<circle class="' + (live ? 'a-knuckle' : '') + '" style="animation-delay:' + (n * .18) + 's" cx="' + (x - 13 + n * 8.5) + '" cy="58" r="3.2" fill="' + (live ? '#f2c75c' : '#c9bfa8') + '"/>';
         var e = P(x, 96, 52, g[1]);
-        o += '<line x1="' + x + '" y1="96" x2="' + e[0] + '" y2="' + e[1] + '" stroke="#f2c75c" stroke-width="2" marker-end="url(#' + id + 'a)"/>' +
-          T(x, 140, g[3], 'middle', k === 1 ? 'fd-t gold' : 'fd-t') + T(x, 155, g[4], 'middle', 'fd-s');
+        o += '<line class="' + (live ? 'a-draw' : '') + '" pathLength="1" x1="' + x + '" y1="96" x2="' + e[0] + '" y2="' + e[1] + '" stroke="#f2c75c" stroke-width="2" marker-end="url(#' + id + 'a)"/>' +
+          T(x, 140, g[3], 'middle', live ? 'fd-t gold' : 'fd-t') + T(x, 155, g[4], 'middle', 'fd-s');
       });
     } else if (type === 'stance') {
       o += '<rect y="112" width="360" height="58" fill="rgba(255,255,255,.04)"/>' +
         '<line x1="34" y1="72" x2="330" y2="72" stroke="#fbf8ef" stroke-width="1.2" stroke-dasharray="4 5" opacity=".6" marker-end="url(#' + id + 'a)"/>' + T(330, 62, '目標', 'end', 'fd-t gold') +
-        '<ellipse cx="138" cy="126" rx="11" ry="22" fill="#f6f3ec" opacity=".92"/><ellipse cx="222" cy="126" rx="11" ry="22" fill="#f6f3ec" opacity=".92" transform="rotate(25 222 126)"/>' +
+        '<g class="a-rfoot"><ellipse cx="138" cy="126" rx="11" ry="22" fill="#f6f3ec" opacity=".92"/></g>' +
+        '<g class="a-lfoot"><ellipse cx="222" cy="126" rx="11" ry="22" fill="#f6f3ec" opacity=".92" transform="rotate(25 222 126)"/></g>' +
         T(138, 160, '右腳', 'middle', 'fd-s') + T(230, 160, '左腳 · 打開 20–30°', 'middle', 'fd-s');
       [[172, 'W', -1], [188, '7i', 1], [203, 'HY', -1], [216, 'DR', 1]].forEach(function (b) {
         o += '<circle cx="' + b[0] + '" cy="72" r="4.5" fill="#fff"/>' + T(b[0], b[2] < 0 ? 60 : 92, b[1], 'middle', 'fd-t gold');
       });
-      o += '<path d="M127 104 L127 98 L233 98 L233 104" fill="none" stroke="#fbf8ef" stroke-opacity=".5"/>' + T(80, 102, '7 號鐵：與肩同寬', 'middle', 'fd-s') +
+      o += '<circle class="a-ballpick" cx="172" cy="72" r="9" fill="none" stroke="#f2c75c" stroke-width="1.6"/>' +
+        '<path class="a-late" d="M127 104 L127 98 L233 98 L233 104" fill="none" stroke="#fbf8ef" stroke-opacity=".5"/>' + '<g class="a-late">' + T(80, 102, '7 號鐵：與肩同寬', 'middle', 'fd-s') + '</g>' +
         T(340, 26, '球位：W 挖起桿在中間 → DR 一號木在左腳跟內側', 'end', 'fd-s');
     } else if (type === 'posture') {
       o += '<line x1="40" y1="154" x2="330" y2="154" stroke="#fbf8ef" stroke-opacity=".3"/>' +
-        '<path d="M146 152 L152 124 L140 92" fill="none" stroke="#f6f3ec" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>' +
+        '<path class="a-legs-straight" d="M146 152 L143 122 L140 92" fill="none" stroke="#f6f3ec" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>' +
+        '<path class="a-legs-bent" d="M146 152 L152 124 L140 92" fill="none" stroke="#f6f3ec" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>' +
         '<line x1="136" y1="154" x2="166" y2="154" stroke="#f6f3ec" stroke-width="6" stroke-linecap="round"/>' +
-        '<line x1="140" y1="92" x2="176" y2="40" stroke="#f6f3ec" stroke-width="8" stroke-linecap="round"/>' +
-        '<circle cx="187" cy="27" r="10" fill="#f6f3ec"/>' +
-        '<line x1="176" y1="42" x2="178" y2="104" stroke="#e6e0d2" stroke-width="5" stroke-linecap="round"/>' +
-        '<line x1="178" y1="104" x2="232" y2="150" stroke="#9aa59f" stroke-width="2.5" stroke-linecap="round"/><circle cx="240" cy="150" r="4.5" fill="#fff"/>' +
-        '<line x1="176" y1="40" x2="176" y2="150" stroke="#f2c75c" stroke-dasharray="3 4" opacity=".8"/>' + T(184, 84, '手臂自然垂下', 'start', 'fd-s') +
+        '<g class="a-hinge"><line x1="140" y1="92" x2="176" y2="40" stroke="#f6f3ec" stroke-width="8" stroke-linecap="round"/><circle cx="187" cy="27" r="10" fill="#f6f3ec"/></g>' +
+        '<g class="a-arms"><line x1="176" y1="42" x2="178" y2="104" stroke="#e6e0d2" stroke-width="5" stroke-linecap="round"/>' +
+        '<line x1="178" y1="104" x2="232" y2="150" stroke="#9aa59f" stroke-width="2.5" stroke-linecap="round"/></g><circle cx="240" cy="150" r="4.5" fill="#fff"/>' +
+        '<g class="a-late"><line x1="176" y1="40" x2="176" y2="150" stroke="#f2c75c" stroke-dasharray="3 4" opacity=".8"/>' + T(184, 84, '手臂自然垂下', 'start', 'fd-s') +
         '<line x1="140" y1="92" x2="140" y2="52" stroke="#fbf8ef" stroke-dasharray="2 4" opacity=".6"/>' +
-        '<path d="M140 68 A 24 24 0 0 1 153.8 72.3" fill="none" stroke="#f2c75c" stroke-width="1.6"/>' + T(132, 60, '前傾約 35°', 'end', 'fd-t gold') +
+        '<path d="M140 68 A 24 24 0 0 1 153.8 72.3" fill="none" stroke="#f2c75c" stroke-width="1.6"/>' + T(132, 60, '前傾約 35°', 'end', 'fd-t gold') + '</g>' +
         T(126, 96, '從髖部前傾', 'end', 'fd-s') + T(144, 130, '膝蓋微彎', 'end', 'fd-s') + T(206, 60, '背部平直', 'start', 'fd-s');
     } else if (type === 'alignment') {
       for (var x = 54; x < 300; x += 26) o += '<line x1="' + x + '" y1="64" x2="' + x + '" y2="112" stroke="#fbf8ef" stroke-opacity=".12" stroke-width="5"/>';
-      o += '<line x1="70" y1="64" x2="318" y2="64" stroke="#fbf8ef" stroke-width="1.6"/>' + '<line x1="40" y1="112" x2="300" y2="112" stroke="#f2c75c" stroke-width="1.6"/>' +
+      o += '<line class="a-draw1" pathLength="1" x1="70" y1="64" x2="318" y2="64" stroke="#fbf8ef" stroke-width="1.6"/>' +
+        '<line class="a-draw2" pathLength="1" x1="40" y1="112" x2="300" y2="112" stroke="#f2c75c" stroke-width="1.6"/>' +
         '<line x1="318" y1="64" x2="318" y2="24" stroke="#fbf8ef" stroke-width="1.6"/><path class="wave" d="M318 24 l18 6 l-18 6z" fill="#f2c75c"/><ellipse cx="318" cy="65" rx="5" ry="2" fill="#0b2a18"/>' +
-        '<circle cx="70" cy="64" r="4.5" fill="#fff"/><circle cx="114" cy="64" r="6" fill="none" stroke="#f2c75c" stroke-width="1.4"/>' + T(114, 50, '中間目標 · 1 公尺', 'middle', 'fd-s') +
-        '<ellipse cx="70" cy="120" rx="9" ry="5" fill="#f6f3ec" opacity=".9"/><ellipse cx="104" cy="120" rx="9" ry="5" fill="#f6f3ec" opacity=".9"/>' +
-        T(250, 56, '目標線：球 → 旗桿', 'middle', 'fd-t') + T(220, 138, '身體線：腳、髖、肩與目標線平行', 'middle', 'fd-t gold') + T(220, 155, '身體其實對準旗桿的左邊', 'middle', 'fd-s');
+        '<circle cx="70" cy="64" r="4.5" fill="#fff"/><circle class="a-pulse" cx="114" cy="64" r="6" fill="none" stroke="#f2c75c" stroke-width="1.4"/>' + T(114, 50, '中間目標 · 1 公尺', 'middle', 'fd-s') +
+        '<g class="a-feet"><ellipse cx="70" cy="120" rx="9" ry="5" fill="#f6f3ec" opacity=".9"/><ellipse cx="104" cy="120" rx="9" ry="5" fill="#f6f3ec" opacity=".9"/></g>' +
+        T(250, 56, '目標線：球 → 旗桿', 'middle', 'fd-t') + '<g class="a-late">' + T(220, 138, '身體線：腳、髖、肩與目標線平行', 'middle', 'fd-t gold') + T(220, 155, '身體其實對準旗桿的左邊', 'middle', 'fd-s') + '</g>';
     } else if (type === 'swing') {
       var cx = 180, cy = 92, R = 64, at = function (deg, r) { return P(cx, cy, r || R, deg); };
       var hl = { back: [180, 330, 1, [1, 2, 3]], down: [330, 180, 0, [3, 4]], finish: [180, 45, 0, [4, 5]] }[phase];
@@ -406,6 +411,79 @@
     }
     return o + '</svg>';
   }
+
+  /* One small picture per step (動作步驟) for the setup lessons. The part that changes is gold. */
+  function stepFrames(id) {
+    var G = '#f2c75c', C = '#f6f3ec';
+    var svg = function (inner) { return '<svg class="step-svg" viewBox="0 0 200 130" aria-hidden="true"><rect width="200" height="130" rx="12" fill="#0b4a32"/>' + inner + '</svg>'; };
+    var t = function (x, y, txt, a) { return '<text x="' + x + '" y="' + y + '" text-anchor="' + (a || 'middle') + '" class="sf-t">' + txt + '</text>'; };
+    var arrow = function (x1, y1, x2, y2) {
+      var a = Math.atan2(y2 - y1, x2 - x1), h = 6;
+      return '<line x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 + '" stroke="' + G + '" stroke-width="1.6"/><path d="M' + x2 + ' ' + y2 + ' L' + (x2 - h * Math.cos(a - .5)) + ' ' + (y2 - h * Math.sin(a - .5)) + ' L' + (x2 - h * Math.cos(a + .5)) + ' ' + (y2 - h * Math.sin(a + .5)) + 'z" fill="' + G + '"/>';
+    };
+    var eye = function (x, y) { return '<ellipse cx="' + x + '" cy="' + y + '" rx="8" ry="5" fill="none" stroke="' + G + '" stroke-width="1.4"/><circle cx="' + x + '" cy="' + y + '" r="2.2" fill="' + G + '"/>'; };
+    if (id === 'grip') {
+      var hand = function (x, y, hl) { return '<ellipse cx="' + x + '" cy="' + y + '" rx="22" ry="26" fill="' + C + '" stroke="' + (hl ? G : '#d9d2bd') + '" stroke-width="' + (hl ? 2 : 1) + '"/>'; };
+      var bar = '<rect x="93" y="18" width="14" height="100" rx="6" fill="#2a2f2c"/>';
+      return [
+        svg(arrow(100, 40, 100, 14) + t(118, 22, '目標', 'start') + '<circle cx="100" cy="56" r="5" fill="#fff"/><rect x="78" y="66" width="44" height="18" rx="6" fill="#1f3b2f" stroke="#9aa59f"/><line x1="78" y1="66" x2="122" y2="66" stroke="' + G + '" stroke-width="3"/><line x1="112" y1="84" x2="112" y2="122" stroke="#9aa59f" stroke-width="3"/>' + t(136, 80, '桿面朝目標', 'start')),
+        svg('<rect x="62" y="56" width="66" height="54" rx="12" fill="' + C + '"/>' + [70, 84, 98, 112].map(function (x, i) { return '<rect x="' + x + '" y="' + (24 + (i === 0 ? 10 : i === 3 ? 4 : 0)) + '" width="12" height="' + (34 - (i === 0 ? 10 : i === 3 ? 4 : 0)) + '" rx="6" fill="' + C + '"/>'; }).join('') +
+          '<rect x="124" y="66" width="12" height="32" rx="6" fill="' + C + '" transform="rotate(-35 130 82)"/>' +
+          '<line x1="66" y1="60" x2="126" y2="40" stroke="#2a2f2c" stroke-width="11" stroke-linecap="round" opacity=".85"/><line x1="66" y1="60" x2="126" y2="40" stroke="' + G + '" stroke-width="1.5" stroke-dasharray="3 3"/>' + t(100, 124, '手指根部，不是掌心')),
+        svg(bar + hand(100, 70, false) + [0, 1, 2].map(function (n) { return '<circle cx="' + (86 + n * 9) + '" cy="50" r="3.5" fill="' + G + '"/>'; }).join('') + eye(100, 16) + arrow(100, 24, 100, 38) + t(128, 74, '2–3 個指節', 'start')),
+        svg(bar + hand(100, 52, false) + hand(100, 84, true) + arrow(100, 62, 68, 26) + arrow(100, 96, 66, 62) + t(60, 20, '右肩', 'end') + t(160, 124, 'V 字指向右肩')),
+        svg(t(100, 30, '握力') + Array.apply(null, Array(10)).map(function (_, i) { return '<rect x="' + (28 + i * 15) + '" y="52" width="12" height="22" rx="3" fill="' + (i < 4 ? G : 'rgba(251,248,239,.18)') + '"/>'; }).join('') +
+          t(34, 92, '0') + t(85, 92, '4') + t(172, 92, '10') + t(100, 116, '像拿一條牙膏，不要擠出來'))
+      ];
+    }
+    if (id === 'stance') {
+      var feet = function (r, l, flare, hlR, hlL) {
+        return '<ellipse cx="' + r + '" cy="86" rx="7" ry="14" fill="' + C + '" stroke="' + (hlR ? G : 'none') + '" stroke-width="2"/>' +
+          '<ellipse cx="' + l + '" cy="86" rx="7" ry="14" fill="' + C + '" stroke="' + (hlL ? G : 'none') + '" stroke-width="2" transform="rotate(' + (flare ? 25 : 0) + ' ' + l + ' 86)"/>';
+      };
+      var base = '<line x1="18" y1="34" x2="178" y2="34" stroke="#fbf8ef" stroke-dasharray="3 4" opacity=".5"/>' + t(196, 26, '目標', 'end') + '<circle cx="100" cy="34" r="5" fill="#fff"/>';
+      return [
+        svg(base + feet(92, 108, false, true, true) + '<line x1="100" y1="40" x2="100" y2="70" stroke="' + G + '" stroke-dasharray="2 3"/>' + t(100, 120, '雙腳併攏，球在正中間')),
+        svg(base + feet(92, 120, true, false, true) + arrow(108, 108, 122, 108) + t(100, 124, '左腳往目標一小步')),
+        svg(base + feet(66, 120, true, true, false) + arrow(92, 106, 68, 106) + '<path d="M59 118 L59 114 L127 114 L127 118" fill="none" stroke="#fbf8ef" stroke-opacity=".5"/>' + t(93, 127, '右腳一大步：與肩同寬')),
+        svg(base + feet(66, 120, true, false, false) + '<circle cx="66" cy="86" r="3" fill="' + G + '"/><circle cx="120" cy="86" r="3" fill="' + G + '"/>' + t(100, 116, '膝蓋微彎') + t(100, 128, '重心在腳掌中間'))
+      ];
+    }
+    if (id === 'posture') {
+      var fig = function (a, bend, arms, hl) {
+        var r = a * Math.PI / 180, hip = [90 - (a ? 6 : 0), 66], sh = [hip[0] + Math.sin(r) * 40, hip[1] - Math.cos(r) * 40], hd = [hip[0] + Math.sin(r) * 52 + (a ? 3 : 0), hip[1] - Math.cos(r) * 52];
+        var knee = [hip[0] + (bend ? 10 : 2), 92];
+        var o2 = '<line x1="40" y1="118" x2="170" y2="118" stroke="#fbf8ef" stroke-opacity=".3"/><line x1="80" y1="118" x2="102" y2="118" stroke="' + C + '" stroke-width="5" stroke-linecap="round"/>' +
+          '<path d="M88 116 L' + knee[0] + ' ' + knee[1] + ' L' + hip[0] + ' ' + hip[1] + '" fill="none" stroke="' + (hl === 'knee' ? G : C) + '" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>' +
+          '<line x1="' + hip[0] + '" y1="' + hip[1] + '" x2="' + sh[0] + '" y2="' + sh[1] + '" stroke="' + (hl === 'spine' ? G : C) + '" stroke-width="6" stroke-linecap="round"/><circle cx="' + hd[0] + '" cy="' + hd[1] + '" r="8" fill="' + C + '"/>';
+        if (arms === 'hip') o2 += '<line x1="' + sh[0] + '" y1="' + sh[1] + '" x2="' + (hip[0] + 8) + '" y2="' + (hip[1] + 2) + '" stroke="#e6e0d2" stroke-width="4" stroke-linecap="round"/><circle cx="' + (hip[0] + 8) + '" cy="' + (hip[1] + 2) + '" r="4" fill="' + G + '"/>';
+        else { var hand = [sh[0] + 1, sh[1] + 50]; o2 += '<line x1="' + sh[0] + '" y1="' + sh[1] + '" x2="' + hand[0] + '" y2="' + hand[1] + '" stroke="' + G + '" stroke-width="4" stroke-linecap="round"/><line x1="' + hand[0] + '" y1="' + hand[1] + '" x2="' + (hand[0] + 38) + '" y2="116" stroke="#9aa59f" stroke-width="2"/><circle cx="' + (hand[0] + 44) + '" cy="115" r="3.5" fill="#fff"/>'; }
+        return o2;
+      };
+      return [
+        svg(fig(0, false, 'hip') + t(122, 56, '站直', 'start') + t(122, 70, '球桿橫放髖部', 'start')),
+        svg(fig(35, false, 'hip', 'spine') + arrow(78, 70, 58, 70) + t(46, 60, '推髖', 'middle') + t(134, 40, '從髖部前傾', 'start') + t(134, 54, '背部平直', 'start')),
+        svg(fig(35, true, 'hip', 'knee') + t(132, 96, '膝蓋微彎', 'start')),
+        svg(fig(35, true, 'hang') + t(196, 128, '手臂自然垂下握桿', 'end'))
+      ];
+    }
+    if (id === 'alignment') {
+      var flag = '<line x1="178" y1="62" x2="178" y2="30" stroke="#fbf8ef" stroke-width="1.4"/><path d="M178 30 l14 5 l-14 5z" fill="' + G + '"/><circle cx="54" cy="62" r="4.5" fill="#fff"/>';
+      var tline = function (hl) { return '<line x1="54" y1="62" x2="178" y2="62" stroke="' + (hl ? G : '#fbf8ef') + '" stroke-width="1.3" stroke-dasharray="' + (hl ? '3 4' : '0') + '" opacity="' + (hl ? 1 : .55) + '"/>'; };
+      var mid = function (hl) { return '<circle cx="82" cy="62" r="5" fill="none" stroke="' + (hl ? G : '#fbf8ef') + '" stroke-width="1.4" opacity="' + (hl ? 1 : .7) + '"/>'; };
+      var face = function (hl) { return '<line x1="47" y1="52" x2="47" y2="72" stroke="' + (hl ? G : '#9aa59f') + '" stroke-width="3" stroke-linecap="round"/>'; };
+      var body = function (hl) { return '<line x1="24" y1="94" x2="150" y2="94" stroke="' + (hl ? G : '#fbf8ef') + '" stroke-width="1.6" opacity="' + (hl ? 1 : .6) + '"/><ellipse cx="40" cy="102" rx="7" ry="4" fill="' + C + '"/><ellipse cx="66" cy="102" rx="7" ry="4" fill="' + C + '"/>'; };
+      return [
+        svg(flag + eye(20, 62) + tline(true) + t(100, 110, '站在球的正後方看線')),
+        svg(flag + tline() + mid(true) + t(82, 48, '1 公尺') + t(100, 110, '選一個中間目標')),
+        svg(flag + tline() + mid() + face(true) + t(100, 110, '桿面先對準中間目標')),
+        svg(flag + tline() + mid() + face() + body(true) + t(100, 122, '腳、髖、肩與目標線平行')),
+        svg(flag + tline() + mid() + face() + body() + '<line x1="53" y1="92" x2="176" y2="40" stroke="' + G + '" stroke-dasharray="2 4"/>' + eye(52, 86) + t(118, 120, '最後看一次目標'))
+      ];
+    }
+    return null;
+  }
+
   function lessonArt(l, opts) { return l.art ? fundSVG(l.art, l.phase) : shotSVG(l.shot, opts || { label: l.title }); }
   var sectionOf = function (cat) { return GL.sections.filter(function (x) { return x.cats.indexOf(cat) > -1; })[0]; };
   var lessonOrder = function () {
@@ -652,7 +730,11 @@
         '<table class="scorecard mini"><thead><tr><th>Club</th>' + l.club.ratios.map(function (r) { return '<th>' + r[0] + '</th>'; }).join('') + '</tr></thead>' +
         '<tbody><tr><th>空中 : 滾動</th>' + l.club.ratios.map(function (r) { return '<td>' + r[1] + '</td>'; }).join('') + '</tr></tbody></table></div>'),
       setup: '<ul class="ticks">' + l.setup.map(function (s) { return '<li>' + icon('check') + '<span>' + esc(s) + '</span></li>'; }).join('') + '</ul>',
-      steps: '<ol class="steps">' + l.steps.map(function (s) { return '<li><span>' + esc(s) + '</span></li>'; }).join('') + '</ol>',
+      steps: (function () {
+        var pics = stepFrames(l.id);
+        if (!pics) return '<ol class="steps">' + l.steps.map(function (s) { return '<li><span>' + esc(s) + '</span></li>'; }).join('') + '</ol>';
+        return '<ol class="steps steps-pics">' + l.steps.map(function (s, i) { return '<li><figure>' + (pics[i] || '') + '</figure><span>' + esc(s) + '</span></li>'; }).join('') + '</ol>';
+      })(),
       mistakes: '<div class="mistakes">' + l.mistakes.map(function (m) { return '<div class="mistake"><p class="m">' + esc(m.m) + '</p><p class="f"><b>修正</b>' + esc(m.fix) + '</p></div>'; }).join('') + '</div>',
       drills: '<div class="drills">' + l.drills.map(function (d) { return '<div class="drill">' + icon('target') + '<h4>' + esc(d.name) + '</h4><p>' + esc(d.how) + '</p></div>'; }).join('') + '</div>'
     };
