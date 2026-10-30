@@ -1071,3 +1071,19 @@ body.leaving { opacity: 0; transition: opacity .25s ease; }
 @keyframes slash-in { to { transform: rotate(26deg) scaleY(1); } }
 @media (max-width: 720px) { .wordmark { font-size: 21px; } .hero-est { letter-spacing: .2em; font-size: 11px; } .hero-est::before, .hero-est::after { width: 18px; } }
 @media (prefers-reduced-motion: reduce) { .hero-logo .sl { transform: rotate(26deg); } }
+
+/* practice drill diagrams */
+.block { grid-template-columns: 34px 64px minmax(0, 1fr) minmax(0, 260px); }
+.bl-fig { margin: 0; min-width: 0; }
+.drill-svg { width: 100%; height: auto; border-radius: 14px; box-shadow: 0 6px 18px -10px rgba(6, 53, 36, .45); }
+.bl-fig figcaption { font-size: 12.5px; line-height: 1.55; color: var(--muted); margin-top: 8px; }
+.block.done .bl-fig { opacity: .55; }
+.dg-t { font: 600 10px var(--sans); fill: #fbf8ef; letter-spacing: .02em; }
+.dg-t.gold { fill: #f2c75c; }
+.dg-n { font: 600 8.5px var(--num); fill: #fbf8ef; }
+.dg-n.dark { fill: #04261a; font-size: 9px; }
+@media (max-width: 1240px) and (min-width: 1081px) { .block { grid-template-columns: 34px 64px minmax(0, 1fr) minmax(0, 220px); } }
+@media (max-width: 860px) {
+  .block { grid-template-columns: 30px 52px minmax(0, 1fr); }
+  .bl-fig { grid-column: 2 / -1; }
+}

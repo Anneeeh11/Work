@@ -591,21 +591,21 @@ GL.plans = {
   15: {
     name: 'Short Game Express', zh: '15 分鐘短桿快練',
     blocks: [
-      { mins: 2, cat: 'Putting', name: '暖身：1 公尺推桿', how: '用 Gate Drill 推 10 顆，找回推桿手感。', lesson: 'short-putts' },
-      { mins: 4, cat: 'Putting', name: 'Circle Drill', how: '洞周圍 1 公尺 8 顆，全部連續推進。', lesson: 'short-putts' },
-      { mins: 4, cat: 'Putting', name: 'Lag Ladder', how: '10 / 15 / 20 步，每顆停在洞旁 1 公尺內。', lesson: 'lag-putting' },
-      { mins: 5, cat: 'Chipping', name: '毛巾落點', how: '用 Bump & Run 與 Standard Chip 各打 10 顆，先落在毛巾上。', lesson: 'bump-and-run' }
+      { mins: 2, cat: 'Putting', name: '暖身：1 公尺推桿', how: '用 Gate Drill 推 10 顆，找回推桿手感。', lesson: 'short-putts', fig: 'gate', cap: '在球前方插兩支 tee 當「門」，只比推桿頭寬一點，推桿頭要從中間通過。' },
+      { mins: 4, cat: 'Putting', name: 'Circle Drill', how: '洞周圍 1 公尺 8 顆，全部連續推進。', lesson: 'short-putts', fig: 'circle', cap: '以洞為中心，在 1 公尺處插 8 支 tee 圍成一圈，每支 tee 旁放一顆球，一顆一顆推進洞。' },
+      { mins: 4, cat: 'Putting', name: 'Lag Ladder', how: '10 / 15 / 20 步，每顆停在洞旁 1 公尺內。', lesson: 'lag-putting', fig: 'ladder', cap: '在 10、15、20 步的位置各插一支 tee，從起點推，每一顆都要比上一顆遠，但不能超過 20 步。' },
+      { mins: 5, cat: 'Chipping', name: '毛巾落點', how: '用 Bump & Run 與 Standard Chip 各打 10 顆，先落在毛巾上。', lesson: 'bump-and-run', fig: 'towel', cap: '把毛巾鋪在果嶺邊緣往內一步，球要先落在毛巾上，再滾向洞。' }
     ]
   },
   30: {
     name: 'Complete Short Game', zh: '30 分鐘完整短桿',
     blocks: [
-      { mins: 3, cat: 'Warm-up', name: '暖身與半揮', how: '伸展後用 56° 做 10 次 9 點到 3 點的半揮。' },
-      { mins: 6, cat: 'Putting', name: '短推：Gate + Circle', how: 'Gate Drill 10 顆，再做 1 公尺 Circle Drill。', lesson: 'short-putts' },
-      { mins: 5, cat: 'Putting', name: 'Lag Ladder', how: '長推 5 顆一組，共 2 組，練習停在 1 公尺內。', lesson: 'lag-putting' },
-      { mins: 8, cat: 'Chipping', name: '三支桿比較', how: '7i / 9i / PW 打同一落點，記下你的滾動比例。', lesson: 'bump-and-run' },
-      { mins: 5, cat: 'Pitching', name: '時鐘距離表', how: '7:30 / 9:00 / 10:30 各打 5 顆，記錄距離。', lesson: 'pitch-shot' },
-      { mins: 3, cat: 'Pressure', name: 'Up & Down 挑戰', how: '選 3 個位置，每個都要兩桿內進洞（切球 + 推桿）。' }
+      { mins: 3, cat: 'Warm-up', name: '暖身與半揮', how: '伸展後用 56° 做 10 次 9 點到 3 點的半揮。', fig: 'halfswing', cap: '想像自己站在時鐘中間：後擺時左手臂到 9 點鐘，收桿時到 3 點鐘，兩邊等長。' },
+      { mins: 6, cat: 'Putting', name: '短推：Gate + Circle', how: 'Gate Drill 10 顆，再做 1 公尺 Circle Drill。', lesson: 'short-putts', fig: 'gatecircle', cap: '先在球前方用兩支 tee 做一道門推 10 顆，再用 8 支 tee 在洞周圍 1 公尺圍一圈。' },
+      { mins: 5, cat: 'Putting', name: 'Lag Ladder', how: '長推 5 顆一組，共 2 組，練習停在 1 公尺內。', lesson: 'lag-putting', fig: 'ladder', cap: '在 10、15、20 步的位置各插一支 tee，從起點推，每一顆都要比上一顆遠，但不能超過 20 步。' },
+      { mins: 8, cat: 'Chipping', name: '三支桿比較', how: '7i / 9i / PW 打同一落點，記下你的滾動比例。', lesson: 'bump-and-run', fig: 'threeclub', cap: '三支桿都打到同一條毛巾上，觀察球滾多遠：PW 最短、7i 最長。' },
+      { mins: 5, cat: 'Pitching', name: '時鐘距離表', how: '7:30 / 9:00 / 10:30 各打 5 顆，記錄距離。', lesson: 'pitch-shot', fig: 'clock', cap: '後擺時左手臂停在 7:30、9:00 或 10:30 三個位置，擺幅越大、距離越遠。' },
+      { mins: 3, cat: 'Pressure', name: 'Up & Down 挑戰', how: '選 3 個位置，每個都要兩桿內進洞（切球 + 推桿）。', fig: 'updown', cap: '在果嶺周圍選長草、邊緣、沙坑三個位置，每個位置切一次、推一次，兩桿內進洞才過關。' }
     ]
   }
 };

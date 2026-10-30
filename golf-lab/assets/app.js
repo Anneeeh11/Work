@@ -804,6 +804,87 @@
     draw();
   }
 
+
+  /* Top-down drill diagrams for the practice plans (320 × 190). */
+  function drillSVG(type) {
+    var T = function (x, y, t, a, cls) { return '<text x="' + x + '" y="' + y + '" text-anchor="' + (a || 'middle') + '" class="' + (cls || 'dg-t') + '">' + t + '</text>'; };
+    var ball = function (x, y) { return '<circle cx="' + x + '" cy="' + (y + 1.5) + '" r="5" fill="rgba(0,0,0,.25)"/><circle cx="' + x + '" cy="' + y + '" r="5" fill="#fff"/>'; };
+    var tee = function (x, y) { return '<circle cx="' + x + '" cy="' + y + '" r="3.2" fill="#f2c75c" stroke="#8a6514" stroke-width=".8"/>'; };
+    var hole = function (x, y) { return '<circle cx="' + x + '" cy="' + y + '" r="7.5" fill="#0b2a18"/><circle cx="' + x + '" cy="' + y + '" r="2" fill="#fbf8ef"/>'; };
+    var path = function (d, dash) { return '<path d="' + d + '" fill="none" stroke="#fbf8ef" stroke-width="1.6" stroke-linecap="round"' + (dash ? ' stroke-dasharray="' + dash + '"' : '') + ' opacity=".85"/>'; };
+    var green = '<rect width="320" height="190" rx="16" fill="#5fa64a"/><rect width="320" height="190" rx="16" fill="url(#dgs)"/>';
+    var defs = '<defs><pattern id="dgs" width="28" height="28" patternUnits="userSpaceOnUse" patternTransform="rotate(90)"><rect width="14" height="28" fill="rgba(255,255,255,.06)"/></pattern></defs>';
+    var circle = function (cx, cy, r, gate) {
+      var o = '<circle cx="' + cx + '" cy="' + cy + '" r="' + r + '" fill="none" stroke="#fbf8ef" stroke-width="1.2" stroke-dasharray="3 5" opacity=".7"/>';
+      for (var k = 0; k < 8; k++) {
+        var a = k * Math.PI / 4, ax = cx + Math.sin(a) * r, ay = cy - Math.cos(a) * r;
+        var b = a + 0.22, bx = cx + Math.sin(b) * (r + 1), by = cy - Math.cos(b) * (r + 1);
+        o += tee(ax, ay) + ball(bx, by);
+        if (k === 2 || k === 5) o += path('M' + (cx + Math.sin(b) * (r - 9)) + ' ' + (cy - Math.cos(b) * (r - 9)) + ' L' + (cx + Math.sin(b) * 12) + ' ' + (cy - Math.cos(b) * 12), '1 5');
+      }
+      return o + hole(cx, cy) + '<line x1="' + cx + '" y1="' + cy + '" x2="' + cx + '" y2="' + (cy + r) + '" stroke="#f2c75c" stroke-width="1"/>' + T(cx + 6, cy + r / 2 + 4, '1 公尺', 'start');
+    };
+    var dial = function (cx, cy, r) {
+      var o = '<circle cx="' + cx + '" cy="' + cy + '" r="' + r + '" fill="rgba(251,248,239,.06)" stroke="#fbf8ef" stroke-opacity=".35"/>';
+      for (var h = 0; h < 12; h++) { var a = h * Math.PI / 6; o += '<line x1="' + (cx + Math.sin(a) * (r - 6)) + '" y1="' + (cy - Math.cos(a) * (r - 6)) + '" x2="' + (cx + Math.sin(a) * r) + '" y2="' + (cy - Math.cos(a) * r) + '" stroke="#fbf8ef" stroke-opacity=".5"/>'; }
+      // golfer seen from the front: head, body, ball at six o'clock
+      return o + '<circle cx="' + cx + '" cy="' + (cy - 30) + '" r="9" fill="#fbf8ef" opacity=".9"/><line x1="' + cx + '" y1="' + (cy - 20) + '" x2="' + cx + '" y2="' + (cy + 18) + '" stroke="#fbf8ef" stroke-width="3" stroke-linecap="round" opacity=".9"/>' + ball(cx, cy + r - 4);
+    };
+    var arm = function (cx, cy, r, deg, label, col) {
+      var a = deg * Math.PI / 180, x = cx + Math.sin(a) * r, y = cy - Math.cos(a) * r;
+      return '<line x1="' + cx + '" y1="' + (cy - 14) + '" x2="' + x + '" y2="' + y + '" stroke="' + col + '" stroke-width="2.4" stroke-linecap="round"/><circle cx="' + x + '" cy="' + y + '" r="4" fill="' + col + '"/>' +
+        T(x + (Math.sin(a) < -.2 ? -8 : Math.sin(a) > .2 ? 8 : 0), y + (Math.cos(a) > .5 ? -8 : 4), label, Math.sin(a) < -.2 ? 'end' : Math.sin(a) > .2 ? 'start' : 'middle', 'dg-t gold');
+    };
+    var o = '';
+    if (type === 'gate') {
+      o = green + '<rect x="40" y="84" width="9" height="24" rx="2" fill="#1f3b2f"/>' + ball(60, 96) + tee(72, 84) + tee(72, 108) +
+        path('M66 96 L 252 96', '1 6') + hole(262, 96) +
+        '<path d="M60 140 L262 140 M60 134 L60 146 M262 134 L262 146" stroke="#fbf8ef" stroke-opacity=".7"/>' + T(161, 158, '1 公尺') +
+        '<path d="M72 78 C 90 50 120 46 140 46" fill="none" stroke="#f2c75c" stroke-width="1"/>' + T(146, 50, '兩支 tee 做成「門」', 'start', 'dg-t gold');
+    } else if (type === 'circle') {
+      o = green + circle(160, 86, 60) + T(160, 180, '以洞為中心 · 8 支 tee 圍成一圈', 'middle', 'dg-t gold');
+    } else if (type === 'gatecircle') {
+      o = green + '<rect x="18" y="78" width="7" height="20" rx="2" fill="#1f3b2f"/>' + ball(34, 88) + tee(44, 78) + tee(44, 98) + path('M40 88 L 96 88', '1 5') + T(62, 124, '① Gate', 'middle', 'dg-t gold') +
+        '<line x1="118" y1="20" x2="118" y2="170" stroke="#fbf8ef" stroke-opacity=".25"/>' + circle(220, 86, 56) + T(220, 180, '② Circle 1 公尺', 'middle', 'dg-t gold');
+    } else if (type === 'ladder') {
+      o = green + ball(28, 98) + T(28, 124, '起點');
+      [[120, '10 步'], [190, '15 步'], [270, '20 步']].forEach(function (m, i) {
+        o += '<line x1="' + m[0] + '" y1="40" x2="' + m[0] + '" y2="156" stroke="#fbf8ef" stroke-width="1" stroke-dasharray="3 5" opacity="' + (i === 2 ? .9 : .5) + '"/>' + tee(m[0], 40) + tee(m[0], 156) + T(m[0], 28, m[1], 'middle', i === 2 ? 'dg-t gold' : 'dg-t');
+      });
+      [[126, 88], [158, 108], [204, 92], [238, 104], [262, 96]].forEach(function (p, i) { o += ball(p[0], p[1]) + T(p[0], p[1] - 9, i + 1, 'middle', 'dg-n'); });
+      o += path('M36 98 L 112 98', '1 6') + '<rect x="270" y="40" width="50" height="116" fill="rgba(200,16,46,.18)"/>' + T(296, 176, '不能超過', 'middle', 'dg-t');
+    } else if (type === 'towel' || type === 'threeclub') {
+      o = '<rect width="320" height="190" rx="16" fill="#3f7d3a"/><rect x="96" width="224" height="190" fill="#5fa64a"/><path d="M304 0 h0 a16 16 0 0 1 16 16 v158 a16 16 0 0 1 -16 16 z" fill="#5fa64a"/>' +
+        '<rect x="96" width="224" height="190" fill="url(#dgs)"/><line x1="96" y1="0" x2="96" y2="190" stroke="#8cc163" stroke-width="2"/>' + T(48, 20, '果嶺外', 'middle', 'dg-t') + T(104, 20, '果嶺', 'start', 'dg-t');
+      if (type === 'towel') {
+        o += '<rect x="110" y="78" width="40" height="34" rx="3" fill="#fbf8ef" transform="rotate(-6 130 95)"/><path d="M114 84 h32 M114 90 h32" stroke="#d9d2bd" stroke-width="2" transform="rotate(-6 130 95)"/>' +
+          ball(46, 100) + path('M52 98 Q 90 52 128 92') + path('M132 96 L 262 98', '1 6') + hole(272, 98) + T(130, 132, '毛巾＝落點', 'middle', 'dg-t gold') +
+          '<circle cx="272" cy="98" r="22" fill="none" stroke="#fbf8ef" stroke-opacity=".5" stroke-dasharray="2 4"/>';
+      } else {
+        o += '<rect x="112" y="40" width="30" height="112" rx="3" fill="#fbf8ef" opacity=".92"/>' + T(127, 170, '同一個落點', 'middle', 'dg-t gold') + hole(296, 96);
+        [[58, 170, 'PW'], [96, 226, '9i'], [134, 282, '7i']].forEach(function (r) {
+          o += ball(44, r[0]) + path('M50 ' + (r[0] - 2) + ' Q 86 ' + (r[0] - 36) + ' 124 ' + r[0]) + path('M128 ' + r[0] + ' L ' + r[1] + ' ' + r[0], '1 6') +
+            '<circle cx="' + r[1] + '" cy="' + r[0] + '" r="4" fill="none" stroke="#f2c75c" stroke-width="1.4"/>' + T(r[1] + 9, r[0] + 4, r[2], 'start', 'dg-t gold');
+        });
+      }
+    } else if (type === 'halfswing') {
+      o = '<rect width="320" height="190" rx="16" fill="#0b4a32"/>' + dial(160, 98, 72) +
+        '<path d="M 88 98 A 72 72 0 0 0 232 98" fill="none" stroke="#f2c75c" stroke-width="2" stroke-dasharray="4 5"/>' +
+        arm(160, 98, 72, 270, '9 點 後擺', '#f2c75c') + arm(160, 98, 72, 90, '3 點 收桿', '#f2c75c');
+    } else if (type === 'clock') {
+      o = '<rect width="320" height="190" rx="16" fill="#0b4a32"/>' + dial(176, 98, 72) +
+        arm(176, 98, 72, 225, '7:30 · 短', '#cfe0d6') + arm(176, 98, 72, 270, '9:00 · 中', '#f2c75c') + arm(176, 98, 72, 315, '10:30 · 長', '#fbf8ef');
+    } else if (type === 'updown') {
+      o = '<rect width="320" height="190" rx="16" fill="#3f7d3a"/><ellipse cx="176" cy="92" rx="96" ry="60" fill="#5fa64a"/><ellipse cx="176" cy="92" rx="96" ry="60" fill="url(#dgs)"/>' +
+        '<path d="M262 160 c 14 -18 46 -18 52 -2 c 4 12 -18 22 -38 20 c -14 -2 -20 -8 -14 -18z" fill="#efe6cf"/>' + hole(196, 86);
+      [[38, 44, '長草'], [60, 164, '邊緣'], [288, 168, '沙坑']].forEach(function (p, i) {
+        o += ball(p[0], p[1]) + path('M' + p[0] + ' ' + p[1] + ' Q ' + ((p[0] + 196) / 2) + ' ' + (Math.min(p[1], 86) - 30) + ' 190 88', '1 6') +
+          '<circle cx="' + (p[0] + (i === 2 ? -16 : 14)) + '" cy="' + (p[1] - 12) + '" r="8" fill="#f2c75c"/>' + T(p[0] + (i === 2 ? -16 : 14), p[1] - 8.5, i + 1, 'middle', 'dg-n dark') + T(p[0], p[1] + 18, p[2], 'middle', 'dg-t');
+      });
+    }
+    return '<svg class="drill-svg" viewBox="0 0 320 190" role="img" aria-label="練習示意圖">' + defs + o + '</svg>';
+  }
+
   /* ---------- PRACTICE ---------- */
   function practice() {
     var plan = store.get('plan', '15');
@@ -824,7 +905,8 @@
           '<label class="chk"><input type="checkbox" data-i="' + i + '"' + (done.indexOf(i) > -1 ? ' checked' : '') + '><span>' + icon('check') + '</span></label>' +
           '<div class="bl-time">' + b.mins + '<small>min</small></div>' +
           '<div class="bl-body"><span class="eyebrow">' + esc(b.cat) + '</span><h3>' + esc(b.name) + '</h3><p>' + esc(b.how) + '</p>' +
-          (l ? '<a href="learn.html#' + l.id + '">教學：' + esc(l.title) + ' ' + icon('arrow') + '</a>' : '') + '</div></li>';
+          (l ? '<a href="learn.html#' + l.id + '">教學：' + esc(l.title) + ' ' + icon('arrow') + '</a>' : '') + '</div>' +
+          (b.fig ? '<figure class="bl-fig">' + drillSVG(b.fig) + '<figcaption>' + esc(b.cap) + '</figcaption></figure>' : '') + '</li>';
       }).join('');
       $$('#planList input').forEach(function (c) {
         c.addEventListener('change', function () {
