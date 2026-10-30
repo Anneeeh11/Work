@@ -304,7 +304,7 @@
       f.className = 'site-footer';
       f.innerHTML = '<div class="wrap foot">' +
         '<div><a class="brand light" href="index.html" aria-label="PAR/A 首頁">' + wordmark() + '</a><p class="brand-tag">The Golf Lab</p>' +
-        '<p class="foot-note">PAR/A 是 Anne 一個人整理的小網站，寫給剛開始學高爾夫的人。內容有錯、或想看什麼教學，<a href="index.html#contact">歡迎寫信告訴我</a>。</p>' +
+        '<p class="foot-note">PAR/A 是給高爾夫新手的學習平台，從第一次握桿到打破 100 桿。內容有錯、或想看什麼教學，<a href="index.html#contact">歡迎來信告訴我們</a>。</p>' +
         '<button type="button" class="lefty-btn" id="leftyBtn" aria-pressed="' + lefty + '">左手球員模式：' + (lefty ? '開' : '關') + '</button></div>' +
         '<div class="foot-cols"><div class="foot-col"><h5>開始</h5><a href="start.html">新手入門<small>Start Here</small></a><a href="index.html#contact">聯絡我們<small>Contact Us</small></a></div>' +
         NAV_GROUPS.map(function (g) { return '<div class="foot-col"><h5>' + g.zh + '</h5>' + g.items.map(function (n) { return '<a href="' + n.href + '">' + n.zh + '<small>' + n.en + '</small></a>'; }).join('') + '</div>'; }).join('') + '</div>' +
@@ -997,7 +997,7 @@
     };
     root.innerHTML = '<div class="wrap lesson">' +
       '<a class="crumb" href="#' + sec0.id + '">' + icon('back') + '回到「' + sec0.zh + '」</a>' +
-      '<header class="lesson-head"><div><span class="eyebrow">' + c.zh + ' · ' + l.level + ' · 約 ' + l.mins + ' 分鐘</span><h1>' + esc(l.zh) + '</h1><p class="lead">' + esc(l.title) + '</p><p class="byline">Anne 整理 · 2026 年 10 月更新</p></div>' +
+      '<header class="lesson-head"><div><span class="eyebrow">' + c.zh + ' · ' + l.level + ' · 約 ' + l.mins + ' 分鐘</span><h1>' + esc(l.zh) + '</h1><p class="lead">' + esc(l.title) + '</p><p class="byline">2026 年 10 月更新</p></div>' +
       '<div class="lesson-art">' + lessonArt(l, { label: l.title, tag: l.club.pick.split('、')[0] }) + '</div></header>' +
       (l.key ? '<div class="key-point"><span class="kp-label">這篇的重點</span><p>' + esc(l.key) + '</p></div>' : '') +
       '<div class="lesson-layout"><nav class="format-rail" aria-label="Lesson sections">' + sec.map(function (s, i) {

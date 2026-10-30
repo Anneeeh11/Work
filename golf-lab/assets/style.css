@@ -1649,3 +1649,18 @@ h1, h2, h3 { text-wrap: balance; }
 .lang-btn:lang(zh) { }
 
 html[lang="en"] { --zh-serif: 'Source Serif 4', 'Noto Serif TC', Georgia, serif; }
+
+/* home: journey card in place of the photo */
+.h-journey { background: var(--paper); border: 1px solid #e9e3d3; border-radius: 18px; padding: 30px 30px 26px; }
+.hj-title { font: 600 14px var(--sans); color: var(--gold-deep); margin-bottom: 18px; }
+.hj-steps { list-style: none; margin: 0; padding: 0; position: relative; }
+.hj-steps::before { content: ''; position: absolute; left: 9px; top: 12px; bottom: 26px; width: 2px; background: linear-gradient(var(--green-200), var(--gold)); }
+.hj-steps li { position: relative; display: flex; gap: 18px; align-items: flex-start; padding-bottom: 22px; }
+.hj-dot { flex: none; width: 20px; height: 20px; border-radius: 50%; background: var(--paper); border: 2px solid var(--green); margin-top: 4px; position: relative; z-index: 1; }
+.hj-steps strong { display: block; font: 500 21px var(--zh-serif); color: var(--green-900); }
+.hj-steps small { display: block; font-size: 14.5px; color: var(--muted); margin-top: 2px; }
+.hj-steps li.goal .hj-dot { background: var(--gold); border-color: var(--gold); box-shadow: 0 0 0 5px rgba(242, 199, 92, .25); }
+.hj-steps li.goal strong { color: var(--green); }
+.hj-link { display: inline-block; margin-top: 4px; color: var(--green); font-weight: 600; }
+.hj-link:hover { text-decoration: underline; }
+@media (max-width: 900px) { .h-journey { padding: 24px; } }
