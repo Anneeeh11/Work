@@ -17,7 +17,7 @@ No build step. Open `index.html` in a browser.
 | Practice | `practice.html` | 15 / 30 minute plans with a timer, and a 9-station Up & Down scorecard |
 | My Game | `my-game.html` | Upload a scorecard (CSV/TXT, pasted text or a photo to type from) or enter it hole by hole; Masters-style Statistics (Scoring Summary, Greens Hit, Fairways Hit, Driving Distance, Sand Saves, Putting, Longest Drive) compared with a chosen field, plus practice suggestions. Rounds are saved in the browser |
 | Golf Rules | `rules.html` | Rules by area of the course (clickable hole map), penalty quick reference, penalty-area relief diagram, scoring terms and etiquette; based on the 2023 Rules of Golf |
-| Contact Us | `index.html#contact` | Contact form (sent through FormSubmit, same as the personal site; falls back to Gmail) plus email and Instagram |
+| Contact Us | `index.html#contact` | Contact form (sent through FormSubmit, same as the personal site; falls back to Gmail) plus email |
 
 Site is written for beginners (new to golf up to about 95 strokes). All content is in `assets/data.js`; beginner content (lesson key points, glossary, 4-week paths, starter set, extra diagnoses, range plans) is in `assets/beginner.js`. Edit lessons, clubs, diagnosis rules and plans there.
 My Game logic is in `assets/mygame.js`. Layout and logic are in `assets/app.js`, styles are in `assets/style.css`.
