@@ -307,7 +307,7 @@
         '<p class="foot-note">PAR/A 是給高爾夫新手的學習平台，從第一次握桿到打破 100 桿。內容有錯、或想看什麼教學，<a href="index.html#contact">歡迎來信告訴我們</a>。</p>' +
         '<div class="hand-pick"><p class="hp-q">你是哪一手的球員？</p>' +
         '<div class="toggle hp-toggle" role="group" aria-label="揮桿慣用手"><button type="button" data-hand="right" aria-pressed="' + !lefty + '">右手球員</button><button type="button" data-hand="left" aria-pressed="' + lefty + '">左手球員</button></div>' +
-        '<p class="hp-help">右手球員：右手在下方握桿，球往你的左手邊飛出去，大多數人都是。選「左手球員」，網站上的圖會左右翻轉。</p></div></div>' +
+        '<p class="hp-help">右手球員：右手在下方握桿，球往你的左手邊飛出去，大多數人都是。選「左手球員」，圖和文字的左右會對調，僅供參考。</p></div></div>' +
         '<div class="foot-cols"><div class="foot-col"><h5>開始</h5><a href="start.html">新手入門<small>Start Here</small></a><a href="index.html#contact">聯絡我們<small>Contact Us</small></a></div>' +
         NAV_GROUPS.map(function (g) { return '<div class="foot-col"><h5>' + g.zh + '</h5>' + g.items.map(function (n) { return '<a href="' + n.href + '">' + n.zh + '<small>' + n.en + '</small></a>'; }).join('') + '</div>'; }).join('') + '</div>' +
         '</div><div class="wrap foot-base"><span>&copy; ' + new Date().getFullYear() + ' PAR/A</span><span>最後更新：2026 年 10 月</span></div>';
@@ -324,11 +324,63 @@
 
   function handLine() {
     return store.get('lefty', false)
-      ? '<span>圖示：左手球員（已左右翻轉）</span> · <button type="button" class="link-btn" data-hand="right">改成右手球員</button>'
+      ? '<span>左手球員版本：圖和文字的左右已對調（僅供參考）</span> · <button type="button" class="link-btn" data-hand="right">改成右手球員</button>'
       : '<span>圖示：右手球員</span> · <button type="button" class="link-btn" data-hand="left">我是左手球員</button>';
   }
 
-  /* Left-handed mode mirrors every diagram; the text keeps right-handed wording, with a reminder. */
+  /* Left-handed mode mirrors the diagrams and swaps left/right in the teaching text. The site is
+     written for right-handers; the swap is a convenience. Chrome, notes and [data-noswap] stay as written. */
+  var LR = new WeakMap(); // text node -> [original, swapped]
+  var EN_PART = 'foot|feet|hand|hands|handed|hander|handers|palm|palms|arm|arms|elbow|elbows|shoulder|shoulders|side|sides|knee|knees|hip|hips|heel|heels|ear|field|little|thumb|thumbs|wrist|wrists|eye|leg|legs|pocket|forearm|index|toe|toes|edge|pinky|cheek';
+  var EN_BEFORE = 'to the|to your|on the|on your|of your|off to your|goes|go|going|went|curves?|curving|push(?:es|ed|ing)? it|pull(?:s|ed|ing)? it|aim(?:s|ed|ing)?|tilted|sliding|slides?|too far|a long way|starts?|starting|miss(?:es|ing)?|points?|pointing|turn(?:s|ed)?|leans?|leaning|move(?:s|d)?|step|shift(?:s|ed)?|straight|low and|high and|slightly|far|fat or';
+  // "right" also means "correct" or "exactly" (the right club, right here): those are left alone
+  var EN_NOT = '(?!\\s+(?:here|there|now|away|after|before|behind|over|into|through|width|club|clubs|one|ones|shot|shots|order|amount|distance|time|spot|speed|answer|choice|length|size|thing|things|place|tool|line|loft|first)\\b)';
+  var EN_LR = new RegExp('(?<=\\b(?:' + EN_BEFORE + ')\\s)(left|right)\\b' + EN_NOT + '|\\b(left|right)(?=[\\s-]+(?:' + EN_PART + ')\\b|\\s+of\\b|\\s*\\((?:front|back|lead|trail))', 'gi');
+  function swapLR(t) {
+    var out = t.replace(/左右|右左|[左右]/g, function (m) { return m.length > 1 ? m : m === '左' ? '右' : '左'; });
+    // "left or right" names both sides: keep it as it is
+    var pairs = [];
+    out = out.replace(/\b(?:left|right) (?:or|and|and\/or|to) (?:left|right)\b/gi, function (m) { pairs.push(m); return '\u0000' + (pairs.length - 1) + '\u0000'; });
+    out = out.replace(EN_LR, function (m) {
+      var w = /^l/i.test(m) ? 'right' : 'left';
+      return m === m.toUpperCase() ? w.toUpperCase() : m[0] === m[0].toUpperCase() ? w[0].toUpperCase() + w.slice(1) : w;
+    });
+    return out.replace(/\u0000(\d+)\u0000/g, function (m, i) { return pairs[i]; });
+  }
+  var NOSWAP = '#site-header, #site-footer, .lefty-note, .hand-line, [data-noswap], script, style, textarea';
+  function lrNode(n, on) {
+    var v = n.nodeValue, rec = LR.get(n);
+    if (rec && v === (on ? rec[1] : rec[0])) return;
+    if (!on) { if (rec && v === rec[1]) n.nodeValue = rec[0]; return; }
+    if (!/[左右]|left|right/i.test(v) || (n.parentNode && n.parentNode.closest && n.parentNode.closest(NOSWAP))) return;
+    var w = swapLR(v);
+    LR.set(n, [v, w]);
+    if (w !== v) n.nodeValue = w;
+  }
+  function lrWalk(root, on) {
+    if (root.nodeType === 3) return lrNode(root, on);
+    if (root.nodeType !== 1 || (root.closest && root.closest(NOSWAP))) return;
+    var tw = document.createTreeWalker(root, NodeFilter.SHOW_TEXT), n;
+    while ((n = tw.nextNode())) lrNode(n, on);
+  }
+  var lrObs = null;
+  function lrText(on) {
+    // after the English translator has had its turn on the same nodes
+    setTimeout(function () {
+      lrWalk(document.body, on);
+      if (on && !lrObs) {
+        lrObs = new MutationObserver(function (list) {
+          if (!document.documentElement.classList.contains('lefty')) return;
+          list.forEach(function (m) {
+            if (m.type === 'characterData') lrNode(m.target, true);
+            else m.addedNodes.forEach(function (a) { lrWalk(a, true); });
+          });
+        });
+        lrObs.observe(document.body, { childList: true, subtree: true, characterData: true });
+      }
+    }, 0);
+  }
+
   function applyLefty() {
     var on = !!store.get('lefty', false);
     document.documentElement.classList.toggle('lefty', on);
@@ -338,10 +390,11 @@
     if (on && !note) {
       note = document.createElement('div');
       note.id = 'leftyNote'; note.className = 'lefty-note';
-      note.innerHTML = '<span>目前顯示左手球員的圖（已左右翻轉）。文字仍以右手球員撰寫，讀的時候把「左、右」對調。</span><button type="button" data-hand="right">切回右手球員</button>';
+      note.innerHTML = '<span>左手球員版本：圖已左右翻轉，文字裡的「左、右」也已對調。網站以右手球員為主，左手版本僅供參考。</span><button type="button" data-hand="right">切回右手球員</button>';
       var hd = $('#site-header');
       if (hd && hd.parentNode) hd.parentNode.insertBefore(note, hd.nextSibling);
     } else if (!on && note) note.remove();
+    lrText(on);
   }
 
   /* ---------- learning progress ---------- */
