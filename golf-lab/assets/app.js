@@ -1156,7 +1156,11 @@
 
     function pickList() {
       st = null;
-      root.innerHTML = '<div class="problem-grid">' + GL.problems.map(function (p, i) {
+      // the two problems beginners meet first go to the top
+      var first = ['whiff', 'air'];
+      var list = first.map(function (id) { return GL.problems.filter(function (p) { return p.id === id; })[0]; }).filter(Boolean)
+        .concat(GL.problems.filter(function (p) { return first.indexOf(p.id) < 0; }));
+      root.innerHTML = '<div class="problem-grid">' + list.map(function (p, i) {
         return '<button class="problem" data-p="' + p.id + '"><strong>' + esc(p.title) + '</strong><span>' + esc(p.desc) + '</span><em>開始診斷 ' + icon('arrow') + '</em></button>';
       }).join('') + '</div>';
       reveal(root, true);
@@ -1428,6 +1432,27 @@
         '<path d="M60 136 Q 66 92 108 90 L 140 92 Q 146 116 140 138 Z" fill="#1f3b2f" stroke="#9aa59f"/><line x1="66" y1="96" x2="38" y2="20" stroke="#9aa59f" stroke-width="3"/>' +
         '<line x1="132" y1="91" x2="200" y2="91" stroke="#f2c75c" stroke-dasharray="3 4"/>' + T(206, 94, '桿頭頂端', 'start', 'dg-t') +
         '<path d="M178 86 L178 99" stroke="#f2c75c"/>' + T(206, 80, '球有一半高過桿頭', 'start', 'dg-t gold') + T(160, 166, 'Tee 架高 · 球放左腳跟內側', 'middle', 'dg-t');
+    } else if (type === 'turn') {
+      // face-on: club held across the chest, shoulders turn while the legs stay put
+      var head = function (x, y, deg) { var r = deg * Math.PI / 180; return '<path d="M' + x + ' ' + y + ' l' + (-8 * Math.cos(r - .5)) + ' ' + (-8 * Math.sin(r - .5)) + ' M' + x + ' ' + y + ' l' + (-8 * Math.cos(r + .5)) + ' ' + (-8 * Math.sin(r + .5)) + '" stroke="#f2c75c" stroke-width="1.8" stroke-linecap="round"/>'; };
+      o = '<rect width="320" height="190" rx="16" fill="#0b4a32"/><line x1="40" y1="164" x2="280" y2="164" stroke="#fbf8ef" stroke-opacity=".3"/>' +
+        '<circle cx="160" cy="50" r="11" fill="#fbf8ef" opacity=".92"/><line x1="160" y1="62" x2="160" y2="114" stroke="#fbf8ef" stroke-width="7" stroke-linecap="round" opacity=".92"/>' +
+        '<path d="M144 162 L160 114 L176 162" fill="none" stroke="#fbf8ef" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" opacity=".92"/>' +
+        '<line x1="92" y1="78" x2="228" y2="78" stroke="#2a2f2c" stroke-width="6" stroke-linecap="round"/><line x1="92" y1="78" x2="124" y2="78" stroke="#1a1d1b" stroke-width="8" stroke-linecap="round"/>' +
+        '<circle cx="146" cy="80" r="5" fill="#e6e0d2"/><circle cx="174" cy="80" r="5" fill="#e6e0d2"/>' +
+        '<path d="M214 60 Q 160 34 106 60" fill="none" stroke="#f2c75c" stroke-width="1.8"/>' + head(106, 60, 155) +
+        '<path d="M106 98 Q 160 124 214 98" fill="none" stroke="#f2c75c" stroke-width="1.8"/>' + head(214, 98, -25) +
+        '<path d="M136 172 h48" stroke="#9aa59f" stroke-width="2" stroke-dasharray="3 3"/>' +
+        T(160, 24, '肩膀轉動', 'middle', 'dg-t gold') + T(160, 184, '下半身穩住', 'middle', 'dg-t');
+    } else if (type === 'brush') {
+      // face-on: the clubhead's arc brushes the same spot every time
+      o = '<rect width="320" height="190" rx="16" fill="#0b4a32"/><rect x="30" y="140" width="260" height="20" rx="4" fill="#3f7d3a"/><line x1="30" y1="140" x2="290" y2="140" stroke="#8cc163" stroke-width="2"/>' +
+        '<path d="M70 40 Q 160 230 250 40" fill="none" stroke="#fbf8ef" stroke-width="1.6" stroke-dasharray="3 5" opacity=".75"/>' +
+        '<path d="M64 46 Q 160 244 256 46" fill="none" stroke="#fbf8ef" stroke-width="1" stroke-dasharray="2 6" opacity=".35"/>' +
+        '<rect x="152" y="128" width="18" height="9" rx="2" fill="#c9c4b4"/>' +
+        [146, 154, 162, 170, 178].map(function (x, i) { return '<line x1="' + x + '" y1="142" x2="' + (x + 5) + '" y2="' + (150 - (i % 2) * 3) + '" stroke="#f2c75c" stroke-width="2" stroke-linecap="round"/>'; }).join('') +
+        '<circle cx="70" cy="40" r="4" fill="#f2c75c"/><circle cx="250" cy="40" r="4" fill="#f2c75c"/>' + T(78, 36, '9 點', 'start', 'dg-t gold') + T(242, 36, '3 點', 'end', 'dg-t gold') +
+        '<path d="M190 116 L176 136" stroke="#f2c75c" stroke-width="1"/>' + T(194, 112, '每次刷到同一個位置', 'start', 'dg-t gold') + T(160, 180, '桿頭輕輕刷過草皮', 'middle', 'dg-t');
     } else if (type === 'halfswing') {
       o = '<rect width="320" height="190" rx="16" fill="#0b4a32"/>' + dial(160, 98, 72) +
         '<path d="M 88 98 A 72 72 0 0 0 232 98" fill="none" stroke="#f2c75c" stroke-width="2" stroke-dasharray="4 5"/>' +
@@ -1444,11 +1469,11 @@
       });
     }
     // drawn with the target on the right; the face-on views stay as they are, the rest are mirrored (class tleft)
-    var faceOn = type === 'tee' || type === 'halfswing' || type === 'clock';
+    var faceOn = type === 'tee' || type === 'halfswing' || type === 'clock' || type === 'turn' || type === 'brush';
     return '<svg class="drill-svg' + (faceOn ? '' : ' tleft') + '" viewBox="0 0 320 190" role="img" aria-label="練習示意圖">' + defs + o + '</svg>';
   }
 
-  var CAT_ZH = { 'Putting': '推桿', 'Chipping': '切球', 'Pitching': '劈起球', 'Warm-up': '暖身', 'Pressure': '小挑戰', 'Half Swing': '半揮桿', 'Full Swing': '全揮桿', 'Woods': '木桿', 'Short Game': '短桿', 'Driver': '開球' };
+  var CAT_ZH = { 'Practice Swing': '空揮', 'Putting': '推桿', 'Chipping': '切球', 'Pitching': '劈起球', 'Warm-up': '暖身', 'Pressure': '小挑戰', 'Half Swing': '半揮桿', 'Full Swing': '全揮桿', 'Woods': '木桿', 'Short Game': '短桿', 'Driver': '開球' };
 
   /* ---------- PRACTICE ---------- */
   function practice() {
@@ -1464,7 +1489,10 @@
       $$('[data-plan]').forEach(function (b) { b.setAttribute('aria-selected', b.getAttribute('data-plan') === plan); });
       var done = store.get('done' + plan, []);
       var total = p.blocks.reduce(function (s, b) { return s + b.mins; }, 0);
-      $('#planHead').innerHTML = '<span class="eyebrow">共 ' + total + ' 分鐘 · ' + p.blocks.length + ' 個練習</span><h2>' + p.zh + '</h2><p class="plan-sub">' + p.name + '</p>';
+      $('#planHead').innerHTML = '<span class="eyebrow">共 ' + total + ' 分鐘 · ' + p.blocks.length + ' 個練習</span><h2>' + p.zh + '</h2><p class="plan-sub">' + p.name + '</p>' +
+        (p.why ? '<div class="plan-why"><h3>' + esc(p.why.title) + '</h3><p>' + esc(p.why.intro) + '</p><ul>' +
+          p.why.items.map(function (w) { return '<li><strong>' + esc(w[0]) + '</strong><span>' + esc(w[1]) + '</span></li>'; }).join('') +
+          '</ul><p class="pw-tip">' + esc(p.why.tip) + '</p></div>' : '');
       $('#planBar').innerHTML = p.blocks.map(function (b, i) { return '<i class="' + (done.indexOf(i) > -1 ? 'done' : '') + (timer.run || timer.left ? (i === timer.i ? ' now' : '') : '') + '" style="flex:' + b.mins + '" title="' + esc(b.name) + '"></i>'; }).join('');
       $('#planList').innerHTML = p.blocks.map(function (b, i) {
         var l = b.lesson && lessonById(b.lesson);

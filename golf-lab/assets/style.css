@@ -1605,6 +1605,14 @@ h1, h2, h3 { text-wrap: balance; }
 .contact-list dt { font: 600 14px var(--sans); letter-spacing: 0; text-transform: none; color: var(--muted); }
 .brand-tag { display: none; }
 .plan-sub { color: var(--muted); }
+.plan-why { margin: 18px 0 6px; padding: 18px 20px; background: #f6efd9; border-left: 3px solid var(--gold); border-radius: 8px; }
+.plan-why h3 { font-size: 18px; margin: 0 0 6px; }
+.plan-why > p { margin: 0; color: #3d4a43; line-height: 1.8; }
+.plan-why ul { list-style: none; margin: 14px 0 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 12px 20px; }
+.plan-why li strong { display: block; font-size: 15px; color: var(--green); margin-bottom: 2px; }
+.plan-why li span { display: block; font-size: 14px; line-height: 1.7; color: #3d4a43; }
+.plan-why .pw-tip { margin-top: 14px; font-size: 14px; color: var(--muted); }
+@media (max-width: 640px) { .plan-why ul { grid-template-columns: 1fr; } }
 
 #planHead h2 { font-family: var(--zh-serif); font-size: 34px; }
 
