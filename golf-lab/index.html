@@ -58,6 +58,20 @@
       </div>
     </section>
 
+    <div class="wrap">
+      <section class="of-today h-today" id="ofToday">
+        <div class="tw-intro">
+          <span class="of-kicker">Today</span>
+          <h2>今天要穿什麼？</h2>
+          <p>用你現在的位置查今天的天氣，給你一套穿搭建議。位置只用來查天氣，不會被儲存。</p>
+          <button type="button" class="btn" id="ofLocate">使用我的位置</button>
+          <form class="tw-city" id="ofCity" autocomplete="off"><label for="ofCityQ">或輸入城市</label><div><input id="ofCityQ" name="q" type="search" placeholder="例如：台北、Vancouver"><button type="submit" class="btn ghost">查詢</button></div></form>
+          <a class="btn ghost tw-more" href="outfit.html">看完整穿搭指南 →</a>
+        </div>
+        <div class="tw-out" id="ofTodayOut" aria-live="polite"><p class="tw-msg">按「使用我的位置」，或輸入城市，就會看到今天的天氣和建議穿搭。</p></div>
+      </section>
+    </div>
+
     <section class="h-stage wrap">
       <h2>你現在在哪裡？</h2>
       <p class="h-sub">選一個最像你的，我們會告訴你接下來四週該學什麼、練什麼。</p>
@@ -133,5 +147,6 @@
   <script src="assets/beginner.js"></script>
   <script src="assets/en.js"></script>
   <script src="assets/app.js"></script>
+  <script src="assets/outfit.js"></script>
 </body>
 </html>

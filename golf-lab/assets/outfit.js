@@ -1,4 +1,5 @@
-/* PAR/A — What to Wear: lookbook page with drawn garments (160 × 160 each, shaded and stitched). */
+/* PAR/A — What to Wear: lookbook page with drawn garments (160 × 160 each, shaded and stitched),
+   and the today's-weather outfit card shown on the home page. */
 (function () {
   'use strict';
   var GL = window.GL, store = GL.store, icon = GL.icon;
@@ -143,6 +144,23 @@
       s += part('M48 88 Q90 76 141 96 Q128 113 92 107 Q66 103 48 88 Z', '#0b4a32', '#062d1f') + stitch('M58 90 Q92 82 132 97', '#ffffff', .25);
       return s + logo(76, 68, 1.2);
     },
+    golfshorts: function () {
+      var f = '#d8cba7', l = '#b3a47e';
+      var s = '<clipPath id="' + P + 'gs"><rect x="0" y="0" width="160" height="98"/></clipPath><g clip-path="url(#' + P + 'gs)">' + G.pants() + '</g>';
+      return s + line('M42.6 98 H75.6 M84.4 98 H117.4', l, 1.4) + stitch('M43 93 H75 M85 93 H117');
+    },
+    jacket: function () {
+      var f = '#2f4f6b', l = '#1f374c';
+      var s = part('M50 30 L66 20 L80 26 L94 20 L110 30 L132 70 Q136 104 128 136 L116 136 L110 78 L110 138 Q80 142 50 138 L50 78 L44 136 L32 136 Q24 104 28 70 Z', f, l);
+      s += '<path d="M66 20 Q80 30 94 20 L94 13 Q80 22 66 13 Z" fill="#3c6283" stroke="' + l + '"/>' + line('M80 26 V140', '#c9d3dc', 1.6) + stitch('M77 28 V138', '#c9d3dc', .6);
+      s += line('M58 92 L70 90 M102 90 L90 92', '#c9d3dc', 1.4, .8) + stitch('M51 132 Q80 136 109 132', '#c9d3dc', .5) + '<rect x="78" y="40" width="4" height="6" rx="1" fill="#e2b65a"/>';
+      return s + line('M36 128 L44 129 M124 128 L116 129', '#c9d3dc', 2, .7);
+    },
+    umbrella: function () {
+      var s = part('M20 78 Q24 32 80 28 Q136 32 140 78 Q126 70 113 78 Q100 70 87 78 L80 76 L73 78 Q60 70 47 78 Q34 70 20 78 Z', '#0b4a32', '#062d1f');
+      s += line('M80 28 Q66 50 73 78 M80 28 Q94 50 87 78 M80 28 Q46 44 47 78 M80 28 Q114 44 113 78', '#fbf8ef', 1, .35) + '<path d="M50 30 Q80 20 110 30 Q80 26 50 30 Z" fill="#f2c75c" opacity=".8"/>';
+      return s + line('M80 76 V128 Q80 138 70 138 Q62 138 62 130', '#4b3427', 3) + '<circle cx="80" cy="26" r="2.6" fill="#f2c75c"/>';
+    },
     glove: function () {
       var d = 'M40 104 L40 60 Q40 50 46 50 L46 26 Q46 20 52 20 Q58 20 58 26 L58 46 L58 20 Q58 14 64 14 Q70 14 70 20 L70 46 L70 24 Q70 18 76 18 Q82 18 82 24 L82 50 L84 34 Q86 28 91 30 Q95 32 94 38 L90 72 Q88 90 80 104 Z';
       var s = '<g transform="translate(8 8) scale(1.2)">' + part(d, '#ffffff', '#cdc5b0');
@@ -156,7 +174,7 @@
   // one garment on its own tile
   function tile(type, o) {
     P = 'of' + (++n) + '_';
-    var sh = { belt: [80, 104, 64], shoes: [80, 132, 62], cap: [86, 122, 52], visor: [90, 116, 50], glove: [82, 140, 40] }[type] || [80, 148, 46];
+    var sh = { belt: [80, 104, 64], shoes: [80, 132, 62], cap: [86, 122, 52], visor: [90, 116, 50], glove: [82, 140, 40], golfshorts: [80, 108, 46], umbrella: [80, 146, 30] }[type] || [80, 148, 46];
     return '<svg class="of-art" viewBox="0 0 160 160" aria-hidden="true">' + defs() + shadow(sh[0], sh[1], sh[2]) + G[type](o) + '</svg>';
   }
   var place = function (x, y, s, inner, rot) { return '<g transform="translate(' + x + ' ' + y + ')' + (rot ? ' rotate(' + rot + ' 80 80)' : '') + ' scale(' + s + ')">' + inner + '</g>'; };
@@ -205,6 +223,11 @@
     sun: '<circle cx="32" cy="32" r="11" fill="#f2c75c"/>' + [0, 45, 90, 135, 180, 225, 270, 315].map(function (a) { var r = a * Math.PI / 180; return '<line x1="' + (32 + Math.cos(r) * 17) + '" y1="' + (32 + Math.sin(r) * 17) + '" x2="' + (32 + Math.cos(r) * 24) + '" y2="' + (32 + Math.sin(r) * 24) + '" stroke="#e0ab2f" stroke-width="3" stroke-linecap="round"/>'; }).join(''),
     cold: [0, 60, 120].map(function (a) { return '<g transform="rotate(' + a + ' 30 30)"><line x1="30" y1="10" x2="30" y2="50" stroke="#5f86a8" stroke-width="2.6" stroke-linecap="round"/><path d="M24 15 L30 21 L36 15 M24 45 L30 39 L36 45" fill="none" stroke="#5f86a8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></g>'; }).join('') + '<path d="M44 46 H58 M48 53 H62" stroke="#9fb6c9" stroke-width="2.4" stroke-linecap="round"/>',
     rain: '<path d="M18 38 Q10 38 10 30 Q10 22 19 22 Q22 12 33 12 Q45 12 47 23 Q56 23 56 31 Q56 38 48 38 Z" fill="#c9d6cf" stroke="#93ab9d" stroke-width="1.6"/>' + [[22, 46], [33, 49], [44, 46]].map(function (p) { return '<path d="M' + p[0] + ' ' + p[1] + ' q-3 5 0 7 q3 -2 0 -7z" fill="#5f9a7b"/>'; }).join(''),
+    cloud: '<path d="M18 46 Q8 46 8 37 Q8 28 18 28 Q21 16 34 16 Q47 16 50 29 Q58 29 58 37 Q58 46 48 46 Z" fill="#dfe6e2" stroke="#a9b9b0" stroke-width="1.6"/>',
+    partly: '<circle cx="24" cy="24" r="10" fill="#f2c75c"/><path d="M24 50 Q14 50 14 42 Q14 34 23 34 Q26 24 37 24 Q48 24 50 35 Q58 35 58 42 Q58 50 50 50 Z" fill="#eef2ef" stroke="#a9b9b0" stroke-width="1.6"/>',
+    storm: '<path d="M18 36 Q8 36 8 28 Q8 20 18 20 Q21 10 34 10 Q47 10 50 21 Q58 21 58 28 Q58 36 48 36 Z" fill="#b9c4cc" stroke="#7f8f9b" stroke-width="1.6"/><path d="M34 38 L26 50 H33 L28 60 L42 45 H35 L40 38 Z" fill="#f2c75c"/>',
+    snow: '<path d="M18 36 Q8 36 8 28 Q8 20 18 20 Q21 10 34 10 Q47 10 50 21 Q58 21 58 28 Q58 36 48 36 Z" fill="#eef3f6" stroke="#a9b9c6" stroke-width="1.6"/>' + [[22, 46], [34, 52], [46, 46]].map(function (p) { return '<circle cx="' + p[0] + '" cy="' + p[1] + '" r="3" fill="#8fb0c9"/>'; }).join(''),
+    fog: '<path d="M10 24 H54 M6 34 H50 M14 44 H58" stroke="#a9b9b0" stroke-width="4" stroke-linecap="round"/>',
     range: '<rect x="8" y="40" width="48" height="12" rx="3" fill="#5fa64a"/><rect x="8" y="40" width="48" height="4" rx="2" fill="#7cbd5f"/><path d="M30 40 V30" stroke="#f2c75c" stroke-width="2.4"/><circle cx="30" cy="25" r="6" fill="#fff" stroke="#d6d0c2"/><path d="M10 14 Q30 4 54 18" fill="none" stroke="#0b4a32" stroke-width="1.6" stroke-dasharray="2 4"/>',
     course: '<ellipse cx="32" cy="50" rx="24" ry="7" fill="#5fa64a"/><ellipse cx="34" cy="50" rx="3.5" ry="1.4" fill="#0b2a18"/><line x1="34" y1="50" x2="34" y2="12" stroke="#0b4a32" stroke-width="2"/><path d="M34 12 L52 18 L34 24 Z" fill="#f2c75c"/>'
   };
@@ -220,7 +243,105 @@
   ];
   var ITEMS = ['Polo 衫（多帶一件替換）', '長褲、及膝短褲或球裙', '皮帶', '高爾夫球鞋', '帽子', '手套（多帶一副）', '防曬乳、袖套', '雨具或防風外套', '回程換洗的衣服'];
 
+  /* ---------- today: weather where you are, and what to wear ---------- */
+  var EN = function () { return GL.lang === 'en'; };
+  function wx(code) {
+    if (code === 0) return ['sun', '晴天'];
+    if (code <= 2) return ['partly', '晴時多雲'];
+    if (code === 3) return ['cloud', '陰天'];
+    if (code === 45 || code === 48) return ['fog', '有霧'];
+    if (code >= 95) return ['storm', '雷雨'];
+    if ((code >= 71 && code <= 77) || code === 85 || code === 86) return ['snow', '下雪'];
+    return ['rain', '下雨'];
+  }
+  // what to wear from today's high, the feel right now, rain, wind and UV
+  function advise(d) {
+    var hi = d.hi, lo = d.lo, feel = d.feel, rain = d.rain >= 50 || d.wet, wind = d.wind >= 25, mood, items, tips = [];
+    if (hi >= 28) {
+      mood = '今天很熱，穿清爽一點';
+      items = [['polo', '排汗快乾的 Polo 衫', '淺色比較不熱'], ['golfshorts', '及膝短褲或球裙', '透氣好活動'], ['cap', '帽子或遮陽帽', '一定要戴'], ['shoes', '高爾夫球鞋', '透氣的款式']];
+      tips.push('多帶一件上衣，下半場換上會舒服很多', '多喝水，每一洞都喝幾口');
+    } else if (hi >= 20) {
+      mood = '溫度剛好，經典款就對了';
+      items = [['polo', 'Polo 衫', '有領，最安全的選擇'], [hi >= 25 ? 'golfshorts' : 'pants', hi >= 25 ? '及膝短褲或球裙' : '卡其長褲', '看球場規定'], ['cap', '帽子或遮陽帽', '擋太陽，也不會刺眼'], ['shoes', '高爾夫球鞋', '新手買無釘的，平常也能穿']];
+      if (lo < 16) { items.push(['knit', '針織背心', '早上涼，熱了再脫']); tips.push('早晚溫差大，早場先多穿一件'); }
+    } else if (hi >= 12) {
+      mood = '有點涼，加一件背心';
+      items = [['polo', 'Polo 衫', '可以選長袖款'], ['knit', '針織背心', '不會卡住揮桿'], ['pants', '長褲', '比短褲舒服'], ['shoes', '高爾夫球鞋', '新手買無釘的，平常也能穿']];
+      tips.push('打一兩洞身體熱了再脫外層');
+    } else {
+      mood = '很冷，洋蔥式穿法';
+      items = [['polo', '長袖內搭加 Polo 衫', '貼身的保暖內搭最好'], ['knit', '針織背心', '保暖又好揮桿'], ['jacket', '防風外套', '熱了可以脫'], ['pants', '長褲', '可以選刷毛內裡']];
+      tips.push('準備暖手包，推桿前手才不會僵硬', '揮桿前多做幾次空揮暖身');
+    }
+    if (rain) { items.push(['umbrella', '雨傘和雨衣雨褲', '分開的雨衣褲比較好揮桿']); tips.push('穿防水的球鞋，多帶兩、三副手套和毛巾'); }
+    if (wind && !items.some(function (x) { return x[0] === 'jacket'; })) { items.push(['jacket', '防風外套', '風大的時候很有用']); tips.push('風大時球會被吹偏，選低一點的球路'); }
+    if (d.uv >= 6) tips.push('紫外線很強：擦防曬，可以戴防曬袖套');
+    if (d.storm) tips.unshift('有雷雨：聽到打雷就停止打球，到室內躲避');
+    if (feel <= hi - 6 && lo >= 16) tips.push('現在體感比較冷，出門先多穿一件');
+    return { mood: mood, items: items, tips: tips };
+  }
+  function getJSON(url) { return fetch(url).then(function (r) { if (!r.ok) throw new Error('http ' + r.status); return r.json(); }); }
+  function forecast(lat, lon) {
+    return getJSON('https://api.open-meteo.com/v1/forecast?latitude=' + lat + '&longitude=' + lon +
+      '&current=temperature_2m,apparent_temperature,precipitation,weather_code,wind_speed_10m' +
+      '&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,uv_index_max,wind_speed_10m_max&timezone=auto&forecast_days=1');
+  }
+  function placeName(lat, lon) {
+    return getJSON('https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=' + lat + '&longitude=' + lon + '&localityLanguage=' + (EN() ? 'en' : 'zh-Hant'))
+      .then(function (r) { return r.city || r.locality || r.principalSubdivision || ''; }, function () { return ''; });
+  }
+  function findCity(q) {
+    return getJSON('https://geocoding-api.open-meteo.com/v1/search?count=1&format=json&language=' + (EN() ? 'en' : 'zh') + '&name=' + encodeURIComponent(q))
+      .then(function (r) { if (!r.results || !r.results.length) throw new Error('nf'); return r.results[0]; });
+  }
+  function showToday(place, w) {
+    var c = w.current || {}, dl = w.daily || {};
+    var d = { hi: Math.round(dl.temperature_2m_max[0]), lo: Math.round(dl.temperature_2m_min[0]), now: Math.round(c.temperature_2m), feel: Math.round(c.apparent_temperature),
+      rain: dl.precipitation_probability_max ? dl.precipitation_probability_max[0] || 0 : 0, wet: (c.precipitation || 0) > 0, uv: dl.uv_index_max ? Math.round(dl.uv_index_max[0] || 0) : 0,
+      wind: Math.round(Math.max(c.wind_speed_10m || 0, dl.wind_speed_10m_max ? dl.wind_speed_10m_max[0] || 0 : 0)), code: dl.weather_code ? dl.weather_code[0] : c.weather_code };
+    var k = wx(d.code); d.storm = k[0] === 'storm';
+    var a = advise(d);
+    var stat = function (v, u, label) { return '<div><b>' + v + '<small>' + u + '</small></b><span>' + label + '</span></div>'; };
+    $('#ofTodayOut').innerHTML =
+      '<div class="tw-now"><div class="tw-ico">' + ico(k[0]) + '</div><div><span class="tw-place">' + GL.esc(place || (EN() ? 'Your location' : '你的位置')) + '</span>' +
+        '<div class="tw-temp"><b>' + d.now + '°</b><span>' + k[1] + '</span></div></div></div>' +
+      '<div class="tw-stats">' + stat(d.hi + '° / ' + d.lo + '°', '', '最高 / 最低') + stat(d.feel + '°', '', '體感') + stat(d.rain, '%', '降雨機率') + stat(d.wind, ' km/h', '風速') + stat(d.uv, '', '紫外線') + '</div>' +
+      '<div class="tw-advice"><h3>' + a.mood + '</h3><div class="tw-items">' + a.items.map(function (x) {
+        return '<figure><div class="of-swatch">' + tile(x[0]) + '</div><figcaption><strong>' + x[1] + '</strong><small>' + x[2] + '</small></figcaption></figure>';
+      }).join('') + '</div>' + (a.tips.length ? '<ul class="tw-tips">' + a.tips.map(function (t) { return '<li>' + t + '</li>'; }).join('') + '</ul>' : '') + '</div>' +
+      '<p class="tw-src">天氣資料：Open-Meteo，每小時更新。</p>';
+    $('#ofToday').classList.add('has-result');
+  }
+  function todayMsg(t) { $('#ofTodayOut').innerHTML = '<p class="tw-msg">' + t + '</p>'; }
+  function byCoords(lat, lon, label) {
+    todayMsg('正在查今天的天氣⋯');
+    return Promise.all([forecast(lat, lon), label != null ? Promise.resolve(label) : placeName(lat, lon)])
+      .then(function (r) { showToday(r[1], r[0]); }, function () { todayMsg('暫時查不到天氣，請稍後再試，或先參考下面的「看天氣調整」。'); });
+  }
+  function initToday() {
+    var btn = $('#ofLocate'), form = $('#ofCity');
+    btn.addEventListener('click', function () {
+      if (!navigator.geolocation) return todayMsg('這個瀏覽器沒辦法定位，請直接輸入城市。');
+      todayMsg('正在取得你的位置⋯');
+      navigator.geolocation.getCurrentPosition(function (pos) {
+        byCoords(pos.coords.latitude.toFixed(3), pos.coords.longitude.toFixed(3));
+      }, function () { todayMsg('沒有取得位置，可以直接輸入城市，例如「台北」或 Vancouver。'); }, { timeout: 10000, maximumAge: 600000 });
+    });
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var q = form.q.value.trim(); if (!q) return;
+      store.set('wxcity', q);
+      todayMsg('正在查今天的天氣⋯');
+      findCity(q).then(function (c) { byCoords(c.latitude, c.longitude, c.name); }, function () { todayMsg('找不到這個城市，換個寫法試試看，例如「台北」或 Taipei。'); });
+    });
+    var last = store.get('wxcity', '');
+    if (last) form.q.value = last;
+  }
+
   function render() {
+    if ($('#ofToday')) initToday();
+    if (!$('#ofFlat')) return;
     $('#ofFlat').innerHTML = flatLay();
     $('#ofLooks').innerHTML = LOOKS.map(function (l) {
       return '<article class="of-look"><div class="of-look-fig">' + look(l[0]) + '</div><div class="of-look-txt"><span class="of-tag">' + (l[0] === 'classic' ? 'Look 01' : 'Look 02') + '</span><h3>' + l[1] + '</h3><p>' + l[2] + '</p>' +
