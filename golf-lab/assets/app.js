@@ -237,7 +237,7 @@
       { href: 'clubs.html', key: 'clubs', zh: '球桿選擇', en: 'Club Guide' },
       { href: 'rules.html', key: 'rules', zh: '高球規則', en: 'Rules' },
       { href: 'guide.html', key: 'guide', zh: '第一次指南', en: 'First Time' },
-      { href: 'guide.html#outfit', key: 'outfit', zh: '穿搭指南', en: 'What to Wear' },
+      { href: 'outfit.html', key: 'outfit', zh: '穿搭指南', en: 'What to Wear' },
       { href: 'glossary.html', key: 'glossary', zh: '名詞小辭典', en: 'Glossary' }
     ] },
     { zh: '練習', en: 'Practice', items: [
@@ -476,7 +476,7 @@
     items.push({ t: '新手入門', s: '依你的程度，給你 4 週學習路線', k: '新手 開始 入門 路線 start here beginner path first', type: '新手入門', url: 'start.html' });
     items.push({ t: '第一次去練習場', s: '要帶什麼、怎麼買球、練習順序', k: '練習場 第一次 新手 driving range', type: '第一次指南', url: 'guide.html#range' });
     items.push({ t: '第一次下場', s: '服裝、時間、要帶什麼、桿弟與球車', k: '下場 球場 第一次 服裝 預約 first round course booking', type: '第一次指南', url: 'guide.html#course' });
-    items.push({ t: '穿搭指南', s: '第一次下場穿什麼、夏天冬天雨天怎麼穿', k: '穿搭 服裝 衣服 穿什麼 polo 球鞋 帽子 dress code 服裝規定 what to wear clothes shoes', type: '第一次指南', url: 'guide.html#outfit' });
+    items.push({ t: '穿搭指南', s: '第一次下場穿什麼、夏天冬天雨天怎麼穿', k: '穿搭 服裝 衣服 穿什麼 polo 球鞋 帽子 dress code 服裝規定 what to wear clothes shoes', type: '穿搭指南', url: 'outfit.html' });
     items.push({ t: '計分卡怎麼填', s: '每洞記桿數，最多記雙倍標準桿', k: '計分 計分卡 撿球 雙倍標準桿 scorecard score double par', type: '第一次指南', url: 'guide.html#score' });
     items.push({ t: '新手第一套球桿', s: '只需要 5–7 支', k: '買球桿 新手 套桿 第一套 buy clubs starter set beginner', type: '球桿選擇', url: 'clubs.html#starter' });
     items.push({ t: '我的成績', s: '輸入計分卡，看看桿數掉在哪裡', k: 'My Game 計分卡 成績 分析 scorecard 推桿 上果嶺 球道 stats 破百', type: '分析', url: 'my-game.html' });
@@ -1638,7 +1638,7 @@
   document.addEventListener('DOMContentLoaded', function () {
     var page = document.body.getAttribute('data-page');
     renderChrome(page);
-    ({ home: home, learn: learn, clubs: clubs, fix: fix, shot: shot, practice: practice, rules: rules, start: start, guide: guide, glossary: glossary }[page] || function () {})();
+    ({ home: home, learn: learn, clubs: clubs, fix: fix, shot: shot, practice: practice, rules: rules, start: start, guide: guide, outfit: guide, glossary: glossary }[page] || function () {})();
     termPopover();
     reveal(document, true);
     booted = true;

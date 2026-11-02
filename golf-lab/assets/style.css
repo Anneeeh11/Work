@@ -1609,6 +1609,7 @@ h1, h2, h3 { text-wrap: balance; }
 .contact-list dt { font: 600 14px var(--sans); letter-spacing: 0; text-transform: none; color: var(--muted); }
 .brand-tag { display: none; }
 .plan-sub { color: var(--muted); }
+.guide-sec.outfit-page { margin-top: 0; }
 .plan-why { margin: 18px 0 6px; padding: 18px 20px; background: #f6efd9; border-left: 3px solid var(--gold); border-radius: 8px; }
 .plan-why h3 { font-size: 18px; margin: 0 0 6px; }
 .plan-why > p { margin: 0; color: #3d4a43; line-height: 1.8; }
