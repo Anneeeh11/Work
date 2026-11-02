@@ -15,38 +15,59 @@
 </head>
 <body data-page="outfit">
   <header id="site-header"></header>
-  <main class="page guide-page">
-    <header class="page-head wrap">
-      <nav class="crumbs" aria-label="目前位置"><a href="index.html">首頁</a><span>/</span>學習</nav>
-      <h1>穿搭指南</h1>
-      <p class="lead">記住三個字就好：<b>有領、合身、好活動</b>。第一次下場不用買名牌，乾淨整齊、方便揮桿最重要。每個球場的規定不太一樣，第一次去之前可以先打電話或看官網確認。</p>
-    </header>
+  <main class="page of-page">
+    <section class="of-hero">
+      <div class="wrap of-hero-in">
+        <div class="of-hero-text">
+          <nav class="crumbs" aria-label="目前位置"><a href="index.html">首頁</a><span>/</span>學習</nav>
+          <span class="of-kicker">The Dress Code</span>
+          <h1>穿搭指南</h1>
+          <p class="of-lead">第一次下場不用買名牌，乾淨整齊、方便揮桿最重要。每個球場的規定不太一樣，第一次去之前可以先打電話或看官網確認。</p>
+          <ol class="of-rules">
+            <li><b>01</b><strong>有領</strong><span>Polo 衫最安全</span></li>
+            <li><b>02</b><strong>合身</strong><span>不要太寬鬆，也不要太緊</span></li>
+            <li><b>03</b><strong>好活動</strong><span>轉身、彎腰都不卡</span></li>
+          </ol>
+        </div>
+        <figure class="of-hero-art" id="ofFlat"></figure>
+      </div>
+    </section>
+
     <div class="wrap">
+      <section class="of-sec">
+        <header class="of-head"><span class="of-kicker">Lookbook</span><h2>兩套不會出錯的穿搭</h2><p>照著穿就好，大部分球場都可以。</p></header>
+        <div class="of-looks" id="ofLooks"></div>
+      </section>
 
-      <section class="guide-sec outfit-page" id="outfit">
+      <section class="of-sec">
+        <header class="of-head"><span class="of-kicker">Do &amp; Don’t</span><h2>建議這樣穿，這些盡量避免</h2></header>
+        <h3 class="of-sub ok">建議這樣穿</h3>
+        <div class="of-grid" id="outfitDo"></div>
+        <h3 class="of-sub no">下場時盡量避免</h3>
+        <div class="of-grid no" id="outfitDont"></div>
+      </section>
 
-        <div class="outfit-split">
-          <div class="outfit-col ok"><h3>建議這樣穿</h3><div class="outfit-grid" id="outfitDo"></div></div>
-          <div class="outfit-col no"><h3>下場時盡量避免</h3><div class="outfit-grid" id="outfitDont"></div></div>
+      <section class="of-sec">
+        <header class="of-head"><span class="of-kicker">Range &amp; Course</span><h2>練習場和下場不一樣</h2></header>
+        <div class="of-where">
+          <div class="of-card" data-ico="range"><h3>練習場</h3><p>沒有服裝規定，運動服、運動鞋就可以。建議穿有一點彈性的褲子，揮桿比較不會卡。</p></div>
+          <div class="of-card" data-ico="course"><h3>下場</h3><p>多數球場要求有領上衣、不能穿牛仔褲。男生的上衣通常要紮進褲子並繫皮帶；女生的裙子或短褲不要太短，及膝或稍短一點都可以。</p></div>
         </div>
+      </section>
 
-        <div class="gs-grid">
-          <div class="gs-card"><h3>練習場</h3><p>沒有服裝規定，運動服、運動鞋就可以。建議穿有一點彈性的褲子，揮桿比較不會卡。</p></div>
-          <div class="gs-card"><h3>下場</h3><p>多數球場要求有領上衣、不能穿牛仔褲。男生的上衣通常要紮進褲子並繫皮帶；女生的裙子或短褲不要太短，及膝或稍短一點都可以。</p></div>
+      <section class="of-sec">
+        <header class="of-head"><span class="of-kicker">Weather</span><h2>看天氣調整</h2></header>
+        <div class="weather-grid of-weather">
+          <div class="weather sun" data-ico="sun"><strong>夏天、大太陽</strong><ul><li>排汗快乾的 Polo 衫，淺色比較不熱</li><li>帽子或遮陽帽、防曬乳</li><li>防曬袖套（在台灣很常見）</li><li>多帶一件上衣，下半場換上會舒服很多</li></ul></div>
+          <div class="weather cold" data-ico="cold"><strong>冬天、早場</strong><ul><li>洋蔥式穿法：Polo 衫外加背心或薄針織衫</li><li>防風外套，熱了可以脫</li><li>長褲；手冷的話可以準備暖手包</li><li>打一兩洞身體熱了再脫外套</li></ul></div>
+          <div class="weather rain" data-ico="rain"><strong>下雨天</strong><ul><li>雨衣雨褲（分開的比較好揮桿）</li><li>防水的球鞋</li><li>多帶兩、三副手套和毛巾</li><li>大雨或打雷就停下來，安全第一</li></ul></div>
         </div>
+      </section>
 
-        <h3 class="outfit-h">看天氣調整</h3>
-        <div class="weather-grid">
-          <div class="weather sun"><strong>夏天、大太陽</strong><ul><li>排汗快乾的 Polo 衫，淺色比較不熱</li><li>帽子或遮陽帽、防曬乳</li><li>防曬袖套（在台灣很常見）</li><li>多帶一件上衣，下半場換上會舒服很多</li></ul></div>
-          <div class="weather cold"><strong>冬天、早場</strong><ul><li>洋蔥式穿法：Polo 衫外加背心或薄針織衫</li><li>防風外套，熱了可以脫</li><li>長褲；手冷的話可以準備暖手包</li><li>打一兩洞身體熱了再脫外套</li></ul></div>
-          <div class="weather rain"><strong>下雨天</strong><ul><li>雨衣雨褲（分開的比較好揮桿）</li><li>防水的球鞋</li><li>多帶兩、三副手套和毛巾</li><li>大雨或打雷就停下來，安全第一</li></ul></div>
-        </div>
-
-        <div class="outfit-check">
-          <h3>出門前檢查一下</h3>
-          <ul class="check-list" id="outfitCheck"></ul>
-          <button type="button" class="link-btn" id="outfitReset">全部取消勾選</button>
-        </div>
+      <section class="outfit-check of-check">
+        <div class="of-check-head"><div><span class="of-kicker">Checklist</span><h3>出門前檢查一下</h3></div><div class="of-progress"><span id="ofCount"></span><i><b id="ofBar"></b></i></div></div>
+        <ul class="check-list" id="outfitCheck"></ul>
+        <button type="button" class="link-btn" id="outfitReset">全部取消勾選</button>
       </section>
     </div>
   </main>
@@ -56,5 +77,6 @@
   <script src="assets/beginner.js"></script>
   <script src="assets/en.js"></script>
   <script src="assets/app.js"></script>
+  <script src="assets/outfit.js"></script>
 </body>
 </html>
