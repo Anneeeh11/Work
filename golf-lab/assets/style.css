@@ -1076,6 +1076,10 @@ body.leaving { opacity: 0; transition: opacity .25s ease; }
 /* practice drill diagrams */
 .block { grid-template-columns: 34px 64px minmax(0, 1fr) minmax(0, 260px); }
 .bl-fig { margin: 0; min-width: 0; }
+/* plans whose steps are separate moves (warm-up): each step is its own card */
+.plan-list.boxed .block { border: 1px solid var(--line); border-radius: 14px; background: #fff; padding: 20px 22px; margin-top: 14px; box-shadow: 0 1px 2px rgba(25, 40, 33, .04); }
+.plan-list.boxed .block.now { background: linear-gradient(90deg, rgba(242, 199, 92, .16), #fff); border-color: var(--gold); }
+.plan-list.boxed .bl-fig { align-self: center; }
 .drill-svg { width: 100%; height: auto; border-radius: 14px; box-shadow: 0 6px 18px -10px rgba(6, 53, 36, .45); }
 .bl-fig figcaption { font-size: 12.5px; line-height: 1.55; color: var(--muted); margin-top: 8px; }
 .block.done .bl-fig { opacity: .55; }

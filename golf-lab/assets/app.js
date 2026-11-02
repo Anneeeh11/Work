@@ -1432,6 +1432,40 @@
         '<path d="M60 136 Q 66 92 108 90 L 140 92 Q 146 116 140 138 Z" fill="#1f3b2f" stroke="#9aa59f"/><line x1="66" y1="96" x2="38" y2="20" stroke="#9aa59f" stroke-width="3"/>' +
         '<line x1="132" y1="91" x2="200" y2="91" stroke="#f2c75c" stroke-dasharray="3 4"/>' + T(206, 94, '桿頭頂端', 'start', 'dg-t') +
         '<path d="M178 86 L178 99" stroke="#f2c75c"/>' + T(206, 80, '球有一半高過桿頭', 'start', 'dg-t gold') + T(160, 166, 'Tee 架高 · 球放左腳跟內側', 'middle', 'dg-t');
+    } else if (type === 'loosen' || type === 'legs') {
+      // face-on stick figures, two moves side by side
+      var W = 'stroke="#fbf8ef" stroke-linecap="round" stroke-linejoin="round" opacity=".92"';
+      var gold = function (d) { return '<path d="' + d + '" fill="none" stroke="#f2c75c" stroke-width="1.8" stroke-linecap="round"/>'; };
+      var tip = function (x, y, deg) { var r = deg * Math.PI / 180; return gold('M' + x + ' ' + y + ' l' + (-7 * Math.cos(r - .5)) + ' ' + (-7 * Math.sin(r - .5)) + ' M' + x + ' ' + y + ' l' + (-7 * Math.cos(r + .5)) + ' ' + (-7 * Math.sin(r + .5))); };
+      o = '<rect width="320" height="190" rx="16" fill="#0b4a32"/><line x1="20" y1="162" x2="300" y2="162" stroke="#fbf8ef" stroke-opacity=".3"/><line x1="160" y1="22" x2="160" y2="150" stroke="#fbf8ef" stroke-opacity=".15" stroke-dasharray="3 5"/>';
+      if (type === 'loosen') {
+        o += '<circle cx="80" cy="46" r="10" fill="#fbf8ef" opacity=".92"/><path d="M80 57 L80 110 M64 160 L80 110 L96 160" fill="none" stroke-width="6" ' + W + '/>' +
+          '<path d="M80 68 L50 72 M80 68 L110 72" fill="none" stroke-width="4" ' + W + '/>' +
+          gold('M50 58 A 16 16 0 1 0 64 66') + tip(64, 66, 40) + gold('M110 58 A 16 16 0 1 1 96 66') + tip(96, 66, 140) +
+          // side bend, club overhead
+          '<circle cx="250" cy="52" r="10" fill="#fbf8ef" opacity=".92"/><path d="M232 112 Q 236 84 246 62 M218 160 L232 112 L248 160" fill="none" stroke-width="6" ' + W + '/>' +
+          '<path d="M244 66 L238 30 M246 66 L270 34" fill="none" stroke-width="4" ' + W + '/><line x1="226" y1="26" x2="284" y2="34" stroke="#2a2f2c" stroke-width="5" stroke-linecap="round"/>' +
+          gold('M206 70 Q 214 40 236 22') + tip(236, 22, -40) +
+          T(80, 182, '手臂繞圈', 'middle', 'dg-t gold') + T(240, 182, '舉桿側彎', 'middle', 'dg-t gold');
+      } else {
+        // leg swing holding the club for balance
+        o += '<circle cx="76" cy="46" r="10" fill="#fbf8ef" opacity=".92"/><path d="M76 57 L76 110 L78 160" fill="none" stroke-width="6" ' + W + '/>' +
+          '<path d="M76 68 L108 88" fill="none" stroke-width="4" ' + W + '/><line x1="110" y1="80" x2="112" y2="162" stroke="#2a2f2c" stroke-width="5" stroke-linecap="round"/>' +
+          '<path d="M76 110 L52 150" fill="none" stroke-width="6" ' + W + '/><path d="M76 110 L100 150" fill="none" stroke="#fbf8ef" stroke-width="6" stroke-linecap="round" opacity=".3"/>' +
+          gold('M50 158 Q 76 178 102 158') + tip(102, 158, -35) + tip(50, 158, -145) +
+          // squat
+          '<circle cx="244" cy="62" r="10" fill="#fbf8ef" opacity=".92"/><path d="M240 73 L224 118 L252 128 L242 160" fill="none" stroke-width="6" ' + W + '/>' +
+          '<path d="M238 82 L274 92" fill="none" stroke-width="4" ' + W + '/>' + gold('M196 80 L196 128') + tip(196, 128, 90) +
+          T(80, 182, '前後擺腿', 'middle', 'dg-t gold') + T(236, 182, '慢慢深蹲', 'middle', 'dg-t gold');
+      }
+    } else if (type === 'build') {
+      // three steps of speed: 50%, 70%, normal
+      o = '<rect width="320" height="190" rx="16" fill="#0b4a32"/><line x1="30" y1="150" x2="290" y2="150" stroke="#fbf8ef" stroke-opacity=".3"/>';
+      [[70, 44, '50%', '× 3'], [160, 66, '70%', '× 4'], [250, 96, '100%', '× 3']].forEach(function (c, i) {
+        o += '<rect x="' + (c[0] - 20) + '" y="' + (150 - c[1]) + '" width="40" height="' + c[1] + '" rx="4" fill="#f2c75c" opacity="' + (.45 + i * .25) + '"/>' +
+          T(c[0], 142 - c[1], c[2], 'middle', 'dg-t gold') + T(c[0], 168, c[3], 'middle', 'dg-t');
+      });
+      o += '<path d="M90 70 L140 56 M180 48 L228 34" fill="none" stroke="#fbf8ef" stroke-width="1.4" stroke-dasharray="2 5" opacity=".6"/>' + T(160, 186, '每次收桿都站穩 3 秒', 'middle', 'dg-t gold');
     } else if (type === 'turn') {
       // face-on: club held across the chest, shoulders turn while the legs stay put
       var head = function (x, y, deg) { var r = deg * Math.PI / 180; return '<path d="M' + x + ' ' + y + ' l' + (-8 * Math.cos(r - .5)) + ' ' + (-8 * Math.sin(r - .5)) + ' M' + x + ' ' + y + ' l' + (-8 * Math.cos(r + .5)) + ' ' + (-8 * Math.sin(r + .5)) + '" stroke="#f2c75c" stroke-width="1.8" stroke-linecap="round"/>'; };
@@ -1469,7 +1503,7 @@
       });
     }
     // drawn with the target on the right; the face-on views stay as they are, the rest are mirrored (class tleft)
-    var faceOn = type === 'tee' || type === 'halfswing' || type === 'clock' || type === 'turn' || type === 'brush';
+    var faceOn = type === 'tee' || type === 'halfswing' || type === 'clock' || type === 'turn' || type === 'brush' || type === 'loosen' || type === 'legs' || type === 'build';
     return '<svg class="drill-svg' + (faceOn ? '' : ' tleft') + '" viewBox="0 0 320 190" role="img" aria-label="練習示意圖">' + defs + o + '</svg>';
   }
 
@@ -1494,6 +1528,7 @@
           p.why.items.map(function (w) { return '<li><strong>' + esc(w[0]) + '</strong><span>' + esc(w[1]) + '</span></li>'; }).join('') +
           '</ul><p class="pw-tip">' + esc(p.why.tip) + '</p></div>' : '');
       $('#planBar').innerHTML = p.blocks.map(function (b, i) { return '<i class="' + (done.indexOf(i) > -1 ? 'done' : '') + (timer.run || timer.left ? (i === timer.i ? ' now' : '') : '') + '" style="flex:' + b.mins + '" title="' + esc(b.name) + '"></i>'; }).join('');
+      $('#planList').classList.toggle('boxed', !!p.boxed);
       $('#planList').innerHTML = p.blocks.map(function (b, i) {
         var l = b.lesson && lessonById(b.lesson);
         return '<li class="block' + (done.indexOf(i) > -1 ? ' done' : '') + ((timer.run || timer.left) && i === timer.i ? ' now' : '') + '">' +

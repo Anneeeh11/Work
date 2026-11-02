@@ -155,7 +155,7 @@
 
   /* Warm-up and practice swings: do this before any session, and before a round. */
   GL.plans.w10 = {
-    name: 'Warm-up & Practice Swings', zh: '暖身與空揮 10 分鐘',
+    name: 'Warm-up & Practice Swings', zh: '暖身與空揮 10 分鐘', boxed: true,
     why: {
       title: '為什麼要先暖身？',
       intro: '很多人一到練習場就拿起球桿全力打，結果前二十顆球都在亂飛，打完腰還痠。花 10 分鐘暖身，整場練習會差很多。',
@@ -168,11 +168,11 @@
       tip: '下場前也一樣：在開球台旁邊做第 1、2、4 項，大約 5 分鐘就夠了。'
     },
     blocks: [
-      { mins: 2, cat: 'Warm-up', name: '動一動：身體熱起來', how: '原地快走或小跑 1 分鐘。手臂前後繞圈各 10 次，再雙手握住球桿兩端舉過頭，往左、往右側彎各 5 次。' },
+      { mins: 2, cat: 'Warm-up', name: '動一動：身體熱起來', how: '原地快走或小跑 1 分鐘。手臂前後繞圈各 10 次，再雙手握住球桿兩端舉過頭，往左、往右側彎各 5 次。', fig: 'loosen', cap: '左：手臂往前、往後畫大圓。右：球桿舉過頭，身體往旁邊彎。' },
       { mins: 2, cat: 'Warm-up', name: '轉體：球桿放肩上', how: '把球桿橫放在肩膀前方、雙手交叉扶住，擺好站姿、從髖部前傾。慢慢往後轉、往前轉各 10 次，下半身盡量穩住。', fig: 'turn', cap: '肩膀轉、下半身穩住。上桿時左肩轉到下巴下方。' },
-      { mins: 2, cat: 'Warm-up', name: '髖部與腿', how: '一手扶著球桿當支撐，單腳前後擺腿各 10 次，再做 10 次慢慢的深蹲。' },
+      { mins: 2, cat: 'Warm-up', name: '髖部與腿', how: '一手扶著球桿當支撐，單腳前後擺腿各 10 次，再做 10 次慢慢的深蹲。', fig: 'legs', cap: '左：扶著球桿，腳像鐘擺一樣前後擺。右：屁股往後坐，膝蓋不要超過腳尖太多。' },
       { mins: 2, cat: 'Practice Swing', name: '半揮空揮：刷草', how: '用 PW 從 9 點到 3 點空揮 10 次，每一次都讓桿頭輕輕刷過草皮（或打擊墊）的同一個位置。', lesson: 'iron-basics', fig: 'brush', cap: '刷到的位置要一樣，代表擊球的最低點很穩定。' },
-      { mins: 2, cat: 'Practice Swing', name: '全揮空揮：慢慢加速', how: '換 7 號鐵空揮 10 次：前 3 次用 50% 力量，接著 4 次 70%，最後 3 次正常速度。每次收桿都站穩 3 秒。', lesson: 'finish-tempo' }
+      { mins: 2, cat: 'Practice Swing', name: '全揮空揮：慢慢加速', how: '換 7 號鐵空揮 10 次：前 3 次用 50% 力量，接著 4 次 70%，最後 3 次正常速度。每次收桿都站穩 3 秒。', lesson: 'finish-tempo', fig: 'build', cap: '速度一段一段加上去，最後幾次才用正常速度。' }
     ]
   };
 
