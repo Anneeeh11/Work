@@ -480,7 +480,7 @@
     items.push({ t: '計分卡怎麼填', s: '每洞記桿數，最多記雙倍標準桿', k: '計分 計分卡 撿球 雙倍標準桿 scorecard score double par', type: '第一次指南', url: 'guide.html#score' });
     items.push({ t: '新手第一套球桿', s: '只需要 5–7 支', k: '買球桿 新手 套桿 第一套 buy clubs starter set beginner', type: '球桿選擇', url: 'clubs.html#starter' });
     items.push({ t: '我的成績', s: '輸入計分卡，看看桿數掉在哪裡', k: 'My Game 計分卡 成績 分析 scorecard 推桿 上果嶺 球道 stats 破百', type: '分析', url: 'my-game.html' });
-    items.push({ t: '練習計畫', s: '練習場 30 / 60 分鐘、短桿 15 / 30 分鐘菜單', k: 'Practice 練習 計畫 菜單 練習場 up and down', type: '練習', url: 'practice.html' });
+    items.push({ t: '練習計畫', s: '暖身、練習場、推桿與切球練習菜單', k: 'Practice 練習 計畫 菜單 練習場 up and down', type: '練習', url: 'practice.html' });
     return items;
   }
 
@@ -1400,6 +1400,17 @@
         '<ellipse cx="80" cy="40" rx="11" ry="7" fill="none" stroke="#f2c75c" stroke-width="1.6"/><circle cx="80" cy="40" r="3" fill="#f2c75c"/>' +
         '<line x1="80" y1="48" x2="80" y2="92" stroke="#f2c75c" stroke-dasharray="2 4"/>' + T(96, 44, '眼睛留在硬幣上', 'start', 'dg-t gold') +
         T(80, 130, '硬幣', 'middle', 'dg-t') + T(160, 170, '推完數一秒，再抬頭看球', 'middle', 'dg-t');
+    } else if (type === 'chipzone') {
+      // chips from off the green, finishing inside a putter-length circle
+      o = '<rect width="320" height="190" rx="16" fill="#3f7d3a"/><rect x="96" width="224" height="190" fill="#5fa64a"/><path d="M304 0 h0 a16 16 0 0 1 16 16 v158 a16 16 0 0 1 -16 16 z" fill="#5fa64a"/>' +
+        '<rect x="96" width="224" height="190" fill="url(#dgs)"/><line x1="96" y1="0" x2="96" y2="190" stroke="#8cc163" stroke-width="2"/>' + T(48, 20, '果嶺外', 'middle', 'dg-t') + T(104, 20, '果嶺', 'start', 'dg-t') +
+        '<circle cx="246" cy="98" r="34" fill="rgba(242,199,92,.14)" stroke="#f2c75c" stroke-width="1.4" stroke-dasharray="4 4"/>' + hole(246, 98) +
+        '<line x1="246" y1="98" x2="280" y2="98" stroke="#f2c75c"/>' + T(246, 54, '半徑 = 1 支推桿', 'middle', 'dg-t gold');
+      [[40, 50, 228, 84], [52, 104, 236, 112], [36, 152, 262, 120]].forEach(function (c) {
+        var lx = 120, ly = c[1] + (c[3] - c[1]) * .35;
+        o += ball(c[0], c[1]) + path('M' + (c[0] + 5) + ' ' + (c[1] - 2) + ' Q ' + ((c[0] + lx) / 2) + ' ' + (Math.min(c[1], ly) - 34) + ' ' + lx + ' ' + ly) + path('M' + lx + ' ' + ly + ' L ' + c[2] + ' ' + c[3], '1 6') + ball(c[2], c[3]);
+      });
+      o += T(246, 156, '停在圈裡就成功', 'middle', 'dg-t gold') + T(48, 182, '不同位置', 'middle', 'dg-t');
     } else if (type === 'zone') {
       o = green + '<circle cx="232" cy="92" r="40" fill="rgba(242,199,92,.14)" stroke="#f2c75c" stroke-width="1.4" stroke-dasharray="4 4"/>' + hole(232, 92) +
         '<line x1="232" y1="92" x2="272" y2="92" stroke="#f2c75c"/>' + T(232, 44, '半徑 = 1 支推桿', 'middle', 'dg-t gold');
@@ -1512,8 +1523,8 @@
   /* ---------- PRACTICE ---------- */
   function practice() {
     var hp = location.hash.slice(1);
-    var plan = GL.plans[hp] ? hp : store.get('plan', '15');
-    if (!GL.plans[plan]) plan = '15';
+    var plan = GL.plans[hp] ? hp : store.get('plan', 'r30');
+    if (!GL.plans[plan]) plan = 'r30';
     var timer = { i: 0, left: 0, run: false, h: null };
     var STATIONS = ['短草 5 步', '邊緣推桿', '長草切球', '下坡切球', '上坡切球', '越過沙坑', '20 碼 Pitch', '沙坑', '自選位置'];
     var scores = store.get('ud', []);

@@ -87,13 +87,13 @@
     range: [
       { w: '第 1 週', t: '檢查基本功', items: [L('grip'), L('stance'), L('posture'), L('alignment'), P('fix.html', '擊球診斷', '找出你最常見的問題')] },
       { w: '第 2 週', t: '揮桿順序與節奏', items: [L('backswing'), L('downswing'), L('finish-tempo'), L('iron-basics'), P('practice.html#r60', '練習場 60 分鐘', '完整的練習菜單')] },
-      { w: '第 3 週', t: '果嶺周圍', items: [L('bump-and-run'), L('standard-chip'), L('short-putts'), L('lag-putting'), P('practice.html#30', '短桿 30 分鐘', '切球加推桿')] },
+      { w: '第 3 週', t: '果嶺周圍', items: [L('bump-and-run'), L('standard-chip'), L('short-putts'), L('lag-putting'), P('practice.html#c30', '切球 30 分鐘', '落點、選桿與 Up & Down')] },
       { w: '第 4 週', t: '第一次下場', items: [P('guide.html#course', '第一次下場', '服裝、時間、要帶什麼'), P('guide.html#score', '計分卡怎麼填', '每洞最多記雙倍標準桿'), P('rules.html', '高球規則', '依球的位置查規則'), L('driver-basics'), P('shot.html', '短桿選擇', '果嶺邊不知道怎麼打時')] }
     ],
     course: [
       { w: '第 1 週', t: '找出漏掉的桿數', items: [P('my-game.html', '輸入一場成績', '用新手模式看看桿數掉在哪'), P('fix.html', '擊球診斷', '最常出現的失誤'), P('guide.html#score', '每洞上限', '避免一洞打到十幾桿')] },
       { w: '第 2 週', t: '少掉三推', items: [L('lag-putting'), L('short-putts'), L('green-reading'), P('practice.html#p30', '推桿 30 分鐘', '短推、距離感與看線一次練到')] },
-      { w: '第 3 週', t: '果嶺周圍兩桿進洞', items: [L('bump-and-run'), L('standard-chip'), L('putter-from-fringe'), P('shot.html', '短桿選擇', '選最簡單的打法'), P('practice.html#30', 'Up & Down 挑戰', '9 站計分卡')] },
+      { w: '第 3 週', t: '果嶺周圍兩桿進洞', items: [L('bump-and-run'), L('standard-chip'), L('putter-from-fringe'), P('shot.html', '短桿選擇', '選最簡單的打法'), P('practice.html#updown', 'Up & Down 挑戰', '9 站計分卡')] },
       { w: '第 4 週', t: '避免大數字', items: [L('driver-basics'), L('bunker-splash'), P('rules.html#lost', '遺失球與界外', '正確處理罰桿'), P('practice.html#r60', '練習場 60 分鐘', '開球與鐵桿')] }
     ]
   };
@@ -195,6 +195,18 @@
       { mins: 9, cat: 'Putting', name: 'Circle Drill', how: '洞周圍 1 公尺放 8 顆，全部連續推進才能退到 1.5 公尺。', lesson: 'short-putts', fig: 'circle', cap: '以洞為中心，在 1 公尺處插 8 支 tee 圍成一圈，每支 tee 旁放一顆球。' },
       { mins: 9, cat: 'Putting', name: 'Lag Ladder', how: '10、15、20 步各插一支 tee，每一顆都要比上一顆遠，但不能超過 20 步。', lesson: 'lag-putting', fig: 'ladder', cap: '練的是距離感，方向偏一點沒關係。' },
       { mins: 9, cat: 'Pressure', name: 'Par 18 推桿小遊戲', how: '在練習果嶺選 9 個洞、各種距離和坡度，每洞標準桿 2。新手先以 22 桿以內為目標。', lesson: 'green-reading', fig: 'par18', cap: '每洞只推一顆球，像真的下場一樣認真看線，最後加總桿數。' }
+    ]
+  };
+
+  /* Chipping-only plan. */
+  GL.plans.c30 = {
+    name: 'Chipping Session', zh: '切球 30 分鐘',
+    blocks: [
+      { mins: 3, cat: 'Warm-up', name: '暖身：小空揮刷草', how: '用 PW 做 10 次小幅度的空揮，桿頭輕輕刷過草皮同一個位置，感覺手臂和肩膀一起擺動。', lesson: 'standard-chip', fig: 'brush', cap: '切球的擺幅比圖上小，但一樣要每次刷到同一個位置。' },
+      { mins: 7, cat: 'Chipping', name: '毛巾落點：Bump & Run', how: '把毛巾鋪在果嶺邊緣往內一步，用 9 號鐵或 PW 打 15 顆，每一顆都要先落在毛巾上再滾向洞。', lesson: 'bump-and-run', fig: 'towel', cap: '把毛巾鋪在果嶺邊緣往內一步，球要先落在毛巾上，再滾向洞。' },
+      { mins: 8, cat: 'Chipping', name: '三支桿比較', how: '7 號鐵、9 號鐵、PW 各打 5 顆到同一個落點，記下每支桿落地後滾多遠。', lesson: 'bump-and-run', fig: 'threeclub', cap: '三支桿都打到同一條毛巾上，觀察球滾多遠：PW 最短、7 號鐵最長。' },
+      { mins: 6, cat: 'Chipping', name: '停在一支推桿內', how: '從果嶺邊不同位置切 10 顆，目標是停在洞周圍一支推桿長度的圈裡，這樣下一推就很好進。', lesson: 'standard-chip', fig: 'chipzone', cap: '用一支推桿長度當半徑，在洞周圍想像一個圈，球停在圈裡就成功。' },
+      { mins: 6, cat: 'Pressure', name: 'Up & Down 挑戰', how: '選長草、邊緣、沙坑旁 3 個位置，每個位置切一次、推一次，兩桿內進洞才過關。', lesson: 'standard-chip', fig: 'updown', cap: '每個位置只打一顆球，像真的下場一樣認真打。' }
     ]
   };
 
