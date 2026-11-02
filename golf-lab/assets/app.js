@@ -1254,7 +1254,7 @@
       r.id = 'pitch-shot'; r.club = a.room === 'lots' ? '52° 挖起桿' : '56° 挖起桿'; r.ratio = a.room === 'lots' ? '2 : 1' : '3 : 1';
       r.alt = a.obs === 'hazard' ? null : 'bump-and-run';
       r.why = [a.obs === 'hazard' ? '中間有沙坑或水，球必須先飛過去。' : '距離較遠，需要較多飛行距離。', '用時鐘系統的擺幅控制距離。'];
-      if (a.room === 'little' && a.lie !== 'fluffy' && a.obs === 'hazard') r.why.push('空間很少，但球位不適合 Flop——接受停在旗桿後方。');
+      if (a.room === 'little' && a.lie !== 'fluffy' && a.obs === 'hazard') r.why.push('空間很少，但球位不適合 Flop：接受停在旗桿後方。');
       r.shot = { air: a.room === 'lots' ? 0.6 : 0.75, h: 0.6, lie: a.lie === 'tight' ? 'fairway' : 'rough', hazard: a.obs === 'hazard' };
       return r;
     }
@@ -1288,7 +1288,7 @@
     r.club = c[0] === '56°' || c[0] === '52°' ? c[0] + ' 挖起桿' : c[0] === 'PW' ? 'PW 劈起桿' : c[0] + ' 鐵桿';
     r.ratio = '1 : ' + c[1];
     r.alt = a.lie === 'fringe' && a.obs === 'none' ? 'putter-from-fringe' : isBump ? 'standard-chip' : 'bump-and-run';
-    r.why = ['能滾就不要飛——滾動比飛行更容易預測。', '落點選在果嶺邊緣往內約一步。', '空中 ' + carry + ' 步、滾動約 ' + room + ' 步，所以選滾動比例 1 : ' + c[1] + ' 的球桿。'];
+    r.why = ['能滾就不要飛：滾動比飛行更容易預測。', '落點選在果嶺邊緣往內約一步。', '空中 ' + carry + ' 步、滾動約 ' + room + ' 步，所以選滾動比例 1 : ' + c[1] + ' 的球桿。'];
     if (a.obs === 'rough') r.why.push('記得讓落點越過長草，再讓球在果嶺上滾。');
     r.shot = { air: carry / (carry + room), h: isBump ? 0.18 : 0.3, lie: a.lie === 'fringe' ? 'fringe' : a.lie === 'tight' ? 'fairway' : 'rough' };
     return r;
