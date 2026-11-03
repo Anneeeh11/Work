@@ -621,9 +621,16 @@
       var bar = '<rect x="93" y="18" width="14" height="100" rx="6" fill="#2a2f2c"/>';
       return [
         svg(arrow(100, 40, 100, 14) + t(118, 22, '目標', 'start') + '<circle cx="100" cy="56" r="5" fill="#fff"/><rect x="78" y="66" width="44" height="18" rx="6" fill="#1f3b2f" stroke="#9aa59f"/><line x1="78" y1="66" x2="122" y2="66" stroke="' + G + '" stroke-width="3"/><line x1="112" y1="84" x2="112" y2="122" stroke="#9aa59f" stroke-width="3"/>' + t(136, 80, '桿面朝目標', 'start')),
-        svg('<rect x="62" y="56" width="66" height="54" rx="12" fill="' + C + '"/>' + [70, 84, 98, 112].map(function (x, i) { return '<rect x="' + x + '" y="' + (24 + (i === 0 ? 10 : i === 3 ? 4 : 0)) + '" width="12" height="' + (34 - (i === 0 ? 10 : i === 3 ? 4 : 0)) + '" rx="6" fill="' + C + '"/>'; }).join('') +
-          '<rect x="124" y="66" width="12" height="32" rx="6" fill="' + C + '" transform="rotate(-35 130 82)"/>' +
-          '<line x1="66" y1="60" x2="126" y2="40" stroke="#2a2f2c" stroke-width="11" stroke-linecap="round" opacity=".85"/><line x1="66" y1="60" x2="126" y2="40" stroke="' + G + '" stroke-width="1.5" stroke-dasharray="3 3"/>' + t(100, 124, '手指根部，不是掌心')),
+        // left hand, palm towards you (thumb on the right): the grip runs from the index finger's middle joint to the base of the little finger
+        svg('<rect x="64" y="58" width="60" height="50" rx="12" fill="' + C + '"/>' + [[66, 36], [80, 26], [94, 22], [108, 28]].map(function (f) { return '<rect x="' + f[0] + '" y="' + f[1] + '" width="12" height="' + (66 - f[1]) + '" rx="6" fill="' + C + '"/>'; }).join('') +
+          '<rect x="122" y="70" width="13" height="34" rx="6.5" fill="' + C + '" transform="rotate(-35 128 86)"/>' +
+          [[66, 50], [80, 42], [94, 40], [108, 44]].map(function (f) { return '<line x1="' + (f[0] + 3) + '" y1="' + f[1] + '" x2="' + (f[0] + 9) + '" y2="' + f[1] + '" stroke="#cfc7b2" stroke-width="1"/>'; }).join('') +
+          '<path d="M90 84 L100 94 M100 84 L90 94" stroke="#c8102e" stroke-width="2.2" stroke-linecap="round"/><text x="95" y="104" text-anchor="middle" class="sf-t" style="fill:#8a2a2a">掌心</text>' +
+          '<line x1="70" y1="67" x2="115" y2="44" stroke="#2a2f2c" stroke-width="10" stroke-linecap="round" opacity=".88"/><line x1="70" y1="67" x2="115" y2="44" stroke="' + G + '" stroke-width="1.5" stroke-dasharray="3 3"/>' +
+          '<circle cx="115" cy="44" r="3" fill="' + G + '"/><circle cx="70" cy="67" r="3" fill="' + G + '"/>' +
+          '<line x1="118" y1="45" x2="137" y2="52" stroke="' + G + '" stroke-width="1"/>' + t(139, 56, '食指第二節', 'start') +
+          '<line x1="66" y1="70" x2="56" y2="78" stroke="' + G + '" stroke-width="1"/>' + t(54, 84, '小指根部', 'end') +
+          t(100, 124, '左手：握在手指根部，不是掌心')),
         svg(bar + hand(100, 70, false) + [0, 1, 2].map(function (n) { return '<circle cx="' + (86 + n * 9) + '" cy="50" r="3.5" fill="' + G + '"/>'; }).join('') + eye(100, 16) + arrow(100, 24, 100, 38) + t(128, 74, '2–3 個指節', 'start')),
         svg(bar + hand(100, 52, false) + hand(100, 84, true) + arrow(100, 62, 68, 26) + arrow(100, 96, 66, 62) + t(60, 20, '右肩', 'end') + t(160, 124, 'V 字指向右肩')),
         svg(t(100, 30, '握力') + Array.apply(null, Array(10)).map(function (_, i) { return '<rect x="' + (28 + i * 15) + '" y="52" width="12" height="22" rx="3" fill="' + (i < 4 ? G : 'rgba(251,248,239,.18)') + '"/>'; }).join('') +
