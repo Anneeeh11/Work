@@ -1423,6 +1423,24 @@
           '<path d="M238 82 L274 92" fill="none" stroke-width="4" ' + W + '/>' + gold('M196 80 L196 128') + tip(196, 128, 90) +
           T(80, 182, '前後擺腿', 'middle', 'dg-t gold') + T(236, 182, '慢慢深蹲', 'middle', 'dg-t gold');
       }
+    } else if (type === 'hipgate') {
+      // open the gate: knee up to 90 degrees, swing it out to the side, put it down
+      var W2 = 'fill="none" stroke="#fbf8ef" stroke-linecap="round" stroke-linejoin="round" opacity=".92"';
+      var gold2 = function (d) { return '<path d="' + d + '" fill="none" stroke="#f2c75c" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>'; };
+      var club = function (x) { return '<line x1="' + x + '" y1="86" x2="' + (x + 1) + '" y2="162" stroke="#2a2f2c" stroke-width="5" stroke-linecap="round"/>'; };
+      var head = function (x) { return '<circle cx="' + x + '" cy="40" r="9" fill="#fbf8ef" opacity=".92"/><path d="M' + x + ' 50 L' + x + ' 100" stroke-width="6" ' + W2 + '/>'; };
+      o = '<rect width="320" height="190" rx="16" fill="#0b4a32"/><line x1="16" y1="162" x2="304" y2="162" stroke="#fbf8ef" stroke-opacity=".3"/>' +
+        '<line x1="108" y1="24" x2="108" y2="150" stroke="#fbf8ef" stroke-opacity=".15" stroke-dasharray="3 5"/><line x1="214" y1="24" x2="214" y2="150" stroke="#fbf8ef" stroke-opacity=".15" stroke-dasharray="3 5"/>';
+      // 1 · side view: thigh level with the hip, shin straight down
+      o += head(50) + '<path d="M50 100 L50 160 M50 100 L80 100 L80 132 L88 132" stroke-width="6" ' + W2 + '/><path d="M50 62 L32 90" stroke-width="4" ' + W2 + '/>' + club(30) +
+        gold2('M60 100 V90 H50') + T(64, 88, '90°', 'start', 'dg-t gold');
+      // 2 · from the front: the knee swings out to the side
+      o += head(160) + '<path d="M166 100 L168 160 M154 100 L166 100 M154 100 L126 100 L126 130" stroke-width="6" ' + W2 + '/><path d="M160 62 L178 90" stroke-width="4" ' + W2 + '/>' + club(180) +
+        '<circle cx="152" cy="112" r="4" fill="none" stroke="#f2c75c" stroke-width="1.4" stroke-dasharray="2 2"/>' + gold2('M148 116 Q132 118 126 108') + gold2('M126 108 l1 7 M126 108 l6 3');
+      // 3 · back down, slowly
+      o += head(266) + '<path d="M260 100 L272 100 M260 100 L257 160 M272 100 L275 160" stroke-width="6" ' + W2 + '/><path d="M266 62 L284 90" stroke-width="4" ' + W2 + '/>' + club(286) +
+        gold2('M244 104 V140') + gold2('M244 140 l-4 -6 M244 140 l4 -6');
+      o += T(58, 182, '① 抬膝 90°', 'middle', 'dg-t gold') + T(160, 182, '② 往外打開', 'middle', 'dg-t gold') + T(264, 182, '③ 慢慢放下', 'middle', 'dg-t gold');
     } else if (type === 'build') {
       // three steps of speed: 50%, 70%, normal
       o = '<rect width="320" height="190" rx="16" fill="#0b4a32"/><line x1="30" y1="150" x2="290" y2="150" stroke="#fbf8ef" stroke-opacity=".3"/>';
@@ -1468,7 +1486,7 @@
       });
     }
     // drawn with the target on the right; the face-on views stay as they are, the rest are mirrored (class tleft)
-    var faceOn = type === 'tee' || type === 'halfswing' || type === 'clock' || type === 'turn' || type === 'brush' || type === 'loosen' || type === 'legs' || type === 'build';
+    var faceOn = type === 'tee' || type === 'halfswing' || type === 'clock' || type === 'turn' || type === 'brush' || type === 'loosen' || type === 'legs' || type === 'build' || type === 'hipgate';
     return '<svg class="drill-svg' + (faceOn ? '' : ' tleft') + '" viewBox="0 0 320 190" role="img" aria-label="練習示意圖">' + defs + o + '</svg>';
   }
 
