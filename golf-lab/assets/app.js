@@ -870,7 +870,7 @@
         html += '<section class="rule-group" id="g-' + a.id + '"><div class="rg-head"><h2>' + a.name + ' <span class="zh">' + a.zh + '</span></h2><p>' + a.desc + '</p></div>' +
           '<div class="rule-list">' + list.map(function (r) {
             return '<details class="rule"' + (q ? ' open' : '') + '><summary><span class="rq">' + esc(r.q) + '</span>' + penBadge(r.pen) + '</summary>' +
-              '<div class="ra"><p>' + esc(r.a) + '</p><span class="rno">Rule ' + esc(r.rule) + '</span></div></details>';
+              '<div class="ra"><p>' + esc(r.a) + '</p><span class="rno">' + (/^\d/.test(r.rule) ? 'Rule ' : '') + esc(r.rule) + '</span></div></details>';
           }).join('') + '</div></section>';
       });
       $('#ruleList').innerHTML = html || '<p class="empty-stats">找不到「' + esc(state.q) + '」相關的規則，試試「沙坑」、「界外」或「旗桿」。</p>';
@@ -1517,6 +1517,8 @@
     return '<svg class="drill-svg' + (faceOn ? '' : ' tleft') + '" viewBox="0 0 320 190" role="img" aria-label="練習示意圖">' + defs + o + '</svg>';
   }
 
+  // English labels for the drill categories (the keys stay as written in the data)
+  var CAT_EN = { 'Warm-up': 'Warm Up', 'Practice Swing': 'Practice Swings', 'Pressure': 'Challenge', 'Half Swing': 'Half Swings', 'Full Swing': 'Full Swings' };
   var CAT_ZH = { 'Practice Swing': '空揮', 'Putting': '推桿', 'Chipping': '切球', 'Pitching': '劈起球', 'Warm-up': '暖身', 'Pressure': '小挑戰', 'Half Swing': '半揮桿', 'Full Swing': '全揮桿', 'Woods': '木桿', 'Short Game': '短桿', 'Driver': '開球' };
 
   /* ---------- PRACTICE ---------- */
@@ -1546,8 +1548,8 @@
         return '<li class="block' + (done.indexOf(i) > -1 ? ' done' : '') + ((timer.run || timer.left) && i === timer.i ? ' now' : '') + '">' +
           '<label class="chk"><input type="checkbox" data-i="' + i + '"' + (done.indexOf(i) > -1 ? ' checked' : '') + '><span>' + icon('check') + '</span></label>' +
           '<div class="bl-time">' + b.mins + '<small>min</small></div>' +
-          '<div class="bl-body"><span class="eyebrow">' + esc(GL.lang === 'en' ? b.cat : (CAT_ZH[b.cat] || b.cat)) + '</span><h3>' + esc(b.name) + '</h3><p>' + esc(b.how) + '</p>' +
-          (l ? '<a href="learn.html#' + l.id + '">教學：' + esc(l.title) + ' ' + icon('arrow') + '</a>' : '') + '</div>' +
+          '<div class="bl-body"><span class="eyebrow">' + esc(GL.lang === 'en' ? (CAT_EN[b.cat] || b.cat) : (CAT_ZH[b.cat] || b.cat)) + '</span><h3>' + esc(b.name) + '</h3><p>' + esc(b.how) + '</p>' +
+          (l ? '<a href="learn.html#' + l.id + '">教學：' + esc(GL.lang === 'en' ? l.zh : l.title) + ' ' + icon('arrow') + '</a>' : '') + '</div>' +
           (b.fig ? '<figure class="bl-fig">' + drillSVG(b.fig) + '<figcaption>' + esc(b.cap) + '</figcaption></figure>' : '') + '</li>';
       }).join('');
       $$('#planList input').forEach(function (c) {
