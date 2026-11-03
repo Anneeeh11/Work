@@ -188,7 +188,7 @@
       { mins: 10, cat: 'Half Swing', name: 'PW 半揮：9 點到 3 點', how: '把球從 Tee 上拿下來，直接放在打擊墊上。用 PW 打 20 顆 9 點到 3 點的半揮，記下 20 顆裡有幾顆打得紮實。', lesson: 'stance', fig: 'halfswing', cap: '後擺左手臂到 9 點，收桿到 3 點，兩邊一樣長。' },
       { mins: 6, cat: 'Setup', name: '準備動作檢查', how: '地上放一支球桿指向目標。每打 5 顆球，就從頭做一次完整的準備動作：握桿、站姿、姿勢、瞄準，再打下一顆。', lesson: 'alignment', fig: 'aimline', cap: '用地上的球桿確認腳、髖、肩都和目標線平行。' },
       { mins: 10, cat: 'Full Swing', name: '7 號鐵四分之三揮桿', how: '換 7 號鐵，用 70% 力量做 10 點到 2 點的揮桿，打 15 顆。每一顆都選一個目標旗，收桿站穩 3 秒。', lesson: 'posture', fig: 'targets', cap: '不用全力，揮得穩比揮得快重要。' },
-      { mins: 6, cat: 'Short Game', name: '切球收尾', how: '換回 PW 打 10 顆小切球：有練習果嶺就在果嶺邊用毛巾當落點；沒有的話，就在打位上瞄最近的旗子。', fig: 'towel', cap: '有練習果嶺的話，讓球先落在毛巾上，再滾向洞。' }
+      { mins: 6, cat: 'Half Swing', name: '短距離收尾：PW 小擺幅', how: '換回 PW，用 8 點到 4 點的擺幅打 10 顆，瞄打位前方最近的旗子，練習打短距離。', fig: 'clock', cap: '擺幅越小、飛得越近，最後用小擺幅打穩收尾。' }
     ]
   };
   /* Putting-only plan. */
@@ -218,9 +218,9 @@
     blocks: [
       { mins: 10, cat: 'Half Swing', name: '短鐵半揮', how: 'PW 與 9 號鐵各打 10 顆半揮，檢查擊球點。', lesson: 'iron-basics', fig: 'targets', cap: '選最近的旗子當目標，先求每一顆都紮實打到。' },
       { mins: 20, cat: 'Full Swing', name: '7 號鐵目標練習', how: '每顆都換一個目標，記錄 20 顆中有幾顆落在目標附近。', lesson: 'alignment', fig: 'targets', cap: '每球都用球桿擺出瞄準線，再換目標。' },
+      { mins: 10, cat: 'Woods', name: 'Hybrid 或 5 號木', how: '用 75% 的力量打 10 顆，球放在很低的 Tee 上或直接放在打擊墊上，收桿站穩 3 秒。', fig: 'tee', cap: 'Tee 的高度：球有一半在桿頭上方。' },
       { mins: 10, cat: 'Driver', name: '開球', how: '用 Driver 或 5 號木以 75% 力量打 10 顆，想像兩側是球道邊界。', lesson: 'driver-basics', fig: 'tee', cap: 'Tee 的高度：球有一半在桿頭上方。' },
-      { mins: 10, cat: 'Short Game', name: '切球', how: '在練習果嶺用毛巾落點練習 Bump & Run 與 Standard Chip。', lesson: 'standard-chip', fig: 'towel', cap: '把毛巾鋪在果嶺邊緣往內一步，球要先落在毛巾上。' },
-      { mins: 10, cat: 'Putting', name: '推桿', how: '1 公尺 Circle Drill 一輪，再推 5 顆 10 步以上的長推。', lesson: 'lag-putting', fig: 'circle', cap: '以洞為中心，在 1 公尺處插 8 支 tee 圍成一圈。' }
+      { mins: 10, cat: 'Half Swing', name: '挖起桿距離控制', how: '在打位上用 PW 瞄最近的旗子，用 8 點和 9 點兩種擺幅各打 10 顆，記下每種擺幅大概飛多遠。', fig: 'clock', cap: '擺幅越小、飛得越近；用固定的擺幅來控制距離。' }
     ]
   };
 })(window.GL);
