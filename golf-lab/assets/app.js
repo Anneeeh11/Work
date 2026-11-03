@@ -1450,6 +1450,13 @@
           '<path d="M238 82 L274 92" fill="none" stroke-width="4" ' + W + '/>' + gold('M196 80 L196 128') + tip(196, 128, 90) +
           T(80, 182, '前後擺腿', 'middle', 'dg-t gold') + T(236, 182, '慢慢深蹲', 'middle', 'dg-t gold');
       }
+    } else if (type === 'aimline') {
+      // from above: one club points from the ball to the flag, the feet line up parallel to it
+      var club = function (x1, y1, x2, y2) { return '<line x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 + '" stroke="#c9c4b4" stroke-width="4" stroke-linecap="round"/><line x1="' + x1 + '" y1="' + y1 + '" x2="' + (x1 + (x2 - x1) * .18) + '" y2="' + (y1 + (y2 - y1) * .18) + '" stroke="#2a2f2c" stroke-width="6" stroke-linecap="round"/>'; };
+      o = green + '<ellipse cx="282" cy="46" rx="16" ry="6" fill="#86c062"/><line x1="282" y1="46" x2="282" y2="16" stroke="#fbf8ef" stroke-width="1.6"/><path d="M282 16 l12 4 l-12 4z" fill="#f2c75c"/>' +
+        path('M118 120 L 276 48', '1 6') + club(70, 128, 214, 62) + ball(118, 120) +
+        club(52, 170, 196, 104) + '<ellipse cx="104" cy="166" rx="7" ry="13" fill="#fbf8ef" opacity=".92" transform="rotate(66 104 166)"/><ellipse cx="154" cy="143" rx="7" ry="13" fill="#fbf8ef" opacity=".92" transform="rotate(66 154 143)"/>' +
+        T(222, 84, '球桿指向目標', 'start', 'dg-t gold') + T(204, 128, '腳尖與它平行', 'start', 'dg-t gold');
     } else if (type === 'hipgate') {
       // open the gate: knee up to 90 degrees, swing it out to the side, put it down
       var W2 = 'fill="none" stroke="#fbf8ef" stroke-linecap="round" stroke-linejoin="round" opacity=".92"';
@@ -1518,14 +1525,14 @@
   }
 
   // English labels for the drill categories (the keys stay as written in the data)
-  var CAT_EN = { 'Warm-up': 'Warm Up', 'Practice Swing': 'Practice Swings', 'Pressure': 'Challenge', 'Half Swing': 'Half Swings', 'Full Swing': 'Full Swings' };
-  var CAT_ZH = { 'Practice Swing': '空揮', 'Putting': '推桿', 'Chipping': '切球', 'Pitching': '劈起球', 'Warm-up': '暖身', 'Pressure': '小挑戰', 'Half Swing': '半揮桿', 'Full Swing': '全揮桿', 'Woods': '木桿', 'Short Game': '短桿', 'Driver': '開球' };
+  var CAT_EN = { 'Setup': 'Setup', 'Warm-up': 'Warm Up', 'Practice Swing': 'Practice Swings', 'Pressure': 'Challenge', 'Half Swing': 'Half Swings', 'Full Swing': 'Full Swings' };
+  var CAT_ZH = { 'Setup': '準備動作', 'Practice Swing': '空揮', 'Putting': '推桿', 'Chipping': '切球', 'Pitching': '劈起球', 'Warm-up': '暖身', 'Pressure': '小挑戰', 'Half Swing': '半揮桿', 'Full Swing': '全揮桿', 'Woods': '木桿', 'Short Game': '短桿', 'Driver': '開球' };
 
   /* ---------- PRACTICE ---------- */
   function practice() {
     var hp = location.hash.slice(1);
-    var plan = GL.plans[hp] ? hp : store.get('plan', 'r30');
-    if (!GL.plans[plan]) plan = 'r30';
+    var plan = GL.plans[hp] ? hp : store.get('plan', 'b40');
+    if (!GL.plans[plan]) plan = 'b40';
     var timer = { i: 0, left: 0, run: false, h: null };
     var STATIONS = ['短草 5 步', '邊緣推桿', '長草切球', '下坡切球', '上坡切球', '越過沙坑', '20 碼 Pitch', '沙坑', '自選位置'];
     var scores = store.get('ud', []);

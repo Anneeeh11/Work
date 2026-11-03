@@ -329,6 +329,33 @@
     return getJSON('https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=' + lat + '&longitude=' + lon + '&localityLanguage=' + (EN() ? 'en' : 'zh-Hant'))
       .then(function (r) { return r.city || r.locality || r.principalSubdivision || ''; }, function () { return ''; });
   }
+  // Common places by their Chinese names, so they work without the search service
+  // (it does not always know Chinese spellings). [lat, lon, Chinese name, English name]
+  var CITIES = {
+    '台北': [25.033, 121.565, '台北', 'Taipei'], '新北': [25.012, 121.465, '新北', 'New Taipei'], '桃園': [24.994, 121.301, '桃園', 'Taoyuan'],
+    '新竹': [24.804, 120.971, '新竹', 'Hsinchu'], '苗栗': [24.560, 120.821, '苗栗', 'Miaoli'], '台中': [24.148, 120.674, '台中', 'Taichung'],
+    '彰化': [24.081, 120.538, '彰化', 'Changhua'], '南投': [23.909, 120.684, '南投', 'Nantou'], '雲林': [23.709, 120.431, '雲林', 'Yunlin'],
+    '嘉義': [23.480, 120.449, '嘉義', 'Chiayi'], '台南': [22.999, 120.227, '台南', 'Tainan'], '高雄': [22.627, 120.301, '高雄', 'Kaohsiung'],
+    '屏東': [22.672, 120.488, '屏東', 'Pingtung'], '基隆': [25.128, 121.739, '基隆', 'Keelung'], '宜蘭': [24.757, 121.753, '宜蘭', 'Yilan'],
+    '花蓮': [23.977, 121.604, '花蓮', 'Hualien'], '台東': [22.757, 121.144, '台東', 'Taitung'], '澎湖': [23.571, 119.579, '澎湖', 'Penghu'],
+    '金門': [24.436, 118.318, '金門', 'Kinmen'],
+    '溫哥華': [49.283, -123.121, '溫哥華', 'Vancouver'], '温哥华': [49.283, -123.121, '溫哥華', 'Vancouver'], '本拿比': [49.249, -122.980, '本拿比', 'Burnaby'],
+    '列治文': [49.166, -123.134, '列治文', 'Richmond'], '素里': [49.191, -122.849, '素里', 'Surrey'], '高貴林': [49.284, -122.794, '高貴林', 'Coquitlam'],
+    '北溫': [49.320, -123.072, '北溫', 'North Vancouver'], '維多利亞': [48.428, -123.366, '維多利亞', 'Victoria'], '惠斯勒': [50.116, -122.957, '惠斯勒', 'Whistler'],
+    '卡加利': [51.045, -114.072, '卡加利', 'Calgary'], '多倫多': [43.653, -79.383, '多倫多', 'Toronto'], '多伦多': [43.653, -79.383, '多倫多', 'Toronto'],
+    '蒙特婁': [45.502, -73.567, '蒙特婁', 'Montreal'], '西雅圖': [47.606, -122.332, '西雅圖', 'Seattle'], '舊金山': [37.775, -122.419, '舊金山', 'San Francisco'],
+    '洛杉磯': [34.052, -118.244, '洛杉磯', 'Los Angeles'], '紐約': [40.713, -74.006, '紐約', 'New York'], '檀香山': [21.307, -157.858, '檀香山', 'Honolulu'],
+    '東京': [35.676, 139.650, '東京', 'Tokyo'], '大阪': [34.694, 135.502, '大阪', 'Osaka'], '沖繩': [26.212, 127.681, '沖繩', 'Okinawa'],
+    '首爾': [37.566, 126.978, '首爾', 'Seoul'], '香港': [22.320, 114.170, '香港', 'Hong Kong'], '澳門': [22.199, 113.544, '澳門', 'Macau'],
+    '上海': [31.230, 121.474, '上海', 'Shanghai'], '北京': [39.904, 116.407, '北京', 'Beijing'], '新加坡': [1.352, 103.820, '新加坡', 'Singapore'],
+    '曼谷': [13.756, 100.502, '曼谷', 'Bangkok'], '雪梨': [-33.869, 151.209, '雪梨', 'Sydney'], '悉尼': [-33.869, 151.209, '雪梨', 'Sydney'],
+    '墨爾本': [-37.814, 144.963, '墨爾本', 'Melbourne'], '倫敦': [51.507, -0.128, '倫敦', 'London']
+  };
+  function knownCity(q) {
+    var k = q.replace(/\s+/g, '').replace(/臺/g, '台').replace(/(市|縣|县)$/, '');
+    var c = CITIES[k] || CITIES[k.replace(/市$/, '')];
+    return c ? { latitude: c[0], longitude: c[1], name: EN() ? c[3] : c[2] } : null;
+  }
   function findCity(q) {
     return getJSON('https://geocoding-api.open-meteo.com/v1/search?count=1&format=json&language=' + (EN() ? 'en' : 'zh') + '&name=' + encodeURIComponent(q))
       .then(function (r) { if (!r.results || !r.results.length) throw new Error('nf'); return r.results[0]; });
@@ -371,7 +398,12 @@
       var q = form.q.value.trim(); if (!q) return;
       store.set('wxcity', q);
       todayMsg('正在查今天的天氣⋯');
-      findCity(q).then(function (c) { byCoords(c.latitude, c.longitude, c.name); }, function () { todayMsg('找不到這個城市，換個寫法試試看，例如「台北」或 Taipei。'); });
+      var known = knownCity(q);
+      if (known) return byCoords(known.latitude, known.longitude, known.name);
+      findCity(q).then(function (c) { byCoords(c.latitude, c.longitude, c.name); }, function (err) {
+        // "nf" = the search ran and found nothing; anything else means the service could not be reached
+        todayMsg(err && err.message === 'nf' ? '找不到這個城市，換個寫法試試看，例如「台北」或 Taipei。' : '暫時連不上天氣服務，請檢查網路後再試一次。');
+      });
     });
     var last = store.get('wxcity', '');
     if (last) form.q.value = last;

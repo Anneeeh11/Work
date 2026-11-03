@@ -65,8 +65,8 @@
   var P = function (href, t, s) { return { href: href, t: t, s: s }; };
   GL.paths = {
     new: [
-      { w: '第 1 週', t: '認識球桿與準備動作', items: [P('guide.html#range', '第一次去練習場', '要帶什麼、怎麼買球、練習順序'), P('clubs.html#starter', '新手第一套球桿', '只需要 5–7 支'), L('grip'), L('stance'), L('posture'), L('alignment'), P('practice.html#r30', '練習場 30 分鐘', '照著菜單練一次')] },
-      { w: '第 2 週', t: '半揮桿，打到球', items: [L('backswing'), L('downswing'), L('iron-basics'), P('fix.html#air', '球飛不起來？', '新手最常見的問題'), P('practice.html#r30', '練習場 30 分鐘', '這週練兩次')] },
+      { w: '第 1 週', t: '認識球桿與準備動作', items: [P('guide.html#range', '第一次去練習場', '要帶什麼、怎麼買球、練習順序'), P('clubs.html#starter', '新手第一套球桿', '只需要 5–7 支'), L('grip'), L('stance'), L('posture'), L('alignment'), P('practice.html#b40', '新手練習場 40 分鐘', '照著菜單練一次')] },
+      { w: '第 2 週', t: '半揮桿，打到球', items: [L('backswing'), L('downswing'), L('iron-basics'), P('fix.html#air', '球飛不起來？', '新手最常見的問題'), P('practice.html#b40', '新手練習場 40 分鐘', '這週練兩次')] },
       { w: '第 3 週', t: '完整揮桿與短桿', items: [L('finish-tempo'), L('bump-and-run'), L('short-putts'), P('practice.html#p30', '推桿 30 分鐘', '這週練一次')] },
       { w: '第 4 週', t: '準備第一次下場', items: [P('guide.html#course', '第一次下場', '服裝、時間、要帶什麼'), P('guide.html#score', '計分卡怎麼填', '每洞最多記雙倍標準桿'), P('rules.html#basics', '基本規則', '最常遇到的幾條'), L('driver-basics'), L('lag-putting')] }
     ],
@@ -169,13 +169,26 @@
   };
 
   /* Driving-range plans for full-swing practice. */
-  GL.plans.r30 = {
-    name: 'Range Basics', zh: '練習場 30 分鐘',
+  /* For complete beginners: small swings first, then build up. */
+  GL.plans.b40 = {
+    name: 'Beginner Range Session', zh: '新手練習場 40 分鐘',
+    why: {
+      title: '給初學者的練習原則',
+      intro: '剛開始去練習場，最重要的不是打多遠，而是每一顆都打得到球。這份菜單從很小的擺幅開始，一步一步加大，比較不會越打越亂。',
+      items: [
+        ['先求打到，再求打遠', '球飛多遠不重要，桿頭每次都紮實碰到球才是重點。'],
+        ['從小擺幅開始', '擺幅越小越容易控制。小揮桿打穩了，再慢慢加大。'],
+        ['每 5 顆檢查一次準備動作', '握桿、站姿、姿勢、瞄準，常常打著打著就跑掉了。'],
+        ['累了就停', '手開始痠、動作開始亂，就休息一下或提早結束，硬打只會練出壞習慣。']
+      ],
+      tip: '每一項都要連續 3 顆打得紮實，再進到下一項；做不到就留在這一項多打幾顆。'
+    },
     blocks: [
-      { mins: 8, cat: 'Half Swing', name: 'PW 半揮', how: '用 PW 打 15 顆 9 點到 3 點的半揮，目標是每顆都打到球。', lesson: 'iron-basics', fig: 'targets', cap: '選最近的旗子當目標，先求每一顆都紮實打到。' },
-      { mins: 12, cat: 'Full Swing', name: '7 號鐵全揮', how: '每顆球都選一個目標旗，打 20 顆，收桿站穩 3 秒。', lesson: 'finish-tempo', fig: 'targets', cap: '每一顆都換一個目標旗，不要連續一直打。' },
-      { mins: 5, cat: 'Woods', name: 'Hybrid 或 5 號木', how: '用 75% 的力量打 10 顆，Tee 稍微架高。', lesson: 'driver-basics', fig: 'tee', cap: 'Tee 的高度：球有一半在桿頭上方。' },
-      { mins: 5, cat: 'Short Game', name: '切球收尾', how: '到練習果嶺用 Bump & Run 打 10 顆，或在打位用 PW 打 30 碼。', lesson: 'bump-and-run', fig: 'towel', cap: '最後用短桿收尾，讓手感留在最常用到的距離。' }
+      { mins: 8, cat: 'Half Swing', name: '小擺幅：Tee 上的 PW', how: '把球放在很低的 Tee 上，用 PW 做小擺幅：後擺左手臂到 7 點半，收桿到 4 點半，打 15 顆。桿頭紮實碰到球就算成功，不用管飛多遠。', lesson: 'grip', fig: 'clock', cap: '先用最短的 7 點半擺幅，打穩了再加大。' },
+      { mins: 10, cat: 'Half Swing', name: 'PW 半揮：9 點到 3 點', how: '把球從 Tee 上拿下來，直接放在打擊墊上。用 PW 打 20 顆 9 點到 3 點的半揮，記下 20 顆裡有幾顆打得紮實。', lesson: 'stance', fig: 'halfswing', cap: '後擺左手臂到 9 點，收桿到 3 點，兩邊一樣長。' },
+      { mins: 6, cat: 'Setup', name: '準備動作檢查', how: '地上放一支球桿指向目標。每打 5 顆球，就從頭做一次完整的準備動作：握桿、站姿、姿勢、瞄準，再打下一顆。', lesson: 'alignment', fig: 'aimline', cap: '用地上的球桿確認腳、髖、肩都和目標線平行。' },
+      { mins: 10, cat: 'Full Swing', name: '7 號鐵四分之三揮桿', how: '換 7 號鐵，用 70% 力量做 10 點到 2 點的揮桿，打 15 顆。每一顆都選一個目標旗，收桿站穩 3 秒。', lesson: 'posture', fig: 'targets', cap: '不用全力，揮得穩比揮得快重要。' },
+      { mins: 6, cat: 'Short Game', name: '切球收尾', how: '換回 PW 打 10 顆小切球：有練習果嶺就在果嶺邊用毛巾當落點；沒有的話，就在打位上瞄最近的旗子。', fig: 'towel', cap: '有練習果嶺的話，讓球先落在毛巾上，再滾向洞。' }
     ]
   };
   /* Putting-only plan. */
