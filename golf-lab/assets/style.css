@@ -1959,3 +1959,41 @@ html[lang="en"] .fg-quote p { font-style: italic; }
 .of-head-row { max-width: none; display: flex; justify-content: space-between; align-items: end; gap: 20px; flex-wrap: wrap; }
 .of-head-row > div:first-child { max-width: 640px; }
 .of-seg { flex: none; }
+
+/* ---------- phones ---------- */
+.in-pen { background: var(--cream); border: 1px solid transparent; font: inherit; font-size: 14px; width: 32px; height: 30px; text-align: center; border-radius: 6px; padding: 0; }
+.in-pen:focus { outline: 2px solid var(--gold); background: #fff; }
+@media (max-width: 760px) {
+  /* iPhone zooms into any field under 16px when it is tapped */
+  input:not([type="checkbox"]):not([type="radio"]):not(.in-score):not(.in-putt):not(.in-pen):not(.in-drive), select, textarea { font-size: 16px; }
+  /* easier to tap */
+  .text-link, .hj-link, .bl-body a, .tw-more, .gs-link, .fg-link, .link-btn { display: inline-flex; align-items: center; min-height: 40px; }
+  .copy-btn { min-height: 36px; padding-inline: 14px; }
+  .chk span { width: 36px; height: 36px; }
+  .fir-btn, .sand-btn { width: 36px; height: 36px; }
+  .in-putt, .in-pen, .in-drive { height: 36px; }
+  /* nothing under 12px */
+  .foot-col h5, .lc-step, .kp-label, .need, .rno, .shot-q small, .bl-time small, .pl-lnav small, .lesson-nav small { font-size: 12px; }
+  .mg-card small, .sc-v small, .scorecard small { font-size: 12px; }
+  /* the lesson's section menu scrolls sideways: snap to each item */
+  .format-rail { scroll-snap-type: x proximity; scroll-padding-inline: 16px; }
+  .format-rail a { scroll-snap-align: start; min-height: 40px; }
+  /* practice: the timer stays at the bottom of the screen while you scroll through the plan */
+  .timer-card { position: sticky; top: auto; bottom: 10px; z-index: 30; display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "now clock" "ctrl ctrl"; gap: 6px 14px; align-items: center; text-align: left; padding: 14px 16px 14px; border-radius: 20px; box-shadow: 0 18px 40px -16px rgba(4, 38, 26, .6); }
+  .tm-now { grid-area: now; min-width: 0; }
+  .tm-now strong { font-size: 18px; min-height: 0; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .tm-clock { grid-area: clock; font-size: 44px; margin: 0; }
+  .tm-ctrl { grid-area: ctrl; justify-content: flex-start; }
+  .timer-card .btn.round { width: 46px; height: 46px; }
+  .timer-card .btn.ghost { padding: 9px 16px; }
+  /* home weather card fits 360px phones */
+  .of-today { grid-template-columns: minmax(0, 1fr); }
+  .tw-city div { min-width: 0; }
+}
+@media (max-width: 380px) {
+  .wrap { width: calc(100% - 28px); }
+  .format-rail { margin-inline: -14px; padding-inline: 14px; }
+  .tw-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .of-today { padding: 16px; }
+  .tw-out { padding: 14px; }
+}
