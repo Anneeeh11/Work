@@ -144,6 +144,28 @@
       s += part('M48 88 Q90 76 141 96 Q128 113 92 107 Q66 103 48 88 Z', '#0b4a32', '#062d1f') + stitch('M58 90 Q92 82 132 97', '#ffffff', .25);
       return s + logo(76, 68, 1.2);
     },
+    sweater: function (o) {
+      // crew-neck sweater with a long-sleeve polo underneath: its collar and cuffs show
+      o = o || {};
+      var f = o.f || '#2e4560', l = o.l || '#1f3044', r = o.rib || '#263a52';
+      var s = part('M50 30 L66 22 Q80 31 94 22 L110 30 Q124 40 132 58 L142 126 L126 130 L114 74 L112 138 Q80 143 48 138 L46 74 L34 130 L18 126 L28 58 Q36 40 50 30 Z', f, l, 'knit');
+      s += line('M80 44 Q76 52 80 60 Q84 68 80 76 Q76 84 80 92 Q84 100 80 108 Q76 116 80 124', '#ffffff', 1.4, .18) + line('M74 46 V126 M86 46 V126', '#000', 1, .12);
+      s += line('M46 74 Q48 60 50 30', l, 1, .5) + line('M114 74 Q112 60 110 30', l, 1, .5);
+      s += '<path d="M48 128 Q80 133 112 128 L112 138 Q80 143 48 138 Z" fill="' + r + '"/>';
+      for (var x = 51; x < 111; x += 4) s += line('M' + x + ' 129.5 V139', '#000', .7, .25);
+      s += '<path d="M19 118 L33 122 L34 130 L18 126 Z" fill="' + r + '"/><path d="M141 118 L127 122 L126 130 L142 126 Z" fill="' + r + '"/>';
+      s += '<path d="M18.2 126.5 L33.8 130.4 L33.4 135 L17.6 131 Z" fill="#ffffff" stroke="#cdc5b0" stroke-width=".8"/><path d="M141.8 126.5 L126.2 130.4 L126.6 135 L142.4 131 Z" fill="#ffffff" stroke="#cdc5b0" stroke-width=".8"/>';
+      s += '<path d="M64 24 Q80 35 96 24 L94 21 Q80 31 66 21 Z" fill="' + r + '"/>';
+      s += '<path d="M66 18 L80 34 L72 41 L59.5 26 Z" fill="#ffffff" stroke="#cdc5b0" stroke-width="1" stroke-linejoin="round"/><path d="M94 18 L80 34 L88 41 L100.5 26 Z" fill="#ffffff" stroke="#cdc5b0" stroke-width="1" stroke-linejoin="round"/>';
+      return s + stitch('M65 22 L76.5 34.5 L71.5 38.5', '#cdc5b0', .9) + stitch('M95 22 L83.5 34.5 L88.5 38.5', '#cdc5b0', .9);
+    },
+    sunglasses: function () {
+      var lens = function (d) { return '<path d="' + d + '" fill="url(#' + P + 'lens)" stroke="#1d241f" stroke-width="2.4" stroke-linejoin="round"/>'; };
+      var s = '<linearGradient id="' + P + 'lens" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4e6a5c"/><stop offset=".55" stop-color="#1f2d26"/><stop offset="1" stop-color="#0f1613"/></linearGradient>';
+      s += lens('M28 70 Q28 62 38 62 H70 Q77 62 77 70 Q77 92 56 92 Q34 92 28 70 Z') + lens('M132 70 Q132 62 122 62 H90 Q83 62 83 70 Q83 92 104 92 Q126 92 132 70 Z');
+      s += line('M77 68 Q80 63 83 68', '#1d241f', 2.6) + line('M28 66 L12 60 M132 66 L148 60', '#1d241f', 2.4);
+      return s + line('M36 70 Q42 66 50 66', '#ffffff', 2, .45) + line('M92 70 Q98 66 106 66', '#ffffff', 2, .45);
+    },
     golfshorts: function () {
       var f = '#d8cba7', l = '#b3a47e';
       var s = '<clipPath id="' + P + 'gs"><rect x="0" y="0" width="160" height="98"/></clipPath><g clip-path="url(#' + P + 'gs)">' + G.pants() + '</g>';
@@ -174,7 +196,7 @@
   // one garment on its own tile
   function tile(type, o) {
     P = 'of' + (++n) + '_';
-    var sh = { belt: [80, 104, 64], shoes: [80, 132, 62], cap: [86, 122, 52], visor: [90, 116, 50], glove: [82, 140, 40], golfshorts: [80, 108, 46], umbrella: [80, 146, 30] }[type] || [80, 148, 46];
+    var sh = { belt: [80, 104, 64], shoes: [80, 132, 62], cap: [86, 122, 52], visor: [90, 116, 50], glove: [82, 140, 40], golfshorts: [80, 108, 46], umbrella: [80, 146, 30], sunglasses: [80, 104, 52] }[type] || [80, 148, 46];
     return '<svg class="of-art" viewBox="0 0 160 160" aria-hidden="true">' + defs() + shadow(sh[0], sh[1], sh[2]) + G[type](o) + '</svg>';
   }
   var place = function (x, y, s, inner, rot) { return '<g transform="translate(' + x + ' ' + y + ')' + (rot ? ' rotate(' + rot + ' 80 80)' : '') + ' scale(' + s + ')">' + inner + '</g>'; };
@@ -205,15 +227,14 @@
     P = 'of' + (++n) + '_';
     var mark = function (x, y, k) { return '<g class="of-pin"><circle cx="' + x + '" cy="' + y + '" r="11" fill="#0b4a32" stroke="#fbf8ef" stroke-width="2"/><text x="' + x + '" y="' + (y + 4.2) + '" text-anchor="middle">' + k + '</text></g>'; };
     var o = '<svg class="of-look-art" viewBox="0 0 240 460" aria-hidden="true">' + defs() + '<ellipse cx="120" cy="446" rx="90" ry="7" fill="#1b2a22" opacity=".08"/>';
-    if (kind === 'classic') {
-      o += place(56, -4, .8, G.cap()) + place(16, 70, 1.3, G.polo({ f: '#ffffff', stripe: '#0b4a32' })) + place(30, 236, 1.125, G.pants());
-      o += '<rect x="82" y="260" width="76" height="8.5" rx="2" fill="#4b3427"/><rect x="112" y="257.5" width="13" height="13.5" rx="2.5" fill="none" stroke="#bdb6a8" stroke-width="2.6"/>';
-      o += place(12, 368, .64, G.shoes()) + '<g transform="translate(228 368) scale(-.64 .64)">' + G.shoes() + '</g>';
-      o += mark(176, 44, 1) + mark(150, 106, 2) + mark(176, 264, 3) + mark(170, 340, 4) + mark(60, 430, 5);
+    var pair = function (y, opt) { return place(12, y, .64, G.shoes(opt)) + '<g transform="translate(228 ' + y + ') scale(-.64 .64)">' + G.shoes(opt) + '</g>'; };
+    if (kind === 'winter') {
+      o += place(56, -4, .8, G.cap()) + place(30, 236, 1.125, G.pants({ f: '#58636c', l: '#3f484f' })) + place(16, 70, 1.3, G.sweater()) + pair(368);
+      o += mark(176, 44, 1) + mark(150, 196, 2) + mark(146, 98, 3) + mark(170, 330, 4) + mark(60, 430, 5);
     } else {
-      o += place(48, 4, .9, G.visor()) + place(16, 70, 1.3, G.polo({ f: '#dcebe1', l: '#b6cdbd', trim: '#ffffff', sleeveless: true })) + place(20, 209, 1.25, G.skirt({ f: '#ffffff' }));
-      o += place(12, 352, .64, G.shoes({ accent: '#c96a7a' })) + '<g transform="translate(228 352) scale(-.64 .64)">' + G.shoes({ accent: '#c96a7a' }) + '</g>';
-      o += mark(172, 72, 1) + mark(150, 106, 2) + mark(186, 320, 3) + mark(60, 414, 4);
+      o += place(56, -4, .8, G.cap()) + place(148, 18, .5, G.sunglasses()) + place(16, 70, 1.3, G.polo({ f: '#e6f0f6', l: '#b9ccda', stripe: '#0b4a32' })) + place(30, 236, 1.125, G.golfshorts()) + pair(320);
+      o = o.replace('cy="446" rx="90"', 'cy="402" rx="90"');
+      o += mark(70, 40, 1) + mark(150, 106, 2) + mark(176, 300, 3) + mark(60, 390, 4);
     }
     return o + '</svg>';
   }
@@ -238,8 +259,8 @@
     ['shoes', '高爾夫球鞋', '新手買無釘的，平常也能穿'], ['cap', '帽子或遮陽帽', '擋太陽，也不會刺眼'], ['glove', '手套', '右手球員戴左手'], ['knit', '針織背心', '冬天加一件，不會卡住揮桿']];
   var DONT = [['tee', '圓領 T 恤', '多數球場不接受'], ['jeans', '牛仔褲', '幾乎所有球場都不行'], ['tank', '無領背心', '有領的無袖上衣通常可以'], ['shorts', '運動短褲', '太短、太休閒']];
   var LOOKS = [
-    ['classic', '經典款', '男女都適合，一年四季都能穿', ['帽子：擋太陽，也比較不刺眼', '有領 Polo 衫', '上衣紮進褲子、繫皮帶', '卡其長褲（或及膝短褲）', '無釘高爾夫球鞋']],
-    ['summer', '夏天款', '天氣熱的時候，清爽又合規定', ['遮陽帽', '有領的無袖上衣', '及膝或稍短的球裙、褲裙', '高爾夫球鞋']]
+    ['winter', '冬天款', '天氣冷的時候，保暖又好揮桿', ['帽子：早上冷也可以戴毛帽', '毛衣或針織衫', '裡面穿有領的長袖 Polo 衫', '長褲（冷的話選刷毛內裡）', '高爾夫球鞋']],
+    ['summer', '夏天款', '天氣熱的時候，清爽又合規定', ['帽子加墨鏡：擋太陽，也保護眼睛', '短袖 Polo 衫：排汗快乾、淺色', '及膝短褲（或球裙）', '高爾夫球鞋']]
   ];
   var ITEMS = ['Polo 衫（多帶一件替換）', '長褲、及膝短褲或球裙', '皮帶', '高爾夫球鞋', '帽子', '手套（多帶一副）', '防曬乳、袖套', '雨具或防風外套', '回程換洗的衣服'];
 
@@ -344,7 +365,7 @@
     if (!$('#ofFlat')) return;
     $('#ofFlat').innerHTML = flatLay();
     $('#ofLooks').innerHTML = LOOKS.map(function (l) {
-      return '<article class="of-look"><div class="of-look-fig">' + look(l[0]) + '</div><div class="of-look-txt"><span class="of-tag">' + (l[0] === 'classic' ? 'Look 01' : 'Look 02') + '</span><h3>' + l[1] + '</h3><p>' + l[2] + '</p>' +
+      return '<article class="of-look"><div class="of-look-fig">' + look(l[0]) + '</div><div class="of-look-txt"><span class="of-tag">' + (l[0] === 'winter' ? 'Look 01' : 'Look 02') + '</span><h3>' + l[1] + '</h3><p>' + l[2] + '</p>' +
         '<ol>' + l[3].map(function (t) { return '<li>' + t + '</li>'; }).join('') + '</ol></div></article>';
     }).join('');
     var card = function (x, ok) {
