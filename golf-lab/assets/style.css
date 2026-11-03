@@ -1831,3 +1831,9 @@ html[lang="en"] { --zh-serif: 'Source Serif 4', 'Noto Serif TC', Georgia, serif;
 @media (max-width: 640px) { .of-today { padding: 20px; margin-top: 36px; } .tw-out { padding: 18px; } .tw-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); } .tw-stats div:first-child { grid-column: 1 / -1; } }
 .plan-pre { margin-top: 12px; padding: 10px 14px; border-radius: 10px; background: rgba(242, 199, 92, .16); font-size: 14.5px; color: #34413a; display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: center; }
 .plan-pre .link-btn { font-weight: 600; color: var(--green); }
+.lesson-card.soon { cursor: default; }
+.lesson-card.soon:hover { transform: none; box-shadow: none; }
+.lesson-card.soon .lc-art svg { opacity: .55; filter: saturate(.6); }
+.lc-soon { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1; padding: 8px 18px; border-radius: 999px; background: rgba(4, 38, 26, .82); color: var(--gold); font: 600 13px var(--sans); letter-spacing: .14em; white-space: nowrap; }
+.lesson-card.soon .lc-meta .go { background: rgba(242, 199, 92, .2); color: #9a7a2c; }
+.lesson-card.soon:hover .go { background: rgba(242, 199, 92, .2); color: #9a7a2c; }

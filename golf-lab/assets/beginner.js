@@ -153,6 +153,11 @@
     }
   );
 
+  /* Lessons announced but not written yet: shown as "coming soon" cards in their category. */
+  GL.soon = {
+    putting: [{ title: 'AimPoint', sub: '用腳感覺坡度的看線方法', shot: { lie: 'green', air: 0, curve: .32 } }]
+  };
+
   /* Warm-up and practice swings: do this before any session, and before a round. */
   GL.plans.w10 = {
     name: 'Warm-up & Practice Swings', zh: '暖身與空揮 10 分鐘', boxed: true,

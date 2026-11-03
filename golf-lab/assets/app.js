@@ -508,6 +508,13 @@
   }
 
   /* ---------- shared fragments ---------- */
+  // a lesson that is announced but not written yet
+  function soonCard(x, c) {
+    return '<div class="lesson-card soon" aria-disabled="true">' +
+      '<div class="lc-art"><span class="lc-soon">敬請期待</span>' + shotSVG(x.shot, { still: true, label: x.title }) + '</div>' +
+      '<div class="lc-body"><span class="eyebrow">' + c.zh + '</span><h3>' + esc(x.title) + '</h3><p>' + esc(x.sub) + '</p>' +
+      '<span class="lc-meta">' + icon('clock') + '敬請期待<span class="go">' + icon('clock') + '</span></span></div></div>';
+  }
   function lessonCard(l, step) {
     var c = catById(l.cat);
     return '<a class="lesson-card" href="learn.html#' + l.id + '">' +
@@ -991,9 +998,10 @@
       }).join('') + '</nav>' +
       '<div class="unit-intro"><span class="eyebrow">第 ' + (GL.sections.indexOf(sec) + 1) + ' 單元</span><h2>' + sec.zh + '</h2><p>' + sec.desc + '</p></div>' +
       sec.cats.map(function (cid) {
-        var c = catById(cid), ls = GL.lessons.filter(function (l) { return l.cat === cid; });
+        var c = catById(cid), ls = GL.lessons.filter(function (l) { return l.cat === cid; }), soon = (GL.soon && GL.soon[cid]) || [];
         return '<section class="cat-block" id="cat-' + cid + '">' + (sec.cats.length > 1 ? '<div class="cat-intro"><h2>' + c.name + ' <span class="zh">' + c.zh + '</span></h2><p>' + c.desc + '</p></div>' : '') +
-          '<div class="lesson-grid' + (ls.length === 4 ? ' four' : '') + '">' + ls.map(function (l, i) { return lessonCard(l, sec.id === 'setup' || sec.id === 'swing' ? i + 1 : 0); }).join('') + '</div></section>';
+          '<div class="lesson-grid' + (ls.length + soon.length === 4 ? ' four' : '') + '">' + ls.map(function (l, i) { return lessonCard(l, sec.id === 'setup' || sec.id === 'swing' ? i + 1 : 0); }).join('') +
+            soon.map(function (x) { return soonCard(x, c); }).join('') + '</div></section>';
       }).join('') + '</div>';
     reveal(root, true);
     linkTerms($('.unit-intro', root));
