@@ -6,7 +6,7 @@ On 2026-11-03 the owner asked to take the lesson content off the website for now
 whenever they ask. Only the 準備動作 (Setup) unit keeps its full content. Every other lesson keeps its
 title and shows 敬請期待 (Coming soon).
 
-**The full content is saved in git history at commit `c19b4d6`** on branch `claude/lucid-keller-tizc9c`
+**The full content is saved in git history at commit `e15f54f`** on branch `claude/lucid-keller-tizc9c`
 (the last commit before the removal; a local tag `lessons-full-2026-11` points at it too).
 Never rewrite or force-push that history.
 
@@ -22,7 +22,7 @@ Also announced but never written: **AimPoint** (`GL.soon.putting` in `golf-lab/a
 
 ### How to put a lesson back
 
-The content lived in three places. Copy each lesson's entry from `c19b4d6` (`git show c19b4d6:<file>`):
+The content lived in three places. Copy each lesson's entry from `e15f54f` (`git show e15f54f:<file>`):
 
 1. `golf-lab/assets/data.js`: the full lesson object (situation, club, setup, steps, mistakes, drills)
    replaces its one-line stub. Drop `soon: true`.
