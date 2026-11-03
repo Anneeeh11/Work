@@ -181,9 +181,8 @@
   GL.plans.r30 = {
     name: 'Range Basics', zh: '練習場 30 分鐘',
     blocks: [
-      { mins: 3, cat: 'Warm-up', name: '暖身與空揮', how: '轉動肩膀與髖部，用 PW 做 10 次 9 點到 3 點的空揮。', fig: 'halfswing', cap: '先做半揮的空揮，感受身體帶動手臂。' },
-      { mins: 7, cat: 'Half Swing', name: 'PW 半揮', how: '用 PW 打 15 顆 9 點到 3 點的半揮，目標是每顆都打到球。', lesson: 'iron-basics', fig: 'targets', cap: '選最近的旗子當目標，先求每一顆都紮實打到。' },
-      { mins: 10, cat: 'Full Swing', name: '7 號鐵全揮', how: '每顆球都選一個目標旗，打 20 顆，收桿站穩 3 秒。', lesson: 'finish-tempo', fig: 'targets', cap: '每一顆都換一個目標旗，不要連續一直打。' },
+      { mins: 8, cat: 'Half Swing', name: 'PW 半揮', how: '用 PW 打 15 顆 9 點到 3 點的半揮，目標是每顆都打到球。', lesson: 'iron-basics', fig: 'targets', cap: '選最近的旗子當目標，先求每一顆都紮實打到。' },
+      { mins: 12, cat: 'Full Swing', name: '7 號鐵全揮', how: '每顆球都選一個目標旗，打 20 顆，收桿站穩 3 秒。', lesson: 'finish-tempo', fig: 'targets', cap: '每一顆都換一個目標旗，不要連續一直打。' },
       { mins: 5, cat: 'Woods', name: 'Hybrid 或 5 號木', how: '用 75% 的力量打 10 顆，Tee 稍微架高。', lesson: 'driver-basics', fig: 'tee', cap: 'Tee 的高度：球有一半在桿頭上方。' },
       { mins: 5, cat: 'Short Game', name: '切球收尾', how: '到練習果嶺用 Bump & Run 打 10 顆，或在打位用 PW 打 30 碼。', lesson: 'bump-and-run', fig: 'towel', cap: '最後用短桿收尾，讓手感留在最常用到的距離。' }
     ]
@@ -192,7 +191,7 @@
   GL.plans.p30 = {
     name: 'Complete Putting', zh: '推桿 30 分鐘',
     blocks: [
-      { mins: 3, cat: 'Warm-up', name: 'Gate Drill 暖身', how: '1 公尺推 10 顆，找回推桿頭方正的感覺。', lesson: 'short-putts', fig: 'gate', cap: '兩支 tee 的間距只比球寬一點，球要從中間穿過。' },
+      { mins: 3, cat: 'Putting', name: 'Gate Drill', how: '1 公尺推 10 顆，找回推桿頭方正的感覺。', lesson: 'short-putts', fig: 'gate', cap: '兩支 tee 的間距只比球寬一點，球要從中間穿過。' },
       { mins: 9, cat: 'Putting', name: 'Circle Drill', how: '洞周圍 1 公尺放 8 顆，全部連續推進才能退到 1.5 公尺。', lesson: 'short-putts', fig: 'circle', cap: '以洞為中心，在 1 公尺處插 8 支 tee 圍成一圈，每支 tee 旁放一顆球。' },
       { mins: 9, cat: 'Putting', name: 'Lag Ladder', how: '10、15、20 步各插一支 tee，每一顆都要比上一顆遠，但不能超過 20 步。', lesson: 'lag-putting', fig: 'ladder', cap: '練的是距離感，方向偏一點沒關係。' },
       { mins: 9, cat: 'Pressure', name: 'Par 18 推桿小遊戲', how: '在練習果嶺選 9 個洞、各種距離和坡度，每洞標準桿 2。新手先以 22 桿以內為目標。', lesson: 'green-reading', fig: 'par18', cap: '每洞只推一顆球，像真的下場一樣認真看線，最後加總桿數。' }
@@ -203,10 +202,9 @@
   GL.plans.c30 = {
     name: 'Chipping Session', zh: '切球 30 分鐘',
     blocks: [
-      { mins: 3, cat: 'Warm-up', name: '暖身：小空揮刷草', how: '用 PW 做 10 次小幅度的空揮，桿頭輕輕刷過草皮同一個位置，感覺手臂和肩膀一起擺動。', lesson: 'standard-chip', fig: 'brush', cap: '切球的擺幅比圖上小，但一樣要每次刷到同一個位置。' },
-      { mins: 7, cat: 'Chipping', name: '毛巾落點：Bump & Run', how: '把毛巾鋪在果嶺邊緣往內一步，用 9 號鐵或 PW 打 15 顆，每一顆都要先落在毛巾上再滾向洞。', lesson: 'bump-and-run', fig: 'towel', cap: '把毛巾鋪在果嶺邊緣往內一步，球要先落在毛巾上，再滾向洞。' },
-      { mins: 8, cat: 'Chipping', name: '三支桿比較', how: '7 號鐵、9 號鐵、PW 各打 5 顆到同一個落點，記下每支桿落地後滾多遠。', lesson: 'bump-and-run', fig: 'threeclub', cap: '三支桿都打到同一條毛巾上，觀察球滾多遠：PW 最短、7 號鐵最長。' },
-      { mins: 6, cat: 'Chipping', name: '停在一支推桿內', how: '從果嶺邊不同位置切 10 顆，目標是停在洞周圍一支推桿長度的圈裡，這樣下一推就很好進。', lesson: 'standard-chip', fig: 'chipzone', cap: '用一支推桿長度當半徑，在洞周圍想像一個圈，球停在圈裡就成功。' },
+      { mins: 8, cat: 'Chipping', name: '毛巾落點：Bump & Run', how: '把毛巾鋪在果嶺邊緣往內一步，用 9 號鐵或 PW 打 15 顆，每一顆都要先落在毛巾上再滾向洞。', lesson: 'bump-and-run', fig: 'towel', cap: '把毛巾鋪在果嶺邊緣往內一步，球要先落在毛巾上，再滾向洞。' },
+      { mins: 9, cat: 'Chipping', name: '三支桿比較', how: '7 號鐵、9 號鐵、PW 各打 5 顆到同一個落點，記下每支桿落地後滾多遠。', lesson: 'bump-and-run', fig: 'threeclub', cap: '三支桿都打到同一條毛巾上，觀察球滾多遠：PW 最短、7 號鐵最長。' },
+      { mins: 7, cat: 'Chipping', name: '停在一支推桿內', how: '從果嶺邊不同位置切 10 顆，目標是停在洞周圍一支推桿長度的圈裡，這樣下一推就很好進。', lesson: 'standard-chip', fig: 'chipzone', cap: '用一支推桿長度當半徑，在洞周圍想像一個圈，球停在圈裡就成功。' },
       { mins: 6, cat: 'Pressure', name: 'Up & Down 挑戰', how: '選長草、邊緣、沙坑旁 3 個位置，每個位置切一次、推一次，兩桿內進洞才過關。', lesson: 'standard-chip', fig: 'updown', cap: '每個位置只打一顆球，像真的下場一樣認真打。' }
     ]
   };
@@ -214,9 +212,8 @@
   GL.plans.r60 = {
     name: 'Complete Range Session', zh: '練習場 60 分鐘',
     blocks: [
-      { mins: 5, cat: 'Warm-up', name: '暖身與空揮', how: '伸展後用 PW 做 15 次半揮空揮。', fig: 'halfswing', cap: '先做半揮的空揮，感受身體帶動手臂。' },
       { mins: 10, cat: 'Half Swing', name: '短鐵半揮', how: 'PW 與 9 號鐵各打 10 顆半揮，檢查擊球點。', lesson: 'iron-basics', fig: 'targets', cap: '選最近的旗子當目標，先求每一顆都紮實打到。' },
-      { mins: 15, cat: 'Full Swing', name: '7 號鐵目標練習', how: '每顆都換一個目標，記錄 20 顆中有幾顆落在目標附近。', lesson: 'alignment', fig: 'targets', cap: '每球都用球桿擺出瞄準線，再換目標。' },
+      { mins: 20, cat: 'Full Swing', name: '7 號鐵目標練習', how: '每顆都換一個目標，記錄 20 顆中有幾顆落在目標附近。', lesson: 'alignment', fig: 'targets', cap: '每球都用球桿擺出瞄準線，再換目標。' },
       { mins: 10, cat: 'Driver', name: '開球', how: '用 Driver 或 5 號木以 75% 力量打 10 顆，想像兩側是球道邊界。', lesson: 'driver-basics', fig: 'tee', cap: 'Tee 的高度：球有一半在桿頭上方。' },
       { mins: 10, cat: 'Short Game', name: '切球', how: '在練習果嶺用毛巾落點練習 Bump & Run 與 Standard Chip。', lesson: 'standard-chip', fig: 'towel', cap: '把毛巾鋪在果嶺邊緣往內一步，球要先落在毛巾上。' },
       { mins: 10, cat: 'Putting', name: '推桿', how: '1 公尺 Circle Drill 一輪，再推 5 顆 10 步以上的長推。', lesson: 'lag-putting', fig: 'circle', cap: '以洞為中心，在 1 公尺處插 8 支 tee 圍成一圈。' }

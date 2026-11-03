@@ -1829,3 +1829,5 @@ html[lang="en"] { --zh-serif: 'Source Serif 4', 'Noto Serif TC', Georgia, serif;
 .of-today.h-today { margin-top: 40px; }
 @media (max-width: 1080px) { .of-today { grid-template-columns: 1fr; } }
 @media (max-width: 640px) { .of-today { padding: 20px; margin-top: 36px; } .tw-out { padding: 18px; } .tw-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); } .tw-stats div:first-child { grid-column: 1 / -1; } }
+.plan-pre { margin-top: 12px; padding: 10px 14px; border-radius: 10px; background: rgba(242, 199, 92, .16); font-size: 14.5px; color: #34413a; display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: center; }
+.plan-pre .link-btn { font-weight: 600; color: var(--green); }

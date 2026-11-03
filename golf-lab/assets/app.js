@@ -1507,10 +1507,12 @@
       var done = store.get('done' + plan, []);
       var total = p.blocks.reduce(function (s, b) { return s + b.mins; }, 0);
       $('#planHead').innerHTML = '<span class="eyebrow">共 ' + total + ' 分鐘 · ' + p.blocks.length + ' 個練習</span><h2>' + p.zh + '</h2><p class="plan-sub">' + p.name + '</p>' +
+        (plan !== 'w10' && GL.plans.w10 ? '<p class="plan-pre">開始前，先做「暖身與空揮 10 分鐘」。<button type="button" class="link-btn" data-goplan="w10">先去暖身 →</button></p>' : '') +
         (p.why ? '<div class="plan-why"><h3>' + esc(p.why.title) + '</h3><p>' + esc(p.why.intro) + '</p><ul>' +
           p.why.items.map(function (w) { return '<li><strong>' + esc(w[0]) + '</strong><span>' + esc(w[1]) + '</span></li>'; }).join('') +
           '</ul><p class="pw-tip">' + esc(p.why.tip) + '</p></div>' : '');
       $('#planBar').innerHTML = p.blocks.map(function (b, i) { return '<i class="' + (done.indexOf(i) > -1 ? 'done' : '') + (timer.run || timer.left ? (i === timer.i ? ' now' : '') : '') + '" style="flex:' + b.mins + '" title="' + esc(b.name) + '"></i>'; }).join('');
+      $$('[data-goplan]').forEach(function (g) { g.addEventListener('click', function () { pause(); plan = g.getAttribute('data-goplan'); store.set('plan', plan); timer.i = 0; timer.left = 0; drawPlan(); }); });
       $('#planList').classList.toggle('boxed', !!p.boxed);
       $('#planList').innerHTML = p.blocks.map(function (b, i) {
         var l = b.lesson && lessonById(b.lesson);
