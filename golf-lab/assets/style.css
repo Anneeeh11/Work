@@ -1837,3 +1837,9 @@ html[lang="en"] { --zh-serif: 'Source Serif 4', 'Noto Serif TC', Georgia, serif;
 .lc-soon { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1; padding: 8px 18px; border-radius: 999px; background: rgba(4, 38, 26, .82); color: var(--gold); font: 600 13px var(--sans); letter-spacing: .14em; white-space: nowrap; }
 .lesson-card.soon .lc-meta .go { background: rgba(242, 199, 92, .2); color: #9a7a2c; }
 .lesson-card.soon:hover .go { background: rgba(242, 199, 92, .2); color: #9a7a2c; }
+.soon-page { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 36px; align-items: center; background: var(--paper); border: 1px solid var(--line); border-radius: 22px; padding: 28px; }
+.soon-page svg { width: 100%; height: auto; border-radius: 16px; opacity: .6; filter: saturate(.6); }
+.soon-page h2 { font: 500 28px var(--zh-serif); color: var(--green-900); margin: 14px 0 8px; }
+.soon-page p { color: var(--muted); line-height: 1.8; margin-bottom: 20px; }
+.lc-soon.static { position: static; transform: none; display: inline-block; }
+@media (max-width: 760px) { .soon-page { grid-template-columns: 1fr; padding: 20px; } }

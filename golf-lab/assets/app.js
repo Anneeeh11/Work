@@ -459,7 +459,7 @@
     var items = [];
     GL.lessons.forEach(function (l) {
       var c = catById(l.cat);
-      items.push({ t: l.title, s: l.zh, k: c.name + ' ' + c.zh + ' ' + l.situation + ' ' + l.club.pick, type: '技巧教學 · ' + c.zh, url: 'learn.html#' + l.id });
+      items.push({ t: l.title, s: l.zh, k: c.name + ' ' + c.zh + (l.soon ? '' : ' ' + l.situation + ' ' + l.club.pick), type: '技巧教學 · ' + c.zh, url: 'learn.html#' + l.id });
     });
     GL.clubs.forEach(function (c) {
       items.push({ t: c.name, s: c.zh, k: c.best.join(' ') + ' loft 球桿', type: '球桿選擇', url: 'clubs.html#' + c.id });
@@ -511,12 +511,13 @@
   // a lesson that is announced but not written yet
   function soonCard(x, c) {
     return '<div class="lesson-card soon" aria-disabled="true">' +
-      '<div class="lc-art"><span class="lc-soon">敬請期待</span>' + shotSVG(x.shot, { still: true, label: x.title }) + '</div>' +
+      '<div class="lc-art">' + (x.step ? '<span class="lc-step">STEP ' + x.step + '</span>' : '') + '<span class="lc-soon">敬請期待</span>' + (x.art ? fundSVG(x.art, x.phase) : shotSVG(x.shot, { still: true, label: x.title })) + '</div>' +
       '<div class="lc-body"><span class="eyebrow">' + c.zh + '</span><h3>' + esc(x.title) + '</h3><p>' + esc(x.sub) + '</p>' +
       '<span class="lc-meta">' + icon('clock') + '敬請期待<span class="go">' + icon('clock') + '</span></span></div></div>';
   }
   function lessonCard(l, step) {
     var c = catById(l.cat);
+    if (l.soon) return soonCard({ title: l.zh, sub: l.title, shot: l.shot, art: l.art, phase: l.phase, step: step }, c);
     return '<a class="lesson-card" href="learn.html#' + l.id + '">' +
       '<div class="lc-art">' + (step ? '<span class="lc-step">STEP ' + step + '</span>' : '') + (isLearned(l.id) ? '<span class="lc-done">' + icon('check') + '已學會</span>' : '') + lessonArt(l) + '</div>' +
       '<div class="lc-body"><span class="eyebrow">' + c.zh + '</span>' +
@@ -707,7 +708,7 @@
     var hero = $('#heroArt');
     if (hero) hero.innerHTML = courseSVG();
 
-    var feat = GL.lessons.filter(function (l) { return l.featured; });
+    var feat = GL.lessons.filter(function (l) { return !l.soon; }).concat(GL.lessons.filter(function (l) { return l.featured && l.soon; }));
     var tick = $('#ticker');
     if (tick) {
       tick.innerHTML = '<div class="tk-badge"><span>R1</span><small>Featured<br>Lessons</small></div>' + feat.concat(feat).map(function (l, i) {
@@ -750,7 +751,7 @@
     var pop = $('#popular');
     if (pop) pop.innerHTML = ['grip', 'stance', 'posture', 'alignment', 'iron-basics', 'short-putts'].map(function (id) {
       var l = lessonById(id);
-      return '<li><a href="learn.html#' + l.id + '"><span class="pl-art">' + lessonArt(l) + '</span><span class="pl-t"><strong>' + esc(l.zh) + '</strong><small>' + esc(l.key || '') + '</small></span><span class="pl-m">' + l.mins + ' 分鐘</span></a></li>';
+      return '<li><a href="learn.html#' + l.id + '"><span class="pl-art">' + lessonArt(l) + '</span><span class="pl-t"><strong>' + esc(l.zh) + '</strong><small>' + (l.soon ? '敬請期待' : esc(l.key || '')) + '</small></span><span class="pl-m">' + l.mins + ' 分鐘</span></a></li>';
     }).join('');
     var inp = $('#search');
     if (inp) bindSearch(inp, $('#searchResults'));
@@ -1013,6 +1014,17 @@
 
   function renderLesson(root, l) {
     var c = catById(l.cat);
+    if (l.soon) {
+      var u = sectionOf(l.cat);
+      document.title = l.zh + '｜技巧教學 | PAR/A';
+      root.innerHTML = '<header class="page-head wrap"><nav class="crumbs" aria-label="目前位置"><a href="index.html">首頁</a><span>/</span><a href="learn.html#' + u.id + '">' + u.zh + '</a></nav>' +
+        '<span class="eyebrow">' + c.zh + '</span><h1>' + esc(l.zh) + '</h1><p class="lead">' + esc(l.title) + '</p></header>' +
+        '<div class="wrap"><div class="soon-page">' + (l.art ? fundSVG(l.art, l.phase) : shotSVG(l.shot, { still: true, label: l.title })) +
+        '<div><span class="lc-soon static">敬請期待</span><h2>這篇教學還在準備中</h2><p>內容整理好之後就會放上來。先看看「準備動作」單元，每一桿都會用到。</p>' +
+        '<a class="btn" href="learn.html#setup">看準備動作 →</a></div></div></div>';
+      reveal(root, true);
+      return;
+    }
     var sib = lessonOrder(), sec0 = sectionOf(l.cat);
     var idx = sib.indexOf(l), prev = sib[(idx - 1 + sib.length) % sib.length], next = sib[(idx + 1) % sib.length];
     document.title = l.zh + '｜技巧教學 | PAR/A';
