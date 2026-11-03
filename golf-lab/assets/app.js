@@ -758,7 +758,9 @@
       new FormData(form).forEach(function (v, k) { d[k] = String(v).trim(); });
       if (d._honey) return;
       if (!d.name || !d.message || !d.email || !form.elements.email.checkValidity()) { say('請填寫姓名、有效的 Email 和訊息。', 'err'); return; }
-      var subject = 'PAR/A：' + d.topic + '（' + d.name + '）';
+      // subject in the language the visitor is reading (the radio values stay in Chinese for the inbox)
+      var picked = form.querySelector('input[name="topic"]:checked'), label = picked && picked.nextElementSibling ? picked.nextElementSibling.textContent : d.topic;
+      var subject = GL.lang === 'en' ? 'PAR/A: ' + label + ' (' + d.name + ')' : 'PAR/A：' + label + '（' + d.name + '）';
       send.disabled = true; say('傳送中…');
       fetch('https://formsubmit.co/ajax/' + TO, {
         method: 'POST',
@@ -770,7 +772,7 @@
       }).catch(function () {
         // Offline, blocked or the service is down: hand the message to Gmail instead.
         gmail.href = 'https://mail.google.com/mail/?view=cm&fs=1&to=' + encodeURIComponent(TO) + '&su=' + encodeURIComponent(subject) +
-          '&body=' + encodeURIComponent(d.message + '\n\n— ' + d.name + ' (' + d.email + ')');
+          '&body=' + encodeURIComponent(d.message + '\n\n' + d.name + ' (' + d.email + ')');
         gmail.hidden = false;
         say('目前無法直接送出。請用 Gmail 開啟並按下傳送，或寄信到 ' + TO + '。', 'err');
       }).then(function () { send.disabled = false; });
