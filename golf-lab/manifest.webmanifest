@@ -1,0 +1,23 @@
+{
+  "name": "PAR/A The Golf Lab",
+  "short_name": "PAR/A",
+  "start_url": "index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#fbf8ef",
+  "theme_color": "#063524",
+  "lang": "zh-Hant",
+  "icons": [
+    {
+      "src": "assets/img/para-mark.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/img/para-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

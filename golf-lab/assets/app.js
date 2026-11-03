@@ -30,6 +30,7 @@
     check: '<path d="M5 12.5l4.5 4.5L19 7.5"/>',
     star: '<path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z"/>',
     menu: '<path d="M4 7h16M4 12h16M4 17h16"/>',
+    home: '<path d="M4 11l8-7 8 7"/><path d="M6 9.5V20h12V9.5"/><path d="M10 20v-5h4v5"/>',
     close: '<path d="M6 6l12 12M18 6L6 18"/>',
     play: '<path d="M8 5.5v13l10-6.5z"/>',
     pause: '<path d="M9 5v14M15 5v14"/>',
@@ -298,6 +299,7 @@
       document.addEventListener('click', function (e) { if (!h.contains(e.target)) closeAll(); });
       document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeAll(); });
     }
+    tabBar(page);
     var f = $('#site-footer');
     if (f) {
       var lefty = !!store.get('lefty', false);
@@ -320,6 +322,54 @@
       applyLefty();
     });
     applyLefty();
+  }
+
+  /* Phones: an app-style tab bar at the bottom of the screen. Learn, Practice and Analyse open a
+     sheet with that group's pages; Menu holds the rest. Hidden on wider screens (style.css). */
+  function tabBar(page) {
+    var groupOf = function (k) { for (var i = 0; i < NAV_GROUPS.length; i++) if (NAV_GROUPS[i].items.some(function (n) { return n.key === k; })) return i; return -1; };
+    var cur = page === 'home' || page === 'start' ? 'home' : groupOf(page);
+    var tabIcons = ['book', 'target', 'chart'];
+    var bar = document.createElement('nav');
+    bar.className = 'tabbar'; bar.setAttribute('aria-label', '快速導覽');
+    bar.innerHTML = '<a href="index.html" class="tab' + (cur === 'home' ? ' on' : '') + '"' + (page === 'home' ? ' aria-current="page"' : '') + '>' + icon('home') + '<span>首頁</span></a>' +
+      NAV_GROUPS.map(function (g, i) { return '<button type="button" class="tab' + (cur === i ? ' on' : '') + '" data-sheet="' + i + '" aria-expanded="false">' + icon(tabIcons[i]) + '<span>' + g.zh + '</span></button>'; }).join('') +
+      '<button type="button" class="tab" data-sheet="more" aria-expanded="false">' + icon('menu') + '<span>選單</span></button>';
+    var sheet = document.createElement('div');
+    sheet.className = 'tab-sheet'; sheet.hidden = true;
+    var link = function (href, zh, en, on) { return '<a href="' + href + '"' + (on ? ' aria-current="page"' : '') + '><span>' + zh + '</span><small>' + en + '</small>' + icon('arrow') + '</a>'; };
+    var fill = function (which) {
+      if (which === 'more') {
+        sheet.innerHTML = '<p class="ts-title">選單</p>' + link('start.html', '新手入門', 'Start Here', page === 'start') + link('index.html#contact', '聯絡我們', 'Contact Us') +
+          '<button type="button" class="ts-lang" data-lang>' + (GL.lang === 'en' ? '切換成中文' : 'Switch to English') + '</button>';
+      } else {
+        var g = NAV_GROUPS[+which];
+        sheet.innerHTML = '<p class="ts-title">' + g.zh + '</p>' + g.items.map(function (n) { return link(n.href, n.zh, n.en, n.key === page); }).join('');
+      }
+    };
+    var shade = document.createElement('div');
+    shade.className = 'tab-shade'; shade.hidden = true;
+    var openWhich = null;
+    var close = function () {
+      openWhich = null; sheet.hidden = shade.hidden = true; document.body.classList.remove('sheet-open');
+      $$('[data-sheet]', bar).forEach(function (b) { b.setAttribute('aria-expanded', 'false'); b.classList.remove('open'); });
+    };
+    $$('[data-sheet]', bar).forEach(function (b) {
+      b.addEventListener('click', function () {
+        var w = b.getAttribute('data-sheet');
+        if (openWhich === w) return close();
+        close(); openWhich = w; fill(w);
+        sheet.hidden = shade.hidden = false; document.body.classList.add('sheet-open');
+        b.setAttribute('aria-expanded', 'true'); b.classList.add('open');
+      });
+    });
+    shade.addEventListener('click', close);
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+    sheet.addEventListener('click', function (e) {
+      if (e.target.closest('[data-lang]')) { store.set('lang', GL.lang === 'en' ? 'zh' : 'en'); location.reload(); }
+      else if (e.target.closest('a')) close();
+    });
+    document.body.appendChild(shade); document.body.appendChild(sheet); document.body.appendChild(bar);
   }
 
   function handLine() {
@@ -347,7 +397,7 @@
     });
     return out.replace(/\u0000(\d+)\u0000/g, function (m, i) { return pairs[i]; });
   }
-  var NOSWAP = '#site-header, #site-footer, .lefty-note, .hand-line, [data-noswap], script, style, textarea';
+  var NOSWAP = '#site-header, #site-footer, .tabbar, .tab-sheet, .lefty-note, .hand-line, [data-noswap], script, style, textarea';
   function lrNode(n, on) {
     var v = n.nodeValue, rec = LR.get(n);
     if (rec && v === (on ? rec[1] : rec[0])) return;
