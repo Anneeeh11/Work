@@ -228,7 +228,18 @@
     var mark = function (x, y, k) { return '<g class="of-pin"><circle cx="' + x + '" cy="' + y + '" r="11" fill="#0b4a32" stroke="#fbf8ef" stroke-width="2"/><text x="' + x + '" y="' + (y + 4.2) + '" text-anchor="middle">' + k + '</text></g>'; };
     var o = '<svg class="of-look-art" viewBox="0 0 240 460" aria-hidden="true">' + defs() + '<ellipse cx="120" cy="446" rx="90" ry="7" fill="#1b2a22" opacity=".08"/>';
     var pair = function (y, opt) { return place(12, y, .64, G.shoes(opt)) + '<g transform="translate(228 ' + y + ') scale(-.64 .64)">' + G.shoes(opt) + '</g>'; };
-    if (kind === 'winter') {
+    if (kind === 'winter-f') o = o.replace('viewBox="0 0 240 460"', 'viewBox="0 0 240 484"').replace('cy="446" rx="90"', 'cy="470" rx="90"');
+    // legs in tights, with the shoes under them (toes pointing out)
+    var tights = '<path d="M104 356 L93 432 M136 356 L147 432" stroke="#2f3438" stroke-width="10" stroke-linecap="round"/>';
+    var feet = function (y) { return '<g transform="translate(118 ' + y + ') scale(-.64 .64)">' + G.shoes() + '</g>' + place(122, y, .64, G.shoes()); };
+    if (kind === 'winter-f') {
+      o += place(56, -4, .8, G.cap()) + tights + place(32, 215, 1.1, G.skirt({ f: '#4b525b', l: '#353b42' })) + place(16, 70, 1.3, G.sweater({ f: '#7a2e3a', l: '#561c26', rib: '#66242f' })) + feet(380);
+      o += mark(176, 44, 1) + mark(150, 196, 2) + mark(146, 98, 3) + mark(178, 330, 4) + mark(214, 452, 5);
+    } else if (kind === 'summer-f') {
+      o += place(48, 4, .9, G.visor()) + place(148, 18, .5, G.sunglasses()) + place(20, 209, 1.25, G.skirt({ f: '#ffffff' })) + place(16, 70, 1.3, G.polo({ f: '#f6e4e8', l: '#e0c2ca', stripe: '#c96a7a' })) + pair(352, { accent: '#c96a7a' });
+      o = o.replace('cy="446" rx="90"', 'cy="434" rx="90"');
+      o += mark(70, 48, 1) + mark(150, 106, 2) + mark(186, 320, 3) + mark(60, 420, 4);
+    } else if (kind === 'winter') {
       o += place(56, -4, .8, G.cap()) + place(30, 236, 1.125, G.pants({ f: '#58636c', l: '#3f484f' })) + place(16, 70, 1.3, G.sweater()) + pair(368);
       o += mark(176, 44, 1) + mark(150, 196, 2) + mark(146, 98, 3) + mark(170, 330, 4) + mark(60, 430, 5);
     } else {
@@ -258,10 +269,16 @@
   var DO = [['polo', 'Polo 衫', '有領，最安全的選擇'], ['pants', '卡其長褲', '或及膝短褲，看球場規定'], ['skirt', '球裙、褲裙', '及膝或稍短一點'], ['belt', '皮帶', '上衣紮進褲子時一定要繫'],
     ['shoes', '高爾夫球鞋', '新手買無釘的，平常也能穿'], ['cap', '帽子或遮陽帽', '擋太陽，也不會刺眼'], ['glove', '手套', '右手球員戴左手'], ['knit', '針織背心', '冬天加一件，不會卡住揮桿']];
   var DONT = [['tee', '圓領 T 恤', '多數球場不接受'], ['jeans', '牛仔褲', '幾乎所有球場都不行'], ['tank', '無領背心', '有領的無袖上衣通常可以'], ['shorts', '運動短褲', '太短、太休閒']];
-  var LOOKS = [
-    ['winter', '冬天款', '天氣冷的時候，保暖又好揮桿', ['帽子：早上冷也可以戴毛帽', '毛衣或針織衫', '裡面穿有領的長袖 Polo 衫', '長褲（冷的話選刷毛內裡）', '高爾夫球鞋']],
-    ['summer', '夏天款', '天氣熱的時候，清爽又合規定', ['帽子加墨鏡：擋太陽，也保護眼睛', '短袖 Polo 衫：排汗快乾、淺色', '及膝短褲（或球裙）', '高爾夫球鞋']]
-  ];
+  var LOOKS = {
+    m: [
+      ['winter', '冬天款', '天氣冷的時候，保暖又好揮桿', ['帽子：早上冷也可以戴毛帽', '毛衣或針織衫', '裡面穿有領的長袖 Polo 衫', '長褲（冷的話選刷毛內裡）', '高爾夫球鞋']],
+      ['summer', '夏天款', '天氣熱的時候，清爽又合規定', ['帽子加墨鏡：擋太陽，也保護眼睛', '短袖 Polo 衫：排汗快乾、淺色', '及膝短褲', '高爾夫球鞋']]
+    ],
+    f: [
+      ['winter-f', '冬天款', '天氣冷的時候，保暖又好揮桿', ['帽子：早上冷也可以戴毛帽', '毛衣或針織衫', '裡面穿有領的長袖 Polo 衫', '球裙配保暖褲襪（或長褲）', '高爾夫球鞋']],
+      ['summer-f', '夏天款', '天氣熱的時候，清爽又合規定', ['遮陽帽加墨鏡：擋太陽，也保護眼睛', '短袖或無袖的有領上衣', '及膝或稍短的球裙、褲裙', '高爾夫球鞋']]
+    ]
+  };
   var ITEMS = ['Polo 衫（多帶一件替換）', '長褲、及膝短褲或球裙', '皮帶', '高爾夫球鞋', '帽子', '手套（多帶一副）', '防曬乳、袖套', '雨具或防風外套', '回程換洗的衣服'];
 
   /* ---------- today: weather where you are, and what to wear ---------- */
@@ -360,14 +377,21 @@
     if (last) form.q.value = last;
   }
 
+  // the two looks, for men or for women (the choice is remembered on this device)
+  function drawLooks(who) {
+    if (!LOOKS[who]) who = 'm';
+    $$('[data-lookfor]').forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-lookfor') === who); });
+    $('#ofLooks').innerHTML = LOOKS[who].map(function (l, i) {
+      return '<article class="of-look"><div class="of-look-fig">' + look(l[0]) + '</div><div class="of-look-txt"><span class="of-tag">Look 0' + (i + 1) + '</span><h3>' + l[1] + '</h3><p>' + l[2] + '</p>' +
+        '<ol>' + l[3].map(function (t) { return '<li>' + t + '</li>'; }).join('') + '</ol></div></article>';
+    }).join('');
+  }
   function render() {
     if ($('#ofToday')) initToday();
     if (!$('#ofFlat')) return;
     $('#ofFlat').innerHTML = flatLay();
-    $('#ofLooks').innerHTML = LOOKS.map(function (l) {
-      return '<article class="of-look"><div class="of-look-fig">' + look(l[0]) + '</div><div class="of-look-txt"><span class="of-tag">' + (l[0] === 'winter' ? 'Look 01' : 'Look 02') + '</span><h3>' + l[1] + '</h3><p>' + l[2] + '</p>' +
-        '<ol>' + l[3].map(function (t) { return '<li>' + t + '</li>'; }).join('') + '</ol></div></article>';
-    }).join('');
+    drawLooks(store.get('lookfor', 'm'));
+    $$('[data-lookfor]').forEach(function (b) { b.addEventListener('click', function () { store.set('lookfor', b.getAttribute('data-lookfor')); drawLooks(b.getAttribute('data-lookfor')); }); });
     var card = function (x, ok) {
       var opt = x[0] === 'jeans' ? { denim: true } : null;
       return '<figure class="of-item ' + (ok ? 'ok' : 'no') + '"><div class="of-swatch">' + tile(x[0] === 'jeans' ? 'pants' : x[0], opt) + '<span class="of-mark" aria-hidden="true">' + (ok ? '✓' : '✕') + '</span></div>' +

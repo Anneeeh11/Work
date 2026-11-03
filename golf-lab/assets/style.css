@@ -1956,3 +1956,6 @@ html[lang="en"] .fg-quote p { font-style: italic; }
 .fg-photo-bg.end img { object-position: 50% 94%; }
 .fg-photo-bg::after { content: ''; position: absolute; inset: 0; background: radial-gradient(60% 55% at 50% 58%, rgba(4, 38, 26, .45), rgba(4, 38, 26, 0) 75%), linear-gradient(180deg, rgba(4, 38, 26, .15) 0%, rgba(4, 38, 26, .25) 45%, rgba(4, 38, 26, .78) 100%); }
 .fg-photo-bg.end::after { background: linear-gradient(180deg, rgba(4, 38, 26, .55), rgba(4, 38, 26, .7)); }
+.of-head-row { max-width: none; display: flex; justify-content: space-between; align-items: end; gap: 20px; flex-wrap: wrap; }
+.of-head-row > div:first-child { max-width: 640px; }
+.of-seg { flex: none; }
